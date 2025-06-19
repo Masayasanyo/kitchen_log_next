@@ -6,21 +6,12 @@ import { createFromSetMeal } from '@/app/lib/shopping-list-actions';
 import Image from 'next/image';
 import Link from 'next/link';
 
-interface RecipeRow {
-  id: number;
-  title: string;
-  img_url: string;
-}
-
-interface Row {
-  recipes: RecipeRow[];
-}
-
 interface Recipe {
   id: number;
   imgUrl: string;
   title: string;
 }
+
 interface RecipeListRow {
   recipes: {
     id: number;
