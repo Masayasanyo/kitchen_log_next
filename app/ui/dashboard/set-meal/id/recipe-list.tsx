@@ -13,13 +13,20 @@ interface RecipeRow {
 }
 
 interface Row {
-  recipes: RecipeRow;
+  recipes: RecipeRow[];
 }
 
 interface Recipe {
   id: number;
   imgUrl: string;
   title: string;
+}
+interface RecipeListRow {
+  recipes: {
+    id: number;
+    img_url: string;
+    title: string;
+  };
 }
 
 export default function RecipeList(props: { setMealId: string }) {
@@ -32,7 +39,8 @@ export default function RecipeList(props: { setMealId: string }) {
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchRecipeList(props.setMealId);
-      const data = result?.data?.map((row: Row) => ({
+      console.log(result);
+      const data = result?.data?.map((row: RecipeListRow) => ({
         id: row.recipes.id,
         imgUrl: row.recipes.img_url,
         title: row.recipes.title,
