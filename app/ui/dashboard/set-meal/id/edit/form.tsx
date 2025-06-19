@@ -14,11 +14,21 @@ interface SetMealRow {
   user_id: number;
 }
 
-interface RecipeListRow {
+interface RecipeRow {
   id: number;
-  img_url: string;
   title: string;
+  img_url: string;
 }
+
+interface Row {
+  recipes: RecipeRow;
+}
+
+// interface RecipeListRow {
+//   id: number;
+//   img_url: string;
+//   title: string;
+// }
 
 export default function EditForm(props: { setMealId: string }) {
   const [formData, setFormData] = useState<SetMealForm>({
@@ -45,13 +55,11 @@ export default function EditForm(props: { setMealId: string }) {
         }),
       );
       const recipeListResult = await fetchRecipeList(props.setMealId);
-      const recipeListData = recipeListResult?.data?.map(
-        (row: RecipeListRow) => ({
-          id: row.id,
-          imgUrl: row.img_url,
-          title: row.title,
-        }),
-      );
+      const recipeListData = recipeListResult?.data?.map((row: Row) => ({
+        id: row.recipes.id,
+        imgUrl: row.recipes.img_url,
+        title: row.recipes.title,
+      }));
 
       if (setMealInfoData && setMealInfoData.length > 0 && recipeListData) {
         setFormData((prev) => ({
