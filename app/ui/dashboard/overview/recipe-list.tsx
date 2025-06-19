@@ -16,7 +16,7 @@ export default function RecipeList() {
         imgUrl: row.img_url,
         title: row.title,
         memo: row.memo,
-        user_id: row.user_id,
+        userId: row.user_id,
       }));
       if (data) {
         setRecipeList(data);
