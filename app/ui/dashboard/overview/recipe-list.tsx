@@ -5,7 +5,6 @@ import { fetchRecipes } from '@/app/lib/recipe-actions';
 import { Recipe } from '@/app/lib/definitions';
 import Image from 'next/image';
 import Link from 'next/link';
-import SearchRecipe from '@/app/ui/dashboard/recipe/search/search-recipe';
 
 export default function RecipeList() {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
@@ -27,12 +26,11 @@ export default function RecipeList() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-8">
-      <SearchRecipe setRecipeList={setRecipeList} />
-      {recipeList?.map((recipe) => (
+    <div className="grid grid-cols-2 gap-4">
+      {recipeList?.slice(0, 4).map((recipe) => (
         <Link
           href={`/dashboard/recipe/${recipe.id}`}
-          className="rounded-md p-4 flex flex-col gap-2 shadow-md"
+          className="rounded-md shadow-md"
           key={recipe.id}
         >
           <Image
@@ -42,7 +40,6 @@ export default function RecipeList() {
             alt={recipe.title}
             className="object-cover aspect-video w-full"
           />
-          <p>{recipe.title}</p>
         </Link>
       ))}
     </div>

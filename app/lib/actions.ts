@@ -1,15 +1,10 @@
 'use server';
 
-import postgres from 'postgres';
 import { z } from 'zod';
 import { signIn, signOut } from '@/auth';
 import { AuthError } from 'next-auth';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
-
-// const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
-const sql = postgres(process.env.POSTGRES_URL!);
+import { supabase } from '@/app/lib/supabase';
 
 const FormSchema = z.object({
   id: z.string(),
@@ -43,7 +38,7 @@ export async function register(prevState: State, formData: FormData) {
   const validatedFields = Register.safeParse({
     username: formData.get('username'),
     email: formData.get('email'),
-    password: formData.get('password'), 
+    password: formData.get('password'),
     confirmedPassword: formData.get('confirmed-password'),
   });
 
@@ -56,29 +51,25 @@ export async function register(prevState: State, formData: FormData) {
 
   const { username, email, password, confirmedPassword } = validatedFields.data;
 
-  console.log(validatedFields.data)
-
   if (password !== confirmedPassword) {
     return {
       message: 'パスワードが一致しません。',
-    }
+    };
   }
 
   const saltRounds = 10;
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  try {
-    await sql`
-      INSERT INTO users (username, email, password)
-      VALUES (${username}, ${email}, ${hashedPassword})
-    `;
-    await signIn('credentials', formData);
-  } catch (error) {
-    console.log(error)
+  const { error } = await supabase
+    .from('users')
+    .insert({ username: username, email: email, password: hashedPassword });
+  if (error) {
+    console.log(error);
     return {
-      message: 'Database Error: Failed to Register.',
+      message: 'Failed to register.',
     };
   }
+  await signIn('credentials', formData);
 }
 
 export async function authenticate(

@@ -32,3 +32,24 @@ export interface Recipe {
   memo: string;
   user_id: number | null;
 }
+
+export interface RecipeInSetMeal {
+  id: number;
+  title: string;
+  imgUrl: string;
+}
+
+export interface SetMealForm {
+  title: string;
+  recipeList: RecipeInSetMeal[];
+}
+
+export interface SetMealChildComponentProps {
+  formData: SetMealForm;
+  setFormData: React.Dispatch<React.SetStateAction<SetMealForm>>;
+}
+
+export interface ShoppingListForm {
+  name: string;
+  amount: string;
+}

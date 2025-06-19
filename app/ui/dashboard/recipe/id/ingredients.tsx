@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { fetchRecipeIng } from '@/app/lib/recipe-actions';
+import { createFromSetMeal } from '@/app/lib/shopping-list-actions';
+import PlusBtn from '@/app/ui/icons/plus-btn';
 
 interface Ingredients {
   name: string;
@@ -10,6 +12,9 @@ interface Ingredients {
 
 export default function Ingredients(props: { recipeId: string }) {
   const [ingredients, setIngredients] = useState<Ingredients[]>([]);
+  const addToList = () => {
+    createFromSetMeal([{ id: Number(props.recipeId), imgUrl: '', title: '' }]);
+  };
 
   useEffect(() => {
     const fetch = async () => {
@@ -38,6 +43,14 @@ export default function Ingredients(props: { recipeId: string }) {
           </div>
         ))}
       </div>
+      <button
+        type="button"
+        onClick={addToList}
+        className="flex gap-2 items-center justify-center mt-2"
+      >
+        買い物リストに追加
+        <PlusBtn cN={'w-6'} />
+      </button>
     </div>
   );
 }

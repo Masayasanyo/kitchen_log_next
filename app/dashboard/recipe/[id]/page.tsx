@@ -1,7 +1,7 @@
 import RecipeInfo from '@/app/ui/dashboard/recipe/id/recipe-info';
 import Ingredients from '@/app/ui/dashboard/recipe/id/ingredients';
 import Step from '@/app/ui/dashboard/recipe/id/step';
-import EditBtn from '@/app/ui/dashboard/recipe/id/edit-btn';
+import EditBtn from '@/app/ui/icons/edit-btn';
 import Link from 'next/link';
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {

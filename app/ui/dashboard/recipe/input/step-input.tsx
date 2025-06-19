@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import CancelBtn from './cancel-btn';
+import CancelBtn from '@/app/ui/icons/cancel-btn';
 
 import { ChildComponentProps } from '@/app/lib/definitions';
 
