@@ -9,7 +9,15 @@ interface RecipeSug {
   imgUrl: string;
   title: string;
   memo: string;
-  userId: string;
+  userId: number;
+}
+
+interface RecipeRow {
+  id: number;
+  img_url: string;
+  title: string;
+  memo: string;
+  user_id: number;
 }
 
 export default function RecipeInput({
@@ -22,7 +30,7 @@ export default function RecipeInput({
     const keyword = e.target.value;
 
     const result = await fetchRecipeSugList(keyword);
-    const data = result?.data?.map((row: any) => ({
+    const data = result?.data?.map((row: RecipeRow) => ({
       id: row.id,
       imgUrl: row.img_url,
       title: row.title,

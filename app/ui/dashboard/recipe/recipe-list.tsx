@@ -7,12 +7,20 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SearchRecipe from '@/app/ui/dashboard/recipe/search/search-recipe';
 
+interface RecipeRow {
+  id: number;
+  img_url: string;
+  title: string;
+  memo: string;
+  user_id: number;
+}
+
 export default function RecipeList() {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchRecipes();
-      const data = result?.data?.map((row: any) => ({
+      const data = result?.data?.map((row: RecipeRow) => ({
         id: row.id,
         imgUrl: row.img_url,
         title: row.title,

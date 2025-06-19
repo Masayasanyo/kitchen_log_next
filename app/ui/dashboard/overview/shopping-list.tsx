@@ -1,13 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import {
-  fetchShoppingList,
-  check,
-  uncheck,
-} from '@/app/lib/shopping-list-actions';
-import CheckBox from '../../icons/check-box';
-import CheckedBox from '../../icons/checked-box';
+import { fetchShoppingList } from '@/app/lib/shopping-list-actions';
 
 interface Row {
   id: number;
@@ -27,18 +21,6 @@ interface ShoppingList {
 
 export default function ShoppingList() {
   const [shoppingList, setShoppingList] = useState<ShoppingList[]>([]);
-
-  const checkItem = async (id: number, progress: boolean) => {
-    if (progress) {
-      await uncheck(id);
-    } else {
-      await check(id);
-    }
-    const newList = shoppingList.map((item) =>
-      item.id === id ? { ...item, progress: !progress } : item,
-    );
-    setShoppingList(newList);
-  };
 
   useEffect(() => {
     const fetch = async () => {

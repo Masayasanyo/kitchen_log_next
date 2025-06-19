@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import Link from 'next/link';
 import ShoppingList from '@/app/ui/dashboard/shopping-list/shopping-list';
 import Create from '@/app/ui/dashboard/shopping-list/create';
 

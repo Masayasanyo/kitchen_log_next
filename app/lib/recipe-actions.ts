@@ -93,8 +93,8 @@ export async function createRecipe(formData: Form) {
 export async function editRecipe(formData: Form, recipeId: string) {
   if (formData.imgFile) {
     if (formData.prevImgUrl) {
-      let splittedUrl = formData.prevImgUrl.split('/');
-      let previousFileName = splittedUrl[splittedUrl.length - 1];
+      const splittedUrl = formData.prevImgUrl.split('/');
+      const previousFileName = splittedUrl[splittedUrl.length - 1];
       await supabase.storage.from('img-url').remove([previousFileName]);
     }
 
@@ -189,8 +189,8 @@ export async function editRecipe(formData: Form, recipeId: string) {
 
 export async function deleteRecipe(formData: Form, recipeId: string) {
   if (formData.prevImgUrl) {
-    let splittedUrl = formData.prevImgUrl.split('/');
-    let previousFileName = splittedUrl[splittedUrl.length - 1];
+    const splittedUrl = formData.prevImgUrl.split('/');
+    const previousFileName = splittedUrl[splittedUrl.length - 1];
     await supabase.storage.from('img-url').remove([previousFileName]);
   }
 

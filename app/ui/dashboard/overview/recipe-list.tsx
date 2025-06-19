@@ -6,12 +6,20 @@ import { Recipe } from '@/app/lib/definitions';
 import Image from 'next/image';
 import Link from 'next/link';
 
+interface Row {
+  id: number;
+  img_url: string;
+  title: string;
+  memo: string;
+  user_id: number;
+}
+
 export default function RecipeList() {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchRecipes();
-      const data = result?.data?.map((row: any) => ({
+      const data = result?.data?.map((row: Row) => ({
         id: row.id,
         imgUrl: row.img_url,
         title: row.title,

@@ -10,6 +10,11 @@ interface Ingredients {
   amount: string;
 }
 
+interface IngRow {
+  name: string;
+  amount: string;
+}
+
 export default function Ingredients(props: { recipeId: string }) {
   const [ingredients, setIngredients] = useState<Ingredients[]>([]);
   const addToList = () => {
@@ -19,7 +24,7 @@ export default function Ingredients(props: { recipeId: string }) {
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchRecipeIng(props.recipeId);
-      const data = result?.data?.map((row: any) => ({
+      const data = result?.data?.map((row: IngRow) => ({
         name: row.name,
         amount: row.amount,
       }));

@@ -14,6 +14,23 @@ import {
 import { Form } from '@/app/lib/definitions';
 import { editRecipe, deleteRecipe } from '@/app/lib/recipe-actions';
 
+interface RecipeRow {
+  id: number;
+  img_url: string;
+  title: string;
+  memo: string;
+  user_id: number;
+}
+
+interface IngRow {
+  name: string;
+  amount: string;
+}
+
+interface StepRow {
+  name: string;
+}
+
 export default function EditForm(props: { recipeId: string }) {
   const [formData, setFormData] = useState<Form>({
     prevImgUrl: '',
@@ -36,7 +53,7 @@ export default function EditForm(props: { recipeId: string }) {
   useEffect(() => {
     const fetch = async () => {
       const recipeInfoResult = await fetchRecipeInfo(props.recipeId);
-      const recipeInfoData = recipeInfoResult?.data?.map((row: any) => ({
+      const recipeInfoData = recipeInfoResult?.data?.map((row: RecipeRow) => ({
         id: row.id,
         imgUrl: row.img_url,
         title: row.title,
@@ -44,23 +61,25 @@ export default function EditForm(props: { recipeId: string }) {
         user_id: row.user_id,
       }));
       const ingResult = await fetchRecipeIng(props.recipeId);
-      const ingData = ingResult?.data?.map((row: any) => ({
+      const ingData = ingResult?.data?.map((row: IngRow) => ({
         name: row.name as string,
         amount: row.amount as string,
       }));
       const stepResult = await fetchRecipeStep(props.recipeId);
-      const stepData = stepResult?.data?.map((row: any) => row.name as string);
+      const stepData = stepResult?.data?.map(
+        (row: StepRow) => row.name as string,
+      );
 
       if (recipeInfoData && recipeInfoData.length > 0 && ingData && stepData) {
-        setFormData({
-          ...formData,
+        setFormData((prev) => ({
+          ...prev,
           prevImgUrl: recipeInfoData[0].imgUrl,
           imgUrl: recipeInfoData[0].imgUrl,
           title: recipeInfoData[0].title,
           memo: recipeInfoData[0].memo,
           ingList: ingData,
           stepList: stepData,
-        });
+        }));
       }
     };
     fetch();

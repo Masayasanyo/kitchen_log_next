@@ -3,13 +3,17 @@
 import { useEffect, useState } from 'react';
 import { fetchRecipeStep } from '@/app/lib/recipe-actions';
 
+interface StepRow {
+  name: string;
+}
+
 export default function Step(props: { recipeId: string }) {
   const [steps, setSteps] = useState<string[]>([]);
 
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchRecipeStep(props.recipeId);
-      const data = result?.data?.map((row: any) => row.name);
+      const data = result?.data?.map((row: StepRow) => row.name);
       if (data) {
         setSteps(data);
       }

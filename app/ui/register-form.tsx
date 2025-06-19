@@ -10,8 +10,8 @@ export default function RegisterForm() {
 
   return (
     <form action={formAction} className="">
-      <div className=''>
-        <h1 className='font-bold text-2xl mb-10'>会員登録</h1>
+      <div className="">
+        <h1 className="font-bold text-2xl mb-10">会員登録</h1>
         <div className="w-full">
           <div className="mt-4">
             <label
@@ -26,10 +26,18 @@ export default function RegisterForm() {
                 id="username"
                 type="text"
                 name="username"
-                placeholder="ユーザーネームを入力してください" 
+                placeholder="ユーザーネームを入力してください"
                 maxLength={50}
                 required
               />
+            </div>
+            <div aria-live="polite" aria-atomic="true">
+              {state?.errors?.username &&
+                state.errors.username.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
             </div>
           </div>
           <div className="mt-4">
@@ -45,10 +53,18 @@ export default function RegisterForm() {
                 id="email"
                 type="email"
                 name="email"
-                placeholder="メールアドレスを入力してください" 
+                placeholder="メールアドレスを入力してください"
                 maxLength={50}
                 required
               />
+            </div>
+            <div aria-live="polite" aria-atomic="true">
+              {state?.errors?.email &&
+                state.errors.email.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
             </div>
           </div>
           <div className="mt-4">
@@ -69,6 +85,14 @@ export default function RegisterForm() {
                 minLength={6}
               />
             </div>
+            <div aria-live="polite" aria-atomic="true">
+              {state?.errors?.password &&
+                state.errors.password.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
           </div>
           <div className="mt-4">
             <label
@@ -88,14 +112,24 @@ export default function RegisterForm() {
                 minLength={6}
               />
             </div>
+            <div aria-live="polite" aria-atomic="true">
+              {state?.errors?.confirmedPassword &&
+                state.errors.confirmedPassword.map((error: string) => (
+                  <p className="mt-2 text-sm text-red-500" key={error}>
+                    {error}
+                  </p>
+                ))}
+            </div>
           </div>
         </div>
         <button className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl">
           登録
         </button>
-        <p className='mt-6'>
+        <p className="mt-6">
           アカウントがある場合
-          <Link href="/login" className='font-medium'> ログイン</Link>
+          <Link href="/login" className="font-medium">
+            ログイン
+          </Link>
         </p>
       </div>
     </form>

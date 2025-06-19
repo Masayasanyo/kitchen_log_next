@@ -34,7 +34,10 @@ export type State = {
   message?: string | null;
 };
 
-export async function register(prevState: State, formData: FormData) {
+export async function register(
+  prevState: State | undefined,
+  formData: FormData,
+) {
   const validatedFields = Register.safeParse({
     username: formData.get('username'),
     email: formData.get('email'),

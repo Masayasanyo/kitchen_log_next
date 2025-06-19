@@ -54,11 +54,11 @@ export default function EditForm(props: { setMealId: string }) {
       );
 
       if (setMealInfoData && setMealInfoData.length > 0 && recipeListData) {
-        setFormData({
-          ...formData,
+        setFormData((prev) => ({
+          ...prev,
           title: setMealInfoData[0].title,
           recipeList: recipeListData,
-        });
+        }));
       }
     };
     fetch();
