@@ -4,11 +4,7 @@ import Link from 'next/link';
 import Cancel from './icons/cancel';
 import Right from './icons/right';
 import { logout } from '@/app/lib/actions';
-
-interface Links {
-  name: string;
-  href: string;
-}
+import { Links } from '@/app/lib/definitions';
 
 const links: Links[] = [
   { name: 'ホーム', href: '/dashboard' },

@@ -2,18 +2,10 @@
 
 import { useEffect, useState } from 'react';
 import { fetchRecipes } from '@/app/lib/recipe-actions';
-import { Recipe } from '@/app/lib/definitions';
+import { Recipe, RecipeRow } from '@/app/lib/definitions';
 import Image from 'next/image';
 import Link from 'next/link';
 import SearchRecipe from '@/app/ui/dashboard/recipe/search/search-recipe';
-
-interface RecipeRow {
-  id: number;
-  img_url: string;
-  title: string;
-  memo: string;
-  user_id: number;
-}
 
 export default function RecipeList() {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
@@ -25,7 +17,7 @@ export default function RecipeList() {
         imgUrl: row.img_url,
         title: row.title,
         memo: row.memo,
-        user_id: row.user_id,
+        userId: row.user_id,
       }));
       if (data) {
         setRecipeList(data);

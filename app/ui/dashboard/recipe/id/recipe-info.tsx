@@ -2,16 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { fetchRecipeInfo } from '@/app/lib/recipe-actions';
-import { Recipe } from '@/app/lib/definitions';
+import { Recipe, RecipeRow } from '@/app/lib/definitions';
 import Image from 'next/image';
-
-interface RecipeRow {
-  id: number;
-  img_url: string;
-  title: string;
-  memo: string;
-  user_id: number;
-}
 
 export default function RecipeInfo(props: { recipeId: string }) {
   const [recipeInfo, setRecipeInfo] = useState<Recipe>({
@@ -19,7 +11,7 @@ export default function RecipeInfo(props: { recipeId: string }) {
     imgUrl: '',
     title: '',
     memo: '',
-    user_id: null,
+    userId: null,
   });
 
   useEffect(() => {
@@ -30,7 +22,7 @@ export default function RecipeInfo(props: { recipeId: string }) {
         imgUrl: row.img_url,
         title: row.title,
         memo: row.memo,
-        user_id: row.user_id,
+        userId: row.user_id,
       }));
       if (data && data.length > 0) {
         setRecipeInfo(data[0]);

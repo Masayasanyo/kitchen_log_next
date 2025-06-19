@@ -4,41 +4,14 @@ import { useEffect, useState } from 'react';
 import { fetchSetMeals } from '@/app/lib/set-meal-actions';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface Recipe {
-  id: number;
-  title: string;
-  img_url: string;
-}
-
-interface RecipeRow {
-  recipes: {
-    id: number;
-    title: string;
-    img_url: string;
-  };
-}
-
-interface Row {
-  id: number;
-  title: string;
-  user_id: number;
-  recipes: RecipeRow[];
-}
-
-interface SetMeal {
-  id: number;
-  title: string;
-  userId: number;
-  recipes: Recipe[];
-}
+import { SetMealRow, SetMeal } from '@/app/lib/definitions';
 
 export default function SetMealList() {
   const [setMealList, setSetMealList] = useState<SetMeal[]>([]);
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchSetMeals();
-      const data = result?.data?.map((row: Row) => ({
+      const data = result?.data?.map((row: SetMealRow) => ({
         id: row.id,
         title: row.title,
         userId: row.user_id,

@@ -1,30 +1,18 @@
 'use client';
 
-import { SetMealChildComponentProps } from '@/app/lib/definitions';
+import {
+  Recipe,
+  SetMealChildComponentProps,
+  RecipeRow,
+} from '@/app/lib/definitions';
 import { useState } from 'react';
 import { fetchRecipeSugList } from '@/app/lib/set-meal-actions';
-
-interface RecipeSug {
-  id: number;
-  imgUrl: string;
-  title: string;
-  memo: string;
-  userId: number;
-}
-
-interface RecipeRow {
-  id: number;
-  img_url: string;
-  title: string;
-  memo: string;
-  user_id: number;
-}
 
 export default function RecipeInput({
   formData,
   setFormData,
 }: SetMealChildComponentProps) {
-  const [recipeList, setRecipeList] = useState<RecipeSug[]>([]);
+  const [recipeList, setRecipeList] = useState<Recipe[]>([]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.target.value;
@@ -42,7 +30,7 @@ export default function RecipeInput({
     }
   };
 
-  const selectRecipe = (recipe: RecipeSug) => {
+  const selectRecipe = (recipe: Recipe) => {
     if (formData.recipeList.some((r) => r.id === recipe.id)) return;
     setFormData((prev) => ({
       ...prev,

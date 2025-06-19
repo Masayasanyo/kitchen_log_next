@@ -2,20 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { fetchSetMealInfo } from '@/app/lib/set-meal-actions';
+import { SetMealInfo, SetMealInfoRow } from '@/app/lib/definitions';
 
-interface SetMealInfo {
-  id: number | null;
-  title: string;
-  userId: number | null;
-}
-
-interface Row {
-  id: number;
-  title: string;
-  user_id: number;
-}
-
-export default function SetMealInfo(props: { setMealId: string }) {
+export default function Page(props: { setMealId: string }) {
   const [setMealInfo, setSetMealInfo] = useState<SetMealInfo>({
     id: null,
     title: '',
@@ -25,7 +14,7 @@ export default function SetMealInfo(props: { setMealId: string }) {
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchSetMealInfo(props.setMealId);
-      const data = result?.data?.map((row: Row) => ({
+      const data = result?.data?.map((row: SetMealInfoRow) => ({
         id: row.id,
         title: row.title,
         userId: row.user_id,

@@ -5,22 +5,12 @@ import RecipeInput from '@/app/ui/dashboard/set-meal/input/recipe-input';
 import RecipeList from '@/app/ui/dashboard/set-meal/input/recipe-list';
 import { useEffect, useState } from 'react';
 import { fetchSetMealInfo, fetchRecipeList } from '@/app/lib/set-meal-actions';
-import { SetMealForm } from '@/app/lib/definitions';
+import {
+  SetMealForm,
+  SetMealInfoRow,
+  RecipeListRow,
+} from '@/app/lib/definitions';
 import { editSetMeal, deleteSetMeal } from '@/app/lib/set-meal-actions';
-
-interface SetMealRow {
-  id: number;
-  title: string;
-  user_id: number;
-}
-
-// interface RecipeListRow {
-//   recipes: {
-//     id: number;
-//     img_url: string;
-//     title: string;
-//   };
-// }
 
 export default function EditForm(props: { setMealId: string }) {
   const [formData, setFormData] = useState<SetMealForm>({
@@ -40,18 +30,20 @@ export default function EditForm(props: { setMealId: string }) {
     const fetch = async () => {
       const setMealInfoResult = await fetchSetMealInfo(props.setMealId);
       const setMealInfoData = setMealInfoResult?.data?.map(
-        (row: SetMealRow) => ({
+        (row: SetMealInfoRow) => ({
           id: row.id,
           title: row.title,
           userId: row.user_id,
         }),
       );
       const recipeListResult = await fetchRecipeList(props.setMealId);
-      const recipeListData = recipeListResult?.data?.map((row) => ({
-        id: row.recipes.id,
-        imgUrl: row.recipes.img_url,
-        title: row.recipes.title,
-      }));
+      const recipeListData = recipeListResult?.data?.map(
+        (row: RecipeListRow) => ({
+          id: row.recipes.id,
+          imgUrl: row.recipes.img_url,
+          title: row.recipes.title,
+        }),
+      );
 
       if (setMealInfoData && setMealInfoData.length > 0 && recipeListData) {
         setFormData((prev) => ({

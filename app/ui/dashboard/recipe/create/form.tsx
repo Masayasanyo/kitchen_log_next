@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { createRecipe } from '@/app/lib/recipe-actions';
-import { Form } from '@/app/lib/definitions';
+import { RecipeForm } from '@/app/lib/definitions';
 import TitleInput from '@/app/ui/dashboard/recipe/input/title-input';
 import MemoInput from '@/app/ui/dashboard/recipe/input/memo-input';
 import IngInput from '@/app/ui/dashboard/recipe/input/ing-input';
@@ -10,7 +10,7 @@ import StepInput from '@/app/ui/dashboard/recipe/input/step-input';
 import ImgInput from '@/app/ui/dashboard/recipe/input/img-input';
 
 export default function CreateForm() {
-  const [formData, setFormData] = useState<Form>({
+  const [formData, setFormData] = useState<RecipeForm>({
     prevImgUrl: '',
     imgUrl: '',
     imgFile: null,

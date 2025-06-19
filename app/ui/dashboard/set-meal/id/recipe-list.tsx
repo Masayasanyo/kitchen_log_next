@@ -5,20 +5,7 @@ import { fetchRecipeList } from '@/app/lib/set-meal-actions';
 import { createFromSetMeal } from '@/app/lib/shopping-list-actions';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface Recipe {
-  id: number;
-  imgUrl: string;
-  title: string;
-}
-
-// interface RecipeListRow {
-//   recipes: {
-//     id: number;
-//     img_url: string;
-//     title: string;
-//   };
-// }
+import { Recipe, RecipeListRow } from '@/app/lib/definitions';
 
 export default function RecipeList(props: { setMealId: string }) {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
@@ -30,11 +17,13 @@ export default function RecipeList(props: { setMealId: string }) {
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchRecipeList(props.setMealId);
-      console.log(result);
-      const data = result?.data?.map((row) => ({
+      console.log(result?.data);
+      const data = result?.data?.map((row: RecipeListRow) => ({
         id: row.recipes.id,
         imgUrl: row.recipes.img_url,
         title: row.recipes.title,
+        userId: row.recipes,
+        memo: row.recipes.memo,
       }));
       if (data && data.length > 0) {
         setRecipeList(data);

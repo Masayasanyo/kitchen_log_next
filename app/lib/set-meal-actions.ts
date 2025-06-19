@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { SetMealForm } from '@/app/lib/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
+import { RecipeListRow, ApiResponse } from '@/app/lib/definitions';
 
 export async function fetchSetMeals() {
   const session = await auth();
@@ -133,23 +134,29 @@ export async function fetchSetMealInfo(setMealId: string) {
   }
 }
 
-export async function fetchRecipeList(setMealId: string) {
+export async function fetchRecipeList(setMealId: string): Promise<ApiResponse> {
   const { data, error } = await supabase
     .from('set_meal_recipes')
-    .select('recipes ( id, title, img_url )')
+    .select('recipes ( id, title, img_url, user_id, memo )')
     .eq('set_meal_id', setMealId);
-  if (data && data?.length > 0) {
+  if (!data || data?.length < 0) {
     return {
-      message: 'Recipe retrieved successfully.',
-      data: data,
+      message: 'Recipe not found.',
+      data: data as RecipeListRow[],
     };
   }
   if (error) {
     console.log(error);
     return {
       message: 'Database Error: Failed to fetch set meal.',
+      data: [],
     };
   }
+
+  return {
+    message: 'Recipe retrieved successfully.',
+    data: data as RecipeListRow[],
+  };
 }
 
 export async function editSetMeal(formData: SetMealForm, setMealId: string) {
@@ -182,7 +189,7 @@ export async function editSetMeal(formData: SetMealForm, setMealId: string) {
   }
 
   for (let i = 0; i < formData.recipeList.length; i++) {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('set_meal_recipes')
       .insert({
         user_id: userId,
@@ -190,9 +197,6 @@ export async function editSetMeal(formData: SetMealForm, setMealId: string) {
         recipe_id: formData.recipeList[i].id,
       })
       .select();
-    if (data && data.length > 0) {
-      setMealId = data[0].id;
-    }
     if (error) {
       console.log(error);
       return {

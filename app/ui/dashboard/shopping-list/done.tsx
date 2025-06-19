@@ -8,22 +8,7 @@ import {
 } from '@/app/lib/shopping-list-actions';
 import CheckBox from '../../icons/check-box';
 import CheckedBox from '../../icons/checked-box';
-
-interface Row {
-  id: number;
-  user_id: number;
-  name: string;
-  amount: string;
-  progress: boolean;
-}
-
-interface ShoppingList {
-  id: number;
-  userId: number;
-  name: string;
-  amount: string;
-  progress: boolean;
-}
+import { ShoppingList, ShoppingListRow } from '@/app/lib/definitions';
 
 export default function Done() {
   const [doneList, setDoneList] = useState<ShoppingList[]>([]);
@@ -43,7 +28,7 @@ export default function Done() {
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchShoppingList(true);
-      const data = result?.data?.map((row: Row) => ({
+      const data = result?.data?.map((row: ShoppingListRow) => ({
         id: row.id,
         userId: row.user_id,
         name: row.name,

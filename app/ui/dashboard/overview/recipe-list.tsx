@@ -2,24 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import { fetchRecipes } from '@/app/lib/recipe-actions';
-import { Recipe } from '@/app/lib/definitions';
+import { Recipe, RecipeRow } from '@/app/lib/definitions';
 import Image from 'next/image';
 import Link from 'next/link';
-
-interface Row {
-  id: number;
-  img_url: string;
-  title: string;
-  memo: string;
-  user_id: number;
-}
 
 export default function RecipeList() {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchRecipes();
-      const data = result?.data?.map((row: Row) => ({
+      const data = result?.data?.map((row: RecipeRow) => ({
         id: row.id,
         imgUrl: row.img_url,
         title: row.title,

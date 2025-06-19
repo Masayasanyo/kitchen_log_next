@@ -1,31 +1,8 @@
 import { useState } from 'react';
 import { searchSetMeal } from '@/app/lib/set-meal-actions';
+import { SetSetMealListProp, SetMealRow } from '@/app/lib/definitions';
 
-interface Recipe {
-  id: number;
-  title: string;
-  img_url: string;
-}
-
-interface SetMeal {
-  id: number;
-  title: string;
-  userId: number;
-  recipes: Recipe[];
-}
-
-interface Prop {
-  setSetMealList: React.Dispatch<React.SetStateAction<SetMeal[]>>;
-}
-
-interface Row {
-  id: number;
-  title: string;
-  user_id: number;
-  recipes: Recipe[];
-}
-
-export default function SearchSetMeal({ setSetMealList }: Prop) {
+export default function SearchSetMeal({ setSetMealList }: SetSetMealListProp) {
   const [query, setQuery] = useState<string>('');
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -36,7 +13,7 @@ export default function SearchSetMeal({ setSetMealList }: Prop) {
 
   const fetchSetMeal = async () => {
     const result = await searchSetMeal(query);
-    const data = result?.data?.map((row: Row) => ({
+    const data = result?.data?.map((row: SetMealRow) => ({
       id: row.id,
       title: row.title,
       userId: row.user_id,

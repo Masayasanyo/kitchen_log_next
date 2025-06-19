@@ -2,30 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { fetchShoppingList } from '@/app/lib/shopping-list-actions';
+import { ShoppingList, ShoppingListRow } from '@/app/lib/definitions';
 
-interface Row {
-  id: number;
-  user_id: number;
-  name: string;
-  amount: string;
-  progress: boolean;
-}
-
-interface ShoppingList {
-  id: number;
-  userId: number;
-  name: string;
-  amount: string;
-  progress: boolean;
-}
-
-export default function ShoppingList() {
+export default function Page() {
   const [shoppingList, setShoppingList] = useState<ShoppingList[]>([]);
 
   useEffect(() => {
     const fetch = async () => {
       const result = await fetchShoppingList(false);
-      const data = result?.data?.map((row: Row) => ({
+      const data = result?.data?.map((row: ShoppingListRow) => ({
         id: row.id,
         userId: row.user_id,
         name: row.name,

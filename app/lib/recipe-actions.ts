@@ -2,11 +2,11 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { Form } from '@/app/lib/definitions';
+import { RecipeForm } from '@/app/lib/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
 
-export async function createRecipe(formData: Form) {
+export async function createRecipe(formData: RecipeForm) {
   const session = await auth();
   const userId: string = session?.user?.id as string;
   let recipeId = 0;
@@ -90,7 +90,7 @@ export async function createRecipe(formData: Form) {
   redirect('/dashboard/recipe');
 }
 
-export async function editRecipe(formData: Form, recipeId: string) {
+export async function editRecipe(formData: RecipeForm, recipeId: string) {
   if (formData.imgFile) {
     if (formData.prevImgUrl) {
       const splittedUrl = formData.prevImgUrl.split('/');
@@ -187,7 +187,7 @@ export async function editRecipe(formData: Form, recipeId: string) {
   redirect(`/dashboard/recipe/${recipeId}`);
 }
 
-export async function deleteRecipe(formData: Form, recipeId: string) {
+export async function deleteRecipe(formData: RecipeForm, recipeId: string) {
   if (formData.prevImgUrl) {
     const splittedUrl = formData.prevImgUrl.split('/');
     const previousFileName = splittedUrl[splittedUrl.length - 1];

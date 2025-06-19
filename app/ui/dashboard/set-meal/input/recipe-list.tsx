@@ -6,7 +6,7 @@ export default function RecipeList({
   formData,
   setFormData,
 }: SetMealChildComponentProps) {
-  const cancelRecipe = (id: number) => {
+  const cancelRecipe = (id: number | null) => {
     let currentList = [...formData.recipeList];
     currentList = currentList.filter((recipe) => recipe.id !== id);
     setFormData({

@@ -10,7 +10,7 @@ export interface NewIng {
   amount: string;
 }
 
-export interface Form {
+export interface RecipeForm {
   prevImgUrl: string;
   imgUrl: string;
   imgFile: File | null;
@@ -21,8 +21,8 @@ export interface Form {
 }
 
 export interface ChildComponentProps {
-  formData: Form;
-  setFormData: React.Dispatch<React.SetStateAction<Form>>;
+  formData: RecipeForm;
+  setFormData: React.Dispatch<React.SetStateAction<RecipeForm>>;
 }
 
 export interface Recipe {
@@ -30,11 +30,39 @@ export interface Recipe {
   imgUrl: string;
   title: string;
   memo: string;
-  user_id: number | null;
+  userId: number | null;
+}
+
+export interface SetMeal {
+  id: number;
+  title: string;
+  userId: number;
+  recipes: { id: number; title: string; img_url: string }[];
+}
+
+export interface SetMealInfo {
+  id: number | null;
+  title: string;
+  userId: number | null;
+}
+
+export interface ShoppingList {
+  id: number;
+  userId: number;
+  name: string;
+  amount: string;
+  progress: boolean;
+}
+
+export interface Ingredient {
+  id: number;
+  recipeId: number;
+  name: string;
+  amount: string;
 }
 
 export interface RecipeInSetMeal {
-  id: number;
+  id: number | null;
   title: string;
   imgUrl: string;
 }
@@ -52,4 +80,96 @@ export interface SetMealChildComponentProps {
 export interface ShoppingListForm {
   name: string;
   amount: string;
+}
+
+export interface RecipeRow {
+  id: number;
+  img_url: string;
+  title: string;
+  memo: string;
+  user_id: number;
+}
+
+export interface SetMealRow {
+  id: number;
+  title: string;
+  user_id: number;
+  recipes: {
+    recipes: {
+      id: number;
+      title: string;
+      img_url: string;
+    };
+  }[];
+}
+
+export interface SetMealInfoRow {
+  id: number;
+  title: string;
+  user_id: number;
+}
+
+export interface RecipeListRow {
+  recipes: {
+    id: number;
+    title: string;
+    img_url: string;
+    memo: string;
+    user_id: number;
+  }[];
+}
+
+export interface IngRow {
+  id: number;
+  recipe_id: number;
+  name: string;
+  amount: string;
+}
+
+export interface StepRow {
+  id: number;
+  recipe_id: number;
+  name: string;
+}
+
+export interface ShoppingListRow {
+  id: number;
+  user_id: number;
+  name: string;
+  amount: string;
+  progress: boolean;
+}
+
+export interface SetRecipeListProp {
+  setRecipeList: React.Dispatch<React.SetStateAction<Recipe[]>>;
+}
+
+export interface SetSetMealListProp {
+  setSetMealList: React.Dispatch<React.SetStateAction<SetMeal[]>>;
+}
+
+export interface RecipeSug {
+  id: number;
+  imgUrl: string;
+  title: string;
+  memo: string;
+  userId: number;
+}
+
+export interface Links {
+  name: string;
+  href: string;
+}
+
+export interface ApiResponse {
+  message: string;
+  data: {
+    recipes: {
+      id: number;
+      title: string;
+      img_url: string;
+      memo: string;
+      user_id: number;
+    }[];
+  }[];
 }

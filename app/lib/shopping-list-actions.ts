@@ -4,26 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
-
-interface Recipe {
-  id: number;
-  imgUrl: string;
-  title: string;
-}
-
-interface Ingredient {
-  id: number;
-  recipeId: number;
-  name: string;
-  amount: string;
-}
-
-interface Row {
-  id: number;
-  recipe_id: number;
-  name: string;
-  amount: string;
-}
+import { Recipe, Ingredient, IngRow } from '@/app/lib/definitions';
 
 export async function fetchShoppingList(isDone: boolean) {
   const session = await auth();
@@ -121,7 +102,7 @@ export async function createFromSetMeal(recipeList: Recipe[]) {
       .select()
       .eq('recipe_id', recipeList[i].id);
     if (data && data?.length > 0) {
-      const newData = data?.map((row: Row) => ({
+      const newData = data?.map((row: IngRow) => ({
         id: row.id,
         recipeId: row.recipe_id,
         name: row.name,

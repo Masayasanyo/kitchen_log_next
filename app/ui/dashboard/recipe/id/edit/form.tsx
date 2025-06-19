@@ -11,28 +11,11 @@ import {
   fetchRecipeIng,
   fetchRecipeStep,
 } from '@/app/lib/recipe-actions';
-import { Form } from '@/app/lib/definitions';
+import { RecipeForm, RecipeRow, IngRow, StepRow } from '@/app/lib/definitions';
 import { editRecipe, deleteRecipe } from '@/app/lib/recipe-actions';
 
-interface RecipeRow {
-  id: number;
-  img_url: string;
-  title: string;
-  memo: string;
-  user_id: number;
-}
-
-interface IngRow {
-  name: string;
-  amount: string;
-}
-
-interface StepRow {
-  name: string;
-}
-
 export default function EditForm(props: { recipeId: string }) {
-  const [formData, setFormData] = useState<Form>({
+  const [formData, setFormData] = useState<RecipeForm>({
     prevImgUrl: '',
     imgUrl: '',
     imgFile: null,

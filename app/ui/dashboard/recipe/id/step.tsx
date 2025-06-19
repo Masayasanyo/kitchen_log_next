@@ -2,10 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { fetchRecipeStep } from '@/app/lib/recipe-actions';
-
-interface StepRow {
-  name: string;
-}
+import { StepRow } from '@/app/lib/definitions';
 
 export default function Step(props: { recipeId: string }) {
   const [steps, setSteps] = useState<string[]>([]);
