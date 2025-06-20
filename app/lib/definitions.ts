@@ -168,8 +168,3 @@ export interface Links {
   name: string;
   href: string;
 }
-
-export interface ApiResponse {
-  message: string;
-  data: RecipeListRow[];
-}
