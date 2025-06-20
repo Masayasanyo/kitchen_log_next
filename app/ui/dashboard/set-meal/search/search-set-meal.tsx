@@ -13,11 +13,18 @@ export default function SearchSetMeal({ setSetMealList }: SetSetMealListProp) {
 
   const fetchSetMeal = async () => {
     const result = await searchSetMeal(query);
+    console.log(result);
+    // const data = result?.data?.map((row: SetMealRow) => ({
+    //   id: row.id,
+    //   title: row.title,
+    //   userId: row.user_id,
+    //   recipes: row.recipes,
+    // }));
     const data = result?.data?.map((row: SetMealRow) => ({
       id: row.id,
       title: row.title,
       userId: row.user_id,
-      recipes: row.recipes,
+      recipes: row.recipes.map((r) => r.recipes),
     }));
     if (data) {
       setSetMealList(data);
