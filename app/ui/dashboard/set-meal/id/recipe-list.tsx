@@ -16,17 +16,39 @@ export default function RecipeList(props: { setMealId: string }) {
 
   useEffect(() => {
     const fetch = async () => {
-      const result = await fetchRecipeList(props.setMealId);
-      console.log(result?.data);
-      const data = result?.data?.map((row: RecipeListRow) => ({
-        id: row.recipes.id,
-        imgUrl: row.recipes.img_url,
-        title: row.recipes.title,
-        userId: row.recipes,
-        memo: row.recipes.memo,
-      }));
-      if (data && data.length > 0) {
-        setRecipeList(data);
+      const recipeListResult = await fetchRecipeList(props.setMealId);
+      // const data = result?.data?.map((row: RecipeListRow) => ({
+      //   id: row.recipes.id,
+      //   imgUrl: row.recipes.img_url,
+      //   title: row.recipes.title,
+      //   userId: row.recipes,
+      //   memo: row.recipes.memo,
+      // }));
+      const recipeListData = recipeListResult?.data?.map(
+        (row: RecipeListRow) => {
+          const recipes = row.recipes;
+
+          if (Array.isArray(recipes)) {
+            return {
+              id: recipes[0].id,
+              imgUrl: recipes[0].img_url,
+              title: recipes[0].title,
+              memo: recipes[0].memo,
+              userId: recipes[0].user_id,
+            };
+          } else {
+            return {
+              id: recipes.id,
+              imgUrl: recipes.img_url,
+              title: recipes.title,
+              memo: recipes.memo,
+              userId: recipes.user_id,
+            };
+          }
+        },
+      );
+      if (recipeListData && recipeListData.length > 0) {
+        setRecipeList(recipeListData);
       }
     };
     fetch();
