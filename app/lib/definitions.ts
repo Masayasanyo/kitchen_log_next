@@ -110,13 +110,21 @@ export interface SetMealInfoRow {
 }
 
 export interface RecipeListRow {
-  recipes: {
-    id: number;
-    title: string;
-    img_url: string;
-    memo: string;
-    user_id: number;
-  }[];
+  recipes:
+    | {
+        id: number;
+        title: string;
+        img_url: string;
+        memo: string;
+        user_id: number;
+      }
+    | {
+        id: number;
+        title: string;
+        img_url: string;
+        memo: string;
+        user_id: number;
+      }[];
 }
 
 export interface IngRow {
@@ -163,13 +171,5 @@ export interface Links {
 
 export interface ApiResponse {
   message: string;
-  data: {
-    recipes: {
-      id: number;
-      title: string;
-      img_url: string;
-      memo: string;
-      user_id: number;
-    }[];
-  }[];
+  data: RecipeListRow[];
 }

@@ -134,7 +134,32 @@ export async function fetchSetMealInfo(setMealId: string) {
   }
 }
 
-export async function fetchRecipeList(setMealId: string): Promise<ApiResponse> {
+// export async function fetchRecipeList(setMealId: string): Promise<ApiResponse> {
+//   const { data, error } = await supabase
+//     .from('set_meal_recipes')
+//     .select('recipes ( id, title, img_url, user_id, memo )')
+//     .eq('set_meal_id', setMealId);
+//   if (!data || data?.length < 0) {
+//     return {
+//       message: 'Recipe not found.',
+//       data: data as RecipeListRow[],
+//     };
+//   }
+//   if (error) {
+//     console.log(error);
+//     return {
+//       message: 'Database Error: Failed to fetch set meal.',
+//       data: [],
+//     };
+//   }
+
+//   return {
+//     message: 'Recipe retrieved successfully.',
+//     data: data as RecipeListRow[],
+//   };
+// }
+
+export async function fetchRecipeList(setMealId: string) {
   const { data, error } = await supabase
     .from('set_meal_recipes')
     .select('recipes ( id, title, img_url, user_id, memo )')
@@ -142,20 +167,19 @@ export async function fetchRecipeList(setMealId: string): Promise<ApiResponse> {
   if (!data || data?.length < 0) {
     return {
       message: 'Recipe not found.',
-      data: data as RecipeListRow[],
+      data: data,
     };
   }
   if (error) {
     console.log(error);
     return {
       message: 'Database Error: Failed to fetch set meal.',
-      data: [],
     };
   }
 
   return {
     message: 'Recipe retrieved successfully.',
-    data: data as RecipeListRow[],
+    data: data,
   };
 }
 

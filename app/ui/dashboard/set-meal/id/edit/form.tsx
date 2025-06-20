@@ -12,6 +12,16 @@ import {
 } from '@/app/lib/definitions';
 import { editSetMeal, deleteSetMeal } from '@/app/lib/set-meal-actions';
 
+// export interface RLR {
+//   recipes: {
+//     id: number;
+//     title: string;
+//     img_url: string;
+//     memo: string;
+//     user_id: number;
+//   };
+// }
+
 export default function EditForm(props: { setMealId: string }) {
   const [formData, setFormData] = useState<SetMealForm>({
     title: '',
@@ -37,12 +47,32 @@ export default function EditForm(props: { setMealId: string }) {
         }),
       );
       const recipeListResult = await fetchRecipeList(props.setMealId);
+      // const recipeListData = recipeListResult?.data?.map(
+      //   (row: RecipeListRow) => ({
+      //     id: row.recipes.id,
+      //     imgUrl: row.recipes.img_url,
+      //     title: row.recipes.title,
+      //   }),
+      // );
+
       const recipeListData = recipeListResult?.data?.map(
-        (row: RecipeListRow) => ({
-          id: row.recipes.id,
-          imgUrl: row.recipes.img_url,
-          title: row.recipes.title,
-        }),
+        (row: RecipeListRow) => {
+          const recipes = row.recipes;
+
+          if (Array.isArray(recipes)) {
+            return {
+              id: recipes[0].id,
+              imgUrl: recipes[0].img_url,
+              title: recipes[0].title,
+            };
+          } else {
+            return {
+              id: recipes.id,
+              imgUrl: recipes.img_url,
+              title: recipes.title,
+            };
+          }
+        },
       );
 
       if (setMealInfoData && setMealInfoData.length > 0 && recipeListData) {
