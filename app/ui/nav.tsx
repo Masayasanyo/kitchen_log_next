@@ -18,7 +18,7 @@ const links: Links[] = [
 
 export default function Nav(props: { openNav?: () => void }) {
   return (
-    <nav className="fixed top-0 left-0 z-[9999] p-8 bg-[#1F4529] text-[#E8ECD7] w-screen h-screen">
+    <nav className="fixed top-0 left-0 z-[9999] p-8 bg-[#1F4529] text-[#E8ECD7] w-screen h-screen md:left-auto md:right-0 md:w-xl">
       <Cancel openNav={props.openNav} />
       {links.map((link) => (
         <div key={link.name}>

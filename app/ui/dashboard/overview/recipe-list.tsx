@@ -26,7 +26,7 @@ export default function RecipeList() {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {recipeList?.slice(0, 4).map((recipe) => (
         <Link
           href={`/dashboard/recipe/${recipe.id}`}

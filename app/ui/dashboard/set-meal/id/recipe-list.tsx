@@ -56,7 +56,7 @@ export default function RecipeList(props: { setMealId: string }) {
 
   return (
     <div>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-8 md:grid md:grid-cols-4">
         {recipeList?.map((recipe) => (
           <Link
             href={`/dashboard/recipe/${recipe.id}`}

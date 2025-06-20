@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { searchSetMeal } from '@/app/lib/set-meal-actions';
 import { SetSetMealListProp, SetMealRow } from '@/app/lib/definitions';
@@ -13,7 +15,6 @@ export default function SearchSetMeal({ setSetMealList }: SetSetMealListProp) {
 
   const fetchSetMeal = async () => {
     const result = await searchSetMeal(query);
-    console.log(result);
     // const data = result?.data?.map((row: SetMealRow) => ({
     //   id: row.id,
     //   title: row.title,
@@ -24,7 +25,7 @@ export default function SearchSetMeal({ setSetMealList }: SetSetMealListProp) {
       id: row.id,
       title: row.title,
       userId: row.user_id,
-      recipes: row.recipes.map((r) => r.recipes),
+      recipes: row.recipes?.map((r) => r.recipes),
     }));
     if (data) {
       setSetMealList(data);

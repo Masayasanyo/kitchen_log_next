@@ -238,12 +238,13 @@ export async function searchSetMeal(query: string) {
   if (data && data?.length > 0) {
     setMealList = data;
   } else {
-    return { message: 'Set meals not found.' };
+    return { message: 'Set meals not found.', data: [] };
   }
   if (error) {
     console.log(error);
     return {
       message: 'Database Error: Failed to fetch set meal.',
+      data: [],
     };
   }
 
@@ -259,6 +260,7 @@ export async function searchSetMeal(query: string) {
       console.log(error);
       return {
         message: 'Database Error: Failed to fetch set meal.',
+        data: [],
       };
     }
   }

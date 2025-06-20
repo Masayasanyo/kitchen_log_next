@@ -14,7 +14,7 @@ export default function Page() {
     <main className="flex flex-col gap-8">
       <section>
         <h2 className="text-2xl font-medium">レシピ</h2>
-        <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2">
+        <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2 md:p-8 md:gap-6">
           <ReciepList />
           <Link
             href={'dashboard/recipe'}
@@ -28,7 +28,7 @@ export default function Page() {
 
       <section>
         <h2 className="text-2xl font-medium">献立</h2>
-        <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2">
+        <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2 md:p-8 md:gap-6">
           <SetMealList />
           <Link
             href={'dashboard/set-meal'}
@@ -42,7 +42,7 @@ export default function Page() {
 
       <section>
         <h2 className="text-2xl font-medium">買い物リスト</h2>
-        <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2">
+        <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2 md:p-8 md:gap-6">
           <ShoppingList />
           <Link
             href={'dashboard/shopping-list'}

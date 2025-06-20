@@ -15,7 +15,7 @@ export default function SetMealList() {
         id: row.id,
         title: row.title,
         userId: row.user_id,
-        recipes: row.recipes.map((r) => r.recipes),
+        recipes: row.recipes?.map((r) => r.recipes),
       }));
       if (data) {
         setSetMealList(data);
@@ -25,7 +25,7 @@ export default function SetMealList() {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
       {setMealList?.slice(0, 4).map((setMeal) => (
         <Link
           href={`/dashboard/set-meal/${setMeal.id}`}
@@ -33,16 +33,18 @@ export default function SetMealList() {
           key={setMeal.id}
         >
           <div className="grid grid-cols-2 grid-rows-2 gap-2">
-            {setMeal.recipes.slice(0, 4).map((recipe) => (
-              <Image
-                key={recipe.id}
-                src={recipe.img_url || '/no_image.png'}
-                width={160}
-                height={90}
-                alt={recipe.title}
-                className="object-cover aspect-video w-full"
-              />
-            ))}
+            {setMeal.recipes
+              ?.slice(0, 4)
+              .map((recipe) => (
+                <Image
+                  key={recipe.id}
+                  src={recipe.img_url || '/no_image.png'}
+                  width={160}
+                  height={90}
+                  alt={recipe.title}
+                  className="object-cover aspect-video w-full"
+                />
+              ))}
           </div>
         </Link>
       ))}

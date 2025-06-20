@@ -321,16 +321,21 @@ export async function searchRecipe(query: string) {
     .select()
     .ilike('title', `%${query}%`)
     .eq('user_id', userId);
+  if (error) {
+    console.log(error);
+    return {
+      message: 'Database Error: Failed to fetch recipes.',
+    };
+  }
   if (data && data?.length > 0) {
     return {
       message: 'Recipes retrieved successfully.',
       data: data,
     };
-  }
-  if (error) {
-    console.log(error);
+  } else {
     return {
-      message: 'Database Error: Failed to fetch recipes.',
+      message: 'Recipe not found.',
+      data: data,
     };
   }
 }

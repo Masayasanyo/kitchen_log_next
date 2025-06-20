@@ -16,7 +16,7 @@ export default function RecipeList({
   };
 
   return (
-    <div>
+    <div className="md:grid md:grid-cols-4 gap-4">
       {formData.recipeList.map((recipe) => (
         <div
           key={recipe.id}
