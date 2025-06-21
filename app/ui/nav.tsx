@@ -1,8 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Cancel from './icons/cancel';
-import Right from './icons/right';
 import { logout } from '@/app/lib/actions/account-actions';
 import { Links } from '@/app/lib/definitions/definitions';
 
@@ -15,7 +13,6 @@ const links: Links[] = [
 
 export default function Nav(props: { openNav?: () => void }) {
   return (
-    // <nav className="fixed top-0 left-0 z-[9999] p-8 bg-[#1F4529] text-[#E8ECD7] w-screen h-screen md:left-auto md:right-0 md:w-xl">
     <nav className="bg-[#1F4529] text-[#E8ECD7] w-[60%] rounded-2xl p-4">
       {links.map((link) => (
         <div key={link.name}>
