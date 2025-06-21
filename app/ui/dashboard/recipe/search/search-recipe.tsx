@@ -1,6 +1,9 @@
-import { SetRecipeListProp, RecipeRow } from '@/app/lib/definitions';
+import {
+  SetRecipeListProp,
+  RecipeRow,
+} from '@/app/lib/definitions/definitions';
 import { useState } from 'react';
-import { searchRecipe } from '@/app/lib/recipe-actions';
+import { searchRecipe } from '@/app/lib/actions/recipe-actions';
 
 export default function SearchRecipe({ setRecipeList }: SetRecipeListProp) {
   const [query, setQuery] = useState<string>('');

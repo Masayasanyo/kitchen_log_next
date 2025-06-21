@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { createRecipe } from '@/app/lib/recipe-actions';
-import { RecipeForm } from '@/app/lib/definitions';
+import { createRecipe } from '@/app/lib/actions/recipe-actions';
+import { RecipeForm } from '@/app/lib/definitions/definitions';
 import TitleInput from '@/app/ui/dashboard/recipe/input/title-input';
 import MemoInput from '@/app/ui/dashboard/recipe/input/memo-input';
 import IngInput from '@/app/ui/dashboard/recipe/input/ing-input';

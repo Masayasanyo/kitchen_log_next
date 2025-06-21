@@ -6,15 +6,15 @@ import SetMealList from '@/app/ui/dashboard/overview/set-meal-list';
 import ShoppingList from '@/app/ui/dashboard/overview/shopping-list';
 
 export const metadata: Metadata = {
-  title: 'Home',
+  title: 'ホーム',
 };
 
 export default function Page() {
   return (
-    <main className="flex flex-col gap-8">
+    <main className="w-full flex flex-col gap-10">
       <section>
-        <h2 className="text-2xl font-medium">レシピ</h2>
         <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2 md:p-8 md:gap-6">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">レシピ</h2>
           <ReciepList />
           <Link
             href={'dashboard/recipe'}
@@ -27,8 +27,8 @@ export default function Page() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-medium">献立</h2>
         <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2 md:p-8 md:gap-6">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">献立</h2>
           <SetMealList />
           <Link
             href={'dashboard/set-meal'}
@@ -41,8 +41,8 @@ export default function Page() {
       </section>
 
       <section>
-        <h2 className="text-2xl font-medium">買い物リスト</h2>
         <div className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-4 mt-2 md:p-8 md:gap-6">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">買い物リスト</h2>
           <ShoppingList />
           <Link
             href={'dashboard/shopping-list'}

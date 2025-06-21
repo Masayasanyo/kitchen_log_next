@@ -1,7 +1,7 @@
 'use client';
 
 import { useActionState } from 'react';
-import { register, State } from '@/app/lib/actions';
+import { register, State } from '@/app/lib/actions/account-actions';
 import Link from 'next/link';
 
 export default function RegisterForm() {
@@ -106,7 +106,7 @@ export default function RegisterForm() {
                 className="bg-[#ffffff] p-3 rounded-2xl w-full"
                 id="confirmed-password"
                 type="password"
-                name="confirmed-password"
+                name="confirmedPassword"
                 placeholder="再度パスワードを入力してください"
                 required
                 minLength={6}
@@ -122,10 +122,13 @@ export default function RegisterForm() {
             </div>
           </div>
         </div>
+        {state?.message && (
+          <p className="mt-2 text-sm text-red-500">{state.message}</p>
+        )}
         <button className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl">
           登録
         </button>
-        <p className="mt-6">
+        <p className="mt-6 flex gap-4">
           アカウントがある場合
           <Link href="/login" className="font-medium">
             ログイン

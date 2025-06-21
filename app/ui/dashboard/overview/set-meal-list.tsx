@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchSetMeals } from '@/app/lib/set-meal-actions';
+import { fetchSetMeals } from '@/app/lib/actions/set-meal-actions';
 import Image from 'next/image';
 import Link from 'next/link';
-import { SetMealRow, SetMeal } from '@/app/lib/definitions';
+import { SetMealRow, SetMeal } from '@/app/lib/definitions/definitions';
 
 export default function SetMealList() {
   const [setMealList, setSetMealList] = useState<SetMeal[]>([]);
@@ -42,7 +42,7 @@ export default function SetMealList() {
                   width={160}
                   height={90}
                   alt={recipe.title}
-                  className="object-cover aspect-video w-full"
+                  className="object-cover aspect-video w-full rounded-2xl"
                 />
               ))}
           </div>

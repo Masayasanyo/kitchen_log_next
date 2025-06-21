@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchSetMeals } from '@/app/lib/set-meal-actions';
+import { fetchSetMeals } from '@/app/lib/actions/set-meal-actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import SearchSetMeal from '@/app/ui/dashboard/set-meal/search/search-set-meal';
-import { SetMeal, SetMealRow } from '@/app/lib/definitions';
+import { SetMeal, SetMealRow } from '@/app/lib/definitions/definitions';
 
 export default function SetMealList() {
   const [setMealList, setSetMealList] = useState<SetMeal[]>([]);
@@ -28,7 +28,7 @@ export default function SetMealList() {
   return (
     <div className="flex flex-col gap-8">
       <SearchSetMeal setSetMealList={setSetMealList} />
-      <div className="md:grid md:grid-cols-2 gap-4">
+      <div className="md:grid md:grid-cols-2 bg-[#ffffff] rounded-2xl gap-6">
         {setMealList?.map((setMeal) => (
           <Link
             href={`/dashboard/set-meal/${setMeal.id}`}
@@ -43,7 +43,7 @@ export default function SetMealList() {
                   width={160}
                   height={90}
                   alt={recipe.title}
-                  className="object-cover aspect-video w-full"
+                  className="object-cover aspect-video w-full rounded-2xl"
                 />
               ))}
             </div>

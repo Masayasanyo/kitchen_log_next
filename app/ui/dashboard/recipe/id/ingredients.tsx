@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchRecipeIng } from '@/app/lib/recipe-actions';
-import { createFromSetMeal } from '@/app/lib/shopping-list-actions';
+import { fetchRecipeIng } from '@/app/lib/actions/recipe-actions';
+import { createFromSetMeal } from '@/app/lib/actions/shopping-list-actions';
 import PlusBtn from '@/app/ui/icons/plus-btn';
-import { Ingredient, IngRow } from '@/app/lib/definitions';
+import { Ingredient, IngRow } from '@/app/lib/definitions/definitions';
 
 export default function Ingredients(props: { recipeId: string }) {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);

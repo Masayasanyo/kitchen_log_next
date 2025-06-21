@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchSetMealInfo } from '@/app/lib/set-meal-actions';
-import { SetMealInfo, SetMealInfoRow } from '@/app/lib/definitions';
+import { fetchSetMealInfo } from '@/app/lib/actions/set-meal-actions';
+import { SetMealInfo, SetMealInfoRow } from '@/app/lib/definitions/definitions';
 
 export default function Page(props: { setMealId: string }) {
   const [setMealInfo, setSetMealInfo] = useState<SetMealInfo>({

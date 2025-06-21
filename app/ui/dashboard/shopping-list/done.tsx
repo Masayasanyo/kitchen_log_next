@@ -5,10 +5,13 @@ import {
   fetchShoppingList,
   check,
   uncheck,
-} from '@/app/lib/shopping-list-actions';
+} from '@/app/lib/actions/shopping-list-actions';
 import CheckBox from '../../icons/check-box';
 import CheckedBox from '../../icons/checked-box';
-import { ShoppingList, ShoppingListRow } from '@/app/lib/definitions';
+import {
+  ShoppingList,
+  ShoppingListRow,
+} from '@/app/lib/definitions/definitions';
 
 export default function Done() {
   const [doneList, setDoneList] = useState<ShoppingList[]>([]);

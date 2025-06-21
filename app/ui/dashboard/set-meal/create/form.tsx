@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { createSetMeal } from '@/app/lib/set-meal-actions';
-import { SetMealForm } from '@/app/lib/definitions';
+import { createSetMeal } from '@/app/lib/actions/set-meal-actions';
+import { SetMealForm } from '@/app/lib/definitions/definitions';
 import TitleInput from '@/app/ui/dashboard/set-meal/input/title-input';
 import RecipeInput from '@/app/ui/dashboard/set-meal/input/recipe-input';
 import RecipeList from '@/app/ui/dashboard/set-meal/input/recipe-list';

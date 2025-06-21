@@ -1,6 +1,6 @@
 'use client';
 
-import { SetMealChildComponentProps } from '@/app/lib/definitions';
+import { SetMealChildComponentProps } from '@/app/lib/definitions/definitions';
 
 export default function TitleInput({
   formData,

@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { ChildComponentProps } from '@/app/lib/definitions';
+import { ChildComponentProps } from '@/app/lib/definitions/definitions';
 
 export default function ImgInput({
   formData,

@@ -4,13 +4,16 @@ import TitleInput from '@/app/ui/dashboard/set-meal/input/title-input';
 import RecipeInput from '@/app/ui/dashboard/set-meal/input/recipe-input';
 import RecipeList from '@/app/ui/dashboard/set-meal/input/recipe-list';
 import { useEffect, useState } from 'react';
-import { fetchSetMealInfo, fetchRecipeList } from '@/app/lib/set-meal-actions';
+import {
+  fetchSetMealInfo,
+  fetchRecipeList,
+} from '@/app/lib/actions/set-meal-actions';
 import {
   SetMealForm,
   SetMealInfoRow,
   RecipeListRow,
-} from '@/app/lib/definitions';
-import { editSetMeal, deleteSetMeal } from '@/app/lib/set-meal-actions';
+} from '@/app/lib/definitions/definitions';
+import { editSetMeal, deleteSetMeal } from '@/app/lib/actions/set-meal-actions';
 
 // export interface RLR {
 //   recipes: {

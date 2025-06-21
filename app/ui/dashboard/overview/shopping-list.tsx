@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchShoppingList } from '@/app/lib/shopping-list-actions';
-import { ShoppingList, ShoppingListRow } from '@/app/lib/definitions';
+import { fetchShoppingList } from '@/app/lib/actions/shopping-list-actions';
+import {
+  ShoppingList,
+  ShoppingListRow,
+} from '@/app/lib/definitions/definitions';
 
 export default function Page() {
   const [shoppingList, setShoppingList] = useState<ShoppingList[]>([]);

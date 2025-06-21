@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
-import { Recipe, Ingredient, IngRow } from '@/app/lib/definitions';
+import { Recipe, Ingredient, IngRow } from '@/app/lib/definitions/definitions';
 
 export async function fetchShoppingList(isDone: boolean) {
   const session = await auth();

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import CancelBtn from '@/app/ui/icons/cancel-btn';
-import { NewIng, ChildComponentProps } from '@/app/lib/definitions';
+import { NewIng, ChildComponentProps } from '@/app/lib/definitions/definitions';
 
 export default function IngInput({
   formData,

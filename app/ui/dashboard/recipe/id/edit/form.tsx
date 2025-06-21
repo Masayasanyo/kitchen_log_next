@@ -10,9 +10,14 @@ import {
   fetchRecipeInfo,
   fetchRecipeIng,
   fetchRecipeStep,
-} from '@/app/lib/recipe-actions';
-import { RecipeForm, RecipeRow, IngRow, StepRow } from '@/app/lib/definitions';
-import { editRecipe, deleteRecipe } from '@/app/lib/recipe-actions';
+} from '@/app/lib/actions/recipe-actions';
+import {
+  RecipeForm,
+  RecipeRow,
+  IngRow,
+  StepRow,
+} from '@/app/lib/definitions/definitions';
+import { editRecipe, deleteRecipe } from '@/app/lib/actions/recipe-actions';
 
 export default function EditForm(props: { recipeId: string }) {
   const [formData, setFormData] = useState<RecipeForm>({

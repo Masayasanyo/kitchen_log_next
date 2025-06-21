@@ -1,4 +1,4 @@
-import { SetMealChildComponentProps } from '@/app/lib/definitions';
+import { SetMealChildComponentProps } from '@/app/lib/definitions/definitions';
 import CancelBtn from '@/app/ui/icons/cancel-btn';
 import Image from 'next/image';
 

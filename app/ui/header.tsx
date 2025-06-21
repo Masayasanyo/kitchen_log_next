@@ -2,18 +2,16 @@
 
 import Image from 'next/image';
 import Burger from './icons/burger';
-import Nav from './nav';
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
-export default function Header() {
-  const [navOpen, setNavOpen] = useState(false);
-
-  const openNav = () => setNavOpen(!navOpen);
-
+export default function Header(props: { openNav?: () => void }) {
   return (
     <header className="w-full">
-      <div className="flex justify-between items-center py-3">
+      <div className="flex gap-2 items-center py-3">
+        <button onClick={props.openNav} className="block p-0 w-8 md:w-12">
+          <Burger />
+        </button>
         <Link href="/dashboard">
           <Image
             src="/logo.png"
@@ -23,9 +21,7 @@ export default function Header() {
             className="w-18 md:w-30"
           />
         </Link>
-        <Burger openNav={openNav} />
       </div>
-      {navOpen && <Nav openNav={openNav} />}
     </header>
   );
 }

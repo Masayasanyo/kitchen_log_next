@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchRecipes } from '@/app/lib/recipe-actions';
-import { Recipe, RecipeRow } from '@/app/lib/definitions';
+import { fetchRecipes } from '@/app/lib/actions/recipe-actions';
+import { Recipe, RecipeRow } from '@/app/lib/definitions/definitions';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -38,7 +38,7 @@ export default function RecipeList() {
             width={160}
             height={90}
             alt={recipe.title}
-            className="object-cover aspect-video w-full"
+            className="object-cover aspect-video w-full rounded-2xl"
           />
         </Link>
       ))}

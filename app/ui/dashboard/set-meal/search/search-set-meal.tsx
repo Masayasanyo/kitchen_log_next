@@ -1,8 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { searchSetMeal } from '@/app/lib/set-meal-actions';
-import { SetSetMealListProp, SetMealRow } from '@/app/lib/definitions';
+import { searchSetMeal } from '@/app/lib/actions/set-meal-actions';
+import {
+  SetSetMealListProp,
+  SetMealRow,
+} from '@/app/lib/definitions/definitions';
 
 export default function SearchSetMeal({ setSetMealList }: SetSetMealListProp) {
   const [query, setQuery] = useState<string>('');

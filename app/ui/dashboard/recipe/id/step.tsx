@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchRecipeStep } from '@/app/lib/recipe-actions';
-import { StepRow } from '@/app/lib/definitions';
+import { fetchRecipeStep } from '@/app/lib/actions/recipe-actions';
+import { StepRow } from '@/app/lib/definitions/definitions';
 
 export default function Step(props: { recipeId: string }) {
   const [steps, setSteps] = useState<string[]>([]);

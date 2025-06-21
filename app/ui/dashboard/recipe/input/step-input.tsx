@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import CancelBtn from '@/app/ui/icons/cancel-btn';
 
-import { ChildComponentProps } from '@/app/lib/definitions';
+import { ChildComponentProps } from '@/app/lib/definitions/definitions';
 
 export default function StepInput({
   formData,

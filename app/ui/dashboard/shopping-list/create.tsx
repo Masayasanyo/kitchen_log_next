@@ -1,7 +1,7 @@
 'use client';
 
 import PlusBtn from '@/app/ui/icons/plus-btn';
-import { create } from '@/app/lib/shopping-list-actions';
+import { create } from '@/app/lib/actions/shopping-list-actions';
 
 export default function Create() {
   return (

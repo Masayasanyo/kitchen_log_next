@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { fetchRecipeInfo } from '@/app/lib/recipe-actions';
-import { Recipe, RecipeRow } from '@/app/lib/definitions';
+import { fetchRecipeInfo } from '@/app/lib/actions/recipe-actions';
+import { Recipe, RecipeRow } from '@/app/lib/definitions/definitions';
 import Image from 'next/image';
 
 export default function RecipeInfo(props: { recipeId: string }) {

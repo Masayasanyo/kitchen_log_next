@@ -1,6 +1,6 @@
 'use client';
 
-import { ChildComponentProps } from '@/app/lib/definitions';
+import { ChildComponentProps } from '@/app/lib/definitions/definitions';
 
 export default function TitleInput({
   formData,

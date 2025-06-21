@@ -4,9 +4,9 @@ import {
   Recipe,
   SetMealChildComponentProps,
   RecipeRow,
-} from '@/app/lib/definitions';
+} from '@/app/lib/definitions/definitions';
 import { useState } from 'react';
-import { fetchRecipeSugList } from '@/app/lib/set-meal-actions';
+import { fetchRecipeSugList } from '@/app/lib/actions/set-meal-actions';
 
 export default function RecipeInput({
   formData,

@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { SetMealForm } from '@/app/lib/definitions';
+import { SetMealForm } from '@/app/lib/definitions/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
 
