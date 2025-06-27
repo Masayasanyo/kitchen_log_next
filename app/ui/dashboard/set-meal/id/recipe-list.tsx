@@ -6,12 +6,25 @@ import { createFromSetMeal } from '@/app/lib/actions/shopping-list-actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe, RecipeListRow } from '@/app/lib/definitions/definitions';
+import { useRouter } from 'next/navigation';
 
 export default function RecipeList(props: { setMealId: string }) {
+  const router = useRouter();
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
 
-  const addToList = () => {
-    createFromSetMeal(recipeList);
+  const addToList = async () => {
+    setIsPending(true);
+    try {
+      await createFromSetMeal(recipeList);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsPending(false);
+      router.push('/dashboard/shopping-list');
+    }
   };
 
   useEffect(() => {
@@ -49,32 +62,40 @@ export default function RecipeList(props: { setMealId: string }) {
 
   return (
     <div>
-      <div className="flex flex-col gap-8 md:grid md:grid-cols-4">
-        {recipeList?.map((recipe) => (
-          <Link
-            href={`/dashboard/recipe/${recipe.id}`}
-            key={recipe.id}
-            className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-2 shadow-md"
+      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isError && (
+        <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
+      )}
+      {!isPending && !isError && (
+        <>
+          <div className="flex flex-col gap-8 md:grid md:grid-cols-4">
+            {recipeList?.map((recipe) => (
+              <Link
+                href={`/dashboard/recipe/${recipe.id}`}
+                key={recipe.id}
+                className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-2 shadow-md"
+              >
+                <Image
+                  src={recipe.imgUrl || '/no_image.png'}
+                  width={160}
+                  height={90}
+                  alt={recipe.title}
+                  className="object-cover aspect-video w-full rounded-2xl"
+                  unoptimized
+                />
+                <p>{recipe.title}</p>
+              </Link>
+            ))}
+          </div>
+          <button
+            className="mt-4 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
+            type="button"
+            onClick={addToList}
           >
-            <Image
-              src={recipe.imgUrl || '/no_image.png'}
-              width={160}
-              height={90}
-              alt={recipe.title}
-              className="object-cover aspect-video w-full rounded-2xl"
-              unoptimized
-            />
-            <p>{recipe.title}</p>
-          </Link>
-        ))}
-      </div>
-      <button
-        className="mt-4 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-        type="button"
-        onClick={addToList}
-      >
-        買い物リストに追加
-      </button>
+            買い物リストに追加
+          </button>{' '}
+        </>
+      )}
     </div>
   );
 }

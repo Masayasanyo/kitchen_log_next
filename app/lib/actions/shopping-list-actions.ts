@@ -57,12 +57,16 @@ async function addList(
 }
 
 async function updateList(id: number, amount: string) {
+  const session = await auth();
+  const userId: string = session?.user?.id as string;
+
   const { error } = await supabase
     .from('shopping_list')
     .update({
       amount: amount,
     })
-    .eq('id', id);
+    .eq('id', id)
+    .eq('user_id', userId);
   if (error) {
     console.log(error);
     return;
@@ -211,8 +215,6 @@ export async function ingToList(name: string, amount: string, unit: string) {
 
   const newAmount = Number(amount) + Number(doesItemExist.amount);
 
-  console.log(newAmount);
-
   if (!isNaN(newAmount)) {
     await updateList(doesItemExist.id, String(newAmount));
     return;
@@ -257,12 +259,19 @@ export async function createFromSetMeal(recipeList: Recipe[]) {
     await ingToList(ingList[i].name, ingList[i].amount, ingList[i].unit);
   }
 
-  revalidatePath('/dashboard/shopping-list');
-  redirect('/dashboard/shopping-list');
+  // revalidatePath('/dashboard/shopping-list');
+  // redirect('/dashboard/shopping-list');
 }
 
 export async function deleteShoppingList(id: number, page: string) {
-  const { error } = await supabase.from('shopping_list').delete().eq('id', id);
+  const session = await auth();
+  const userId: string = session?.user?.id as string;
+
+  const { error } = await supabase
+    .from('shopping_list')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', userId);
   if (error) {
     console.log(error);
   }

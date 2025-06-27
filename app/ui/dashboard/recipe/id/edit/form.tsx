@@ -20,6 +20,8 @@ import {
 import { editRecipe, deleteRecipe } from '@/app/lib/actions/recipe-actions';
 
 export default function EditForm(props: { recipeId: string }) {
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const [formData, setFormData] = useState<RecipeForm>({
     prevImgUrl: '',
     imgUrl: '',
@@ -30,12 +32,28 @@ export default function EditForm(props: { recipeId: string }) {
     stepList: [],
   });
 
-  const submitForm = () => {
-    editRecipe(formData, props.recipeId);
+  const submitForm = async () => {
+    setIsPending(true);
+    try {
+      await editRecipe(formData, props.recipeId);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsPending(false);
+    }
   };
 
-  const deletR = () => {
-    deleteRecipe(formData, props.recipeId);
+  const deletR = async () => {
+    setIsPending(true);
+    try {
+      await deleteRecipe(formData, props.recipeId);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   useEffect(() => {
@@ -76,25 +94,33 @@ export default function EditForm(props: { recipeId: string }) {
 
   return (
     <form className="flex flex-col gap-4">
-      <ImgInput formData={formData} setFormData={setFormData} />
-      <TitleInput formData={formData} setFormData={setFormData} />
-      <MemoInput formData={formData} setFormData={setFormData} />
-      <IngInput formData={formData} setFormData={setFormData} />
-      <StepInput formData={formData} setFormData={setFormData} />
-      <button
-        className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-        type="button"
-        onClick={submitForm}
-      >
-        登録
-      </button>
-      <button
-        className="bg-amber-700 text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-        type="button"
-        onClick={deletR}
-      >
-        削除
-      </button>
+      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isError && (
+        <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
+      )}
+      {!isPending && !isError && (
+        <>
+          <ImgInput formData={formData} setFormData={setFormData} />
+          <TitleInput formData={formData} setFormData={setFormData} />
+          <MemoInput formData={formData} setFormData={setFormData} />
+          <IngInput formData={formData} setFormData={setFormData} />
+          <StepInput formData={formData} setFormData={setFormData} />
+          <button
+            className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
+            type="button"
+            onClick={submitForm}
+          >
+            登録
+          </button>
+          <button
+            className="bg-amber-700 text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
+            type="button"
+            onClick={deletR}
+          >
+            削除
+          </button>
+        </>
+      )}
     </form>
   );
 }

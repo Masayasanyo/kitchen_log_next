@@ -16,17 +16,37 @@ import {
 import { editSetMeal, deleteSetMeal } from '@/app/lib/actions/set-meal-actions';
 
 export default function EditForm(props: { setMealId: string }) {
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const [formData, setFormData] = useState<SetMealForm>({
     title: '',
     recipeList: [],
   });
 
-  const submitForm = () => {
+  const submitForm = async () => {
     editSetMeal(formData, props.setMealId);
+
+    setIsPending(true);
+    try {
+      await editSetMeal(formData, props.setMealId);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsPending(false);
+    }
   };
 
-  const deletSM = () => {
-    deleteSetMeal(props.setMealId);
+  const deletSM = async () => {
+    setIsPending(true);
+    try {
+      await deleteSetMeal(props.setMealId);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsPending(false);
+    }
   };
 
   useEffect(() => {
@@ -74,23 +94,31 @@ export default function EditForm(props: { setMealId: string }) {
 
   return (
     <form className="flex flex-col gap-4">
-      <TitleInput formData={formData} setFormData={setFormData} />
-      <RecipeInput formData={formData} setFormData={setFormData} />
-      <RecipeList formData={formData} setFormData={setFormData} />
-      <button
-        className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-        type="button"
-        onClick={submitForm}
-      >
-        登録
-      </button>
-      <button
-        className="bg-amber-700 text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-        type="button"
-        onClick={deletSM}
-      >
-        削除
-      </button>
+      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isError && (
+        <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
+      )}
+      {!isPending && !isError && (
+        <>
+          <TitleInput formData={formData} setFormData={setFormData} />
+          <RecipeInput formData={formData} setFormData={setFormData} />
+          <RecipeList formData={formData} setFormData={setFormData} />
+          <button
+            className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
+            type="button"
+            onClick={submitForm}
+          >
+            登録
+          </button>
+          <button
+            className="bg-amber-700 text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
+            type="button"
+            onClick={deletSM}
+          >
+            削除
+          </button>
+        </>
+      )}
     </form>
   );
 }

@@ -5,19 +5,32 @@ import { fetchRecipeIng } from '@/app/lib/actions/recipe-actions';
 import { createFromSetMeal } from '@/app/lib/actions/shopping-list-actions';
 import PlusBtn from '@/app/ui/icons/plus-btn';
 import { Ingredient, IngRow } from '@/app/lib/definitions/definitions';
+import { useRouter } from 'next/navigation';
 
 export default function Ingredients(props: { recipeId: string }) {
+  const router = useRouter();
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const addToList = () => {
-    createFromSetMeal([
-      {
-        id: Number(props.recipeId),
-        imgUrl: '',
-        title: '',
-        memo: '',
-        userId: null,
-      },
-    ]);
+  const addToList = async () => {
+    setIsPending(true);
+    try {
+      await createFromSetMeal([
+        {
+          id: Number(props.recipeId),
+          imgUrl: '',
+          title: '',
+          memo: '',
+          userId: null,
+        },
+      ]);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsPending(false);
+      router.push('/dashboard/shopping-list');
+    }
   };
 
   useEffect(() => {
@@ -39,32 +52,40 @@ export default function Ingredients(props: { recipeId: string }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="bg-[#ffffff] rounded-2xl px-6 py-4">
-        <h3 className="font-medium text-xl mb-4">材料</h3>
-        <div className="flex flex-col gap-2">
-          {ingredients?.map((ing, index) => (
-            <div key={index}>
-              <div className="flex gap-2">
-                <p className="">{ing.name}</p>
-                <p className="">...</p>
-                <div className="flex gap-1">
-                  <p className="">{ing.amount}</p>
-                  {ing.unit !== 'その他' && <p className="">{ing.unit}</p>}
+      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isError && (
+        <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
+      )}
+      {!isPending && !isError && (
+        <>
+          <div className="bg-[#ffffff] rounded-2xl px-6 py-4">
+            <h3 className="font-medium text-xl mb-4">材料</h3>
+            <div className="flex flex-col gap-2">
+              {ingredients?.map((ing, index) => (
+                <div key={index}>
+                  <div className="flex gap-2">
+                    <p className="">{ing.name}</p>
+                    <p className="">...</p>
+                    <div className="flex gap-1">
+                      <p className="">{ing.amount}</p>
+                      {ing.unit !== 'その他' && <p className="">{ing.unit}</p>}
+                    </div>
+                  </div>
+                  <hr className="my-2" />
                 </div>
-              </div>
-              <hr className="my-2" />
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-      <button
-        type="button"
-        onClick={addToList}
-        className="flex gap-2 items-center justify-center mt-2"
-      >
-        買い物リストに追加
-        <PlusBtn cN={'w-6'} />
-      </button>
+          </div>
+          <button
+            type="button"
+            onClick={addToList}
+            className="flex gap-2 items-center justify-center mt-2"
+          >
+            買い物リストに追加
+            <PlusBtn cN={'w-6'} />
+          </button>
+        </>
+      )}
     </div>
   );
 }

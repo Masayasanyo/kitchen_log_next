@@ -99,6 +99,9 @@ export async function createRecipe(formData: RecipeForm) {
 }
 
 export async function editRecipe(formData: RecipeForm, recipeId: string) {
+  const session = await auth();
+  const userId: string = session?.user?.id as string;
+
   if (formData.imgFile) {
     if (formData.prevImgUrl) {
       const splittedUrl = formData.prevImgUrl.split('/');
@@ -133,7 +136,8 @@ export async function editRecipe(formData: RecipeForm, recipeId: string) {
       title: formData.title,
       memo: formData.memo,
     })
-    .eq('id', recipeId);
+    .eq('id', recipeId)
+    .eq('user_id', userId);
   if (recipesError) {
     console.log(recipesError);
     return {
@@ -203,6 +207,9 @@ export async function editRecipe(formData: RecipeForm, recipeId: string) {
 }
 
 export async function deleteRecipe(formData: RecipeForm, recipeId: string) {
+  const session = await auth();
+  const userId: string = session?.user?.id as string;
+
   if (formData.prevImgUrl) {
     const splittedUrl = formData.prevImgUrl.split('/');
     const previousFileName = splittedUrl[splittedUrl.length - 1];
@@ -213,6 +220,7 @@ export async function deleteRecipe(formData: RecipeForm, recipeId: string) {
     .from('recipes')
     .delete()
     .eq('id', recipeId)
+    .eq('user_id', userId)
     .select();
   if (deleteRecipeError) {
     console.log(deleteRecipeError);
@@ -271,10 +279,14 @@ export async function fetchRecipes() {
 }
 
 export async function fetchRecipeInfo(recipeId: string) {
+  const session = await auth();
+  const userId: string = session?.user?.id as string;
+
   const { data, error } = await supabase
     .from('recipes')
     .select()
-    .eq('id', recipeId);
+    .eq('id', recipeId)
+    .eq('user_id', userId);
   if (data && data?.length > 0) {
     return {
       message: 'Recipe retrieved successfully.',

@@ -96,10 +96,14 @@ export async function createSetMeal(formData: SetMealForm) {
 }
 
 export async function fetchRecipeSugList(keyword: string) {
+  const session = await auth();
+  const userId: string = session?.user?.id as string;
+
   const { data, error } = await supabase
     .from('recipes')
     .select()
-    .ilike('title', `%${keyword}%`);
+    .ilike('title', `%${keyword}%`)
+    .eq('user_id', userId);
   if (data && data?.length > 0) {
     return {
       message: 'Recipes retrieved successfully.',
@@ -115,10 +119,14 @@ export async function fetchRecipeSugList(keyword: string) {
 }
 
 export async function fetchSetMealInfo(setMealId: string) {
+  const session = await auth();
+  const userId: string = session?.user?.id as string;
+
   const { data, error } = await supabase
     .from('set_meals')
     .select()
-    .eq('id', setMealId);
+    .eq('id', setMealId)
+    .eq('user_id', userId);
   if (data && data?.length > 0) {
     return {
       message: 'Set meal retrieved successfully.',
@@ -166,7 +174,8 @@ export async function editSetMeal(formData: SetMealForm, setMealId: string) {
     .update({
       title: formData.title,
     })
-    .eq('id', setMealId);
+    .eq('id', setMealId)
+    .eq('user_id', userId);
   if (smError) {
     console.log(smError);
     return {
@@ -208,10 +217,14 @@ export async function editSetMeal(formData: SetMealForm, setMealId: string) {
 }
 
 export async function deleteSetMeal(setMealId: string) {
+  const session = await auth();
+  const userId: string = session?.user?.id as string;
+
   const { error: deleteSmError } = await supabase
     .from('set_meals')
     .delete()
     .eq('id', setMealId)
+    .eq('user_id', userId)
     .select();
   if (deleteSmError) {
     console.log(deleteSmError);
