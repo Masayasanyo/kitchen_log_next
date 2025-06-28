@@ -4,12 +4,12 @@ import {
   deleteShoppingList,
   fetchShoppingList,
 } from '@/app/lib/actions/shopping-list-actions';
-import Trash from '../../icons/trash';
 import {
   ShoppingList,
   ShoppingListRow,
 } from '@/app/lib/definitions/definitions';
 import { StringSort } from '@/app/lib/string-sort';
+import Cancel from '@/app/ui/icons/cancel';
 
 export default function DeleteSLBtn(props: {
   id: number;
@@ -44,7 +44,10 @@ export default function DeleteSLBtn(props: {
 
   return (
     <button type="button" onClick={deleteSL}>
-      <Trash width="w-6" />
+      <Cancel
+        design="w-6 bg-[#CC3300] text-[#E8ECD7] shadow-[0_4px_0_#FF3366] hover:bg-[#FF3366] 
+          active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]"
+      />
     </button>
   );
 }
