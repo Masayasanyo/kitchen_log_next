@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { fetchRecipeIng } from '@/app/lib/actions/recipe-actions';
 import { createFromSetMeal } from '@/app/lib/actions/shopping-list-actions';
-import PlusBtn from '@/app/ui/icons/plus-circle';
 import { Ingredient, IngRow } from '@/app/lib/definitions/definitions';
 import { useRouter } from 'next/navigation';
 import Button from '@/app/ui/button';

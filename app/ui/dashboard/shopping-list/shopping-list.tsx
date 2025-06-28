@@ -8,7 +8,6 @@ import {
 } from '@/app/lib/actions/shopping-list-actions';
 import CheckBox from '../../icons/check-box';
 import CheckedBox from '../../icons/checked-box';
-import Link from 'next/link';
 import {
   ShoppingList,
   ShoppingListRow,
