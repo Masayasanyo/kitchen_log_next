@@ -28,7 +28,7 @@ export default function SetMealList() {
   return (
     <div className="flex flex-col gap-8">
       <SearchSetMeal setSetMealList={setSetMealList} />
-      <div className="md:grid md:grid-cols-2 rounded-2xl gap-6">
+      <div className="flex flex-col md:grid md:grid-cols-2 rounded-2xl gap-6">
         {setMealList?.map((setMeal) => (
           <Link
             href={`/dashboard/set-meal/${setMeal.id}`}

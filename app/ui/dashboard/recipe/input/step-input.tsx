@@ -60,7 +60,7 @@ export default function StepInput({
         />
         <button type="button" onClick={applyNewStep} className="col-span-1">
           <PlusBtn
-            design="w-8 h-8 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] 
+            design="w-8 h-8 bg-[#1F4529] text-[#E8ECD7] shadow-[0_3px_0_#32633f] 
               hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
           />
         </button>
@@ -80,7 +80,7 @@ export default function StepInput({
               onClick={() => cancelStep(index)}
             >
               <Cancel
-                design="w-8 bg-[#CC3300] text-[#E8ECD7] shadow-[0_4px_0_#FF3366] hover:bg-[#FF3366] 
+                design="w-8 bg-[#CC3300] text-[#E8ECD7] shadow-[0_3px_0_#FF3366] hover:bg-[#FF3366] 
                   active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]"
               />
             </button>

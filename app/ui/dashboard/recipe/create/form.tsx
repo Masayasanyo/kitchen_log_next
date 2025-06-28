@@ -52,7 +52,7 @@ export default function CreateForm() {
             title="登録"
             action={submitForm}
             color="w-25 mt-6 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] 
-                        hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+              hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
           />
         </>
       )}

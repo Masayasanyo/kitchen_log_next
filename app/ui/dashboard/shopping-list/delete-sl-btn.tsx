@@ -45,7 +45,7 @@ export default function DeleteSLBtn(props: {
   return (
     <button type="button" onClick={deleteSL}>
       <Cancel
-        design="w-6 bg-[#CC3300] text-[#E8ECD7] shadow-[0_4px_0_#FF3366] hover:bg-[#FF3366] 
+        design="w-6 bg-[#CC3300] text-[#E8ECD7] shadow-[0_3px_0_#FF3366] hover:bg-[#FF3366] 
           active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]"
       />
     </button>
