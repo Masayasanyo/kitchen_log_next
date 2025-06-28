@@ -48,6 +48,7 @@ export default function RecipeInput({
         type="search"
         placeholder="レシピ名を入力"
         onChange={handleChange}
+        required
       />
       <div>
         {recipeList.map((recipe) => (
