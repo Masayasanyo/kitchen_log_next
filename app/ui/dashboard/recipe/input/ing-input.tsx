@@ -157,45 +157,6 @@ export default function IngInput({
             onDragEnter={() => (draggedOverIng.current = index)}
             onDragEnd={handleSort}
             onDragOver={(e) => e.preventDefault}
-            data-ing-index={index}
-            onTouchStart={() => {
-              dragIng.current = index;
-            }}
-            onTouchMove={(e) => {
-              const touch = e.touches[0];
-              const target = document.elementFromPoint(
-                touch.clientX,
-                touch.clientY,
-              );
-              if (!target) return;
-              const ingItem = target.closest('[data-ing-index]');
-              if (ingItem) {
-                const overIndex = Number(
-                  ingItem.getAttribute('data-ing-index'),
-                );
-                if (!isNaN(overIndex)) {
-                  draggedOverIng.current = overIndex;
-                }
-              }
-            }}
-            onTouchEnd={() => {
-              if (
-                dragIng.current !== null &&
-                draggedOverIng.current !== null &&
-                dragIng.current !== draggedOverIng.current
-              ) {
-                const ingClone = [...formData.ingList];
-                const draggedItem = ingClone[dragIng.current];
-                ingClone.splice(dragIng.current, 1);
-                ingClone.splice(draggedOverIng.current, 0, draggedItem);
-                setFormData({
-                  ...formData,
-                  ingList: ingClone,
-                });
-              }
-              dragIng.current = 0;
-              draggedOverIng.current = 0;
-            }}
           >
             <input
               name="ingName"
