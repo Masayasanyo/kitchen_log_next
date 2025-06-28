@@ -1,6 +1,6 @@
 import { SetMealChildComponentProps } from '@/app/lib/definitions/definitions';
 import Image from 'next/image';
-import Trash from '@/app/ui/icons/trash';
+import Cancel from '@/app/ui/icons/cancel';
 
 export default function RecipeList({
   formData,
@@ -20,14 +20,17 @@ export default function RecipeList({
       {formData.recipeList.map((recipe) => (
         <div
           key={recipe.id}
-          className="bg-[#ffffff] rounded-2xl p-4 flex flex-col gap-2 shadow-md"
+          className="bg-[#ffffff] rounded-2xl px-4 py-4 flex flex-col gap-4 shadow-md"
         >
           <button
             className="block ml-auto"
             type="button"
             onClick={() => cancelRecipe(recipe.id)}
           >
-            <Trash width="w-6" />
+            <Cancel
+              design="w-6 bg-[#CC3300] text-[#E8ECD7] shadow-[0_4px_0_#FF3366] hover:bg-[#FF3366] 
+                active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]"
+            />
           </button>
           <Image
             width={160}

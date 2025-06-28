@@ -10,8 +10,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   return (
     <main className="w-full flex flex-col gap-8">
-      <Link href={`${recipeId}/edit`}>
-        <EditBtn />
+      <Link href={`${recipeId}/edit`} className="flex justify-end">
+        <EditBtn
+          design="w-8 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f] 
+            active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+        />
       </Link>
       <RecipeInfo recipeId={recipeId} />
       <Ingredients recipeId={recipeId} />

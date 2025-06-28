@@ -6,6 +6,7 @@ import { SetMealForm } from '@/app/lib/definitions/definitions';
 import TitleInput from '@/app/ui/dashboard/set-meal/input/title-input';
 import RecipeInput from '@/app/ui/dashboard/set-meal/input/recipe-input';
 import RecipeList from '@/app/ui/dashboard/set-meal/input/recipe-list';
+import Button from '@/app/ui/button';
 
 export default function CreateForm() {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -38,13 +39,12 @@ export default function CreateForm() {
           <TitleInput formData={formData} setFormData={setFormData} />
           <RecipeInput formData={formData} setFormData={setFormData} />
           <RecipeList formData={formData} setFormData={setFormData} />
-          <button
-            className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-            type="button"
-            onClick={submitForm}
-          >
-            登録
-          </button>
+          <Button
+            title="登録"
+            action={submitForm}
+            color="w-25 mt-6 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] 
+              hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+          />
         </>
       )}
     </form>

@@ -263,7 +263,7 @@ export async function createFromSetMeal(recipeList: Recipe[]) {
   // redirect('/dashboard/shopping-list');
 }
 
-export async function deleteShoppingList(id: number, page: string) {
+export async function deleteShoppingList(id: number) {
   const session = await auth();
   const userId: string = session?.user?.id as string;
 
@@ -274,15 +274,5 @@ export async function deleteShoppingList(id: number, page: string) {
     .eq('user_id', userId);
   if (error) {
     console.log(error);
-  }
-
-  if (page === 'undone') {
-    revalidatePath(`/dashboard/shopping-list`);
-    redirect(`/dashboard/shopping-list`);
-  }
-
-  if (page === 'done') {
-    revalidatePath(`/dashboard/shopping-list/done`);
-    redirect(`/dashboard/shopping-list/done`);
   }
 }

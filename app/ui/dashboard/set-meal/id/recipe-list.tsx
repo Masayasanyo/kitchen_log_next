@@ -7,6 +7,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe, RecipeListRow } from '@/app/lib/definitions/definitions';
 import { useRouter } from 'next/navigation';
+import Button from '@/app/ui/button';
 
 export default function RecipeList(props: { setMealId: string }) {
   const router = useRouter();
@@ -87,13 +88,12 @@ export default function RecipeList(props: { setMealId: string }) {
               </Link>
             ))}
           </div>
-          <button
-            className="mt-4 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-            type="button"
-            onClick={addToList}
-          >
-            買い物リストに追加
-          </button>{' '}
+          <Button
+            title="買い物リストに追加"
+            action={addToList}
+            color="mt-6 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f] 
+                        active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+          />
         </>
       )}
     </div>

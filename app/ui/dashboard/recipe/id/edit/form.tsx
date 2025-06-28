@@ -18,6 +18,7 @@ import {
   StepRow,
 } from '@/app/lib/definitions/definitions';
 import { editRecipe, deleteRecipe } from '@/app/lib/actions/recipe-actions';
+import Button from '@/app/ui/button';
 
 export default function EditForm(props: { recipeId: string }) {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -105,20 +106,20 @@ export default function EditForm(props: { recipeId: string }) {
           <MemoInput formData={formData} setFormData={setFormData} />
           <IngInput formData={formData} setFormData={setFormData} />
           <StepInput formData={formData} setFormData={setFormData} />
-          <button
-            className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-            type="button"
-            onClick={submitForm}
-          >
-            登録
-          </button>
-          <button
-            className="bg-amber-700 text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-            type="button"
-            onClick={deletR}
-          >
-            削除
-          </button>
+          <div className="flex gap-4 mt-6">
+            <Button
+              title="登録"
+              action={submitForm}
+              color="bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f] 
+                active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+            />
+            <Button
+              title="削除"
+              action={deletR}
+              color="bg-[#CC3300] text-[#E8ECD7] shadow-[0_4px_0_#FF3366] hover:bg-[#FF3366] 
+                active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]"
+            />
+          </div>
         </>
       )}
     </form>

@@ -69,7 +69,9 @@ export default function LoginForm() {
         </div>
         <input type="hidden" name="redirectTo" value={callbackUrl} />
         <button
-          className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
+          className="px-6 py-2 rounded-2xl font-bold active:translate-y-1
+            w-40 mt-6 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] 
+            hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
           aria-disabled={isPending}
         >
           ログイン

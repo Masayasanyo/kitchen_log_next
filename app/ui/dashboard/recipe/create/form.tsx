@@ -8,6 +8,7 @@ import MemoInput from '@/app/ui/dashboard/recipe/input/memo-input';
 import IngInput from '@/app/ui/dashboard/recipe/input/ing-input';
 import StepInput from '@/app/ui/dashboard/recipe/input/step-input';
 import ImgInput from '@/app/ui/dashboard/recipe/input/img-input';
+import Button from '@/app/ui/button';
 
 export default function CreateForm() {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -47,13 +48,12 @@ export default function CreateForm() {
           <MemoInput formData={formData} setFormData={setFormData} />
           <IngInput formData={formData} setFormData={setFormData} />
           <StepInput formData={formData} setFormData={setFormData} />
-          <button
-            className="mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
-            type="button"
-            onClick={submitForm}
-          >
-            登録
-          </button>
+          <Button
+            title="登録"
+            action={submitForm}
+            color="w-25 mt-6 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] 
+                        hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+          />
         </>
       )}
     </form>

@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react';
 import { fetchRecipeIng } from '@/app/lib/actions/recipe-actions';
 import { createFromSetMeal } from '@/app/lib/actions/shopping-list-actions';
-import PlusBtn from '@/app/ui/icons/plus-btn';
+import PlusBtn from '@/app/ui/icons/plus-circle';
 import { Ingredient, IngRow } from '@/app/lib/definitions/definitions';
 import { useRouter } from 'next/navigation';
+import Button from '@/app/ui/button';
 
 export default function Ingredients(props: { recipeId: string }) {
   const router = useRouter();
@@ -75,15 +76,22 @@ export default function Ingredients(props: { recipeId: string }) {
                 </div>
               ))}
             </div>
+            <Button
+              title="買い物リストに追加"
+              action={addToList}
+              color="mt-6 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f] 
+              active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+            />
           </div>
-          <button
+
+          {/* <button
             type="button"
             onClick={addToList}
             className="flex gap-2 items-center justify-center mt-2"
           >
             買い物リストに追加
             <PlusBtn cN={'w-6'} />
-          </button>
+          </button> */}
         </>
       )}
     </div>

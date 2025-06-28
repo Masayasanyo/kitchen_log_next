@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Trash from '@/app/ui/icons/trash';
 import { NewIng, ChildComponentProps } from '@/app/lib/definitions/definitions';
-import PlusBtn from '@/app/ui/icons/plus-btn';
+import PlusBtn from '@/app/ui/icons/plus-circle';
+import Cancel from '@/app/ui/icons/cancel';
 
 export default function IngInput({
   formData,
@@ -128,7 +128,10 @@ export default function IngInput({
           <option value="その他">その他</option>
         </select>
         <button type="button" onClick={applyNewIng} className="col-span-1">
-          <PlusBtn cN="block w-6 mr-auto" />
+          <PlusBtn
+            design="w-8 h-8 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] 
+              hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+          />
         </button>
       </div>
       <div className="flex flex-col gap-1">
@@ -174,7 +177,10 @@ export default function IngInput({
               type="button"
               onClick={() => cancelIng(index)}
             >
-              <Trash width="w-6" />
+              <Cancel
+                design="w-8 bg-[#CC3300] text-[#E8ECD7] shadow-[0_4px_0_#FF3366] hover:bg-[#FF3366] 
+                  active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]"
+              />
             </button>
           </div>
         ))}

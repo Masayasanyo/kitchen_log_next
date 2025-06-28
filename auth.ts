@@ -4,7 +4,6 @@ import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import type { User } from '@/app/lib/definitions/definitions';
 import bcrypt from 'bcryptjs';
-import postgres from 'postgres';
 import { supabase } from '@/app/lib/supabase';
 
 async function getUser(email: string): Promise<User | undefined> {

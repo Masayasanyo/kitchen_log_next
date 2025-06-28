@@ -1,6 +1,6 @@
 'use client';
 
-import PlusBtn from '@/app/ui/icons/plus-btn';
+import PlusBtn from '@/app/ui/icons/plus-circle';
 import { create } from '@/app/lib/actions/shopping-list-actions';
 
 export default function Create() {
@@ -34,7 +34,10 @@ export default function Create() {
         <option value="その他">その他</option>
       </select>
       <button className="block ml-auto col-span-1" type="submit">
-        <PlusBtn cN={'block w-8 ml-auto'} />
+        <PlusBtn
+          design="w-8 h-8 bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] 
+              hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+        />{' '}
       </button>
     </form>
   );

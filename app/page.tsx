@@ -1,16 +1,16 @@
-import Link from 'next/link';
+import LinkBtn from '@/app/ui/linkBtn';
 
 export default function Page() {
   return (
-    <main className="p-5 flex flex-col gap-4 max-w-[1120px] mx-auto my-0">
-      <section>
+    <main className="p-5 flex flex-col gap-8 max-w-[1120px] mx-auto my-0">
+      <section className="flex flex-col gap-2">
         <h1 className="font-bold text-3xl py-4">Kitchen Log</h1>
         <p>
           レシピ、献立、買い物リストを簡単に管理できる、日常の料理に役立つアプリです。
         </p>
       </section>
 
-      <section>
+      <section className="flex flex-col gap-2">
         <h2 className="font-semibold">主な機能</h2>
         <ul className="list-disc list-inside">
           <li>レシピ・献立・買い物リストを管理できます。</li>
@@ -18,7 +18,7 @@ export default function Page() {
         </ul>
       </section>
 
-      <section>
+      <section className="flex flex-col gap-2">
         <h2 className="font-semibold">使用技術</h2>
         <ul className="list-disc list-inside">
           <li>Tailwind</li>
@@ -30,7 +30,7 @@ export default function Page() {
         </ul>
       </section>
 
-      <section>
+      <section className="flex flex-col gap-2">
         <h2 className="font-semibold">工夫した点</h2>
         <ul className="list-disc list-inside">
           <li>3色配色のバランスルール</li>
@@ -42,7 +42,7 @@ export default function Page() {
         </ul>
       </section>
 
-      <section>
+      <section className="flex flex-col gap-2">
         <h2 className="font-semibold">制作の背景</h2>
         <ul className="list-disc list-inside">
           <li>
@@ -52,20 +52,22 @@ export default function Page() {
         </ul>
       </section>
 
-      <section>
+      <section className="flex flex-col gap-2">
         <h2 className="font-semibold">使い方</h2>
         <p>下記のテスト用メールアドレスとパスワードでログインしてください。</p>
         <ul className="list-disc list-inside">
           <li>メールアドレス: test@gmail.com</li>
           <li>パスワード: testtest</li>
         </ul>
-
-        <Link
-          href={'/dashboard'}
-          className="text-center block mx-auto mt-6 bg-[#1F4529] text-[#E8ECD7] w-full px-4 py-2 rounded-2xl"
+        <LinkBtn
+          link={'/dashboard'}
+          design="w-40
+            px-6 py-2 rounded-2xl font-bold active:translate-y-1
+            bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f] 
+            active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
         >
           使用してみる
-        </Link>
+        </LinkBtn>
       </section>
     </main>
   );
