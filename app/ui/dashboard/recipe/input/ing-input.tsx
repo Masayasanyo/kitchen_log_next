@@ -135,6 +135,8 @@ export default function IngInput({
           <option value="個">個</option>
           <option value="本">本</option>
           <option value="枚">枚</option>
+          <option value="袋">袋</option>
+          <option value="丁">丁</option>
           <option value="片">片</option>
           <option value="適量">適量</option>
           <option value="少々">少々</option>
@@ -188,6 +190,8 @@ export default function IngInput({
               <option value="個">個</option>
               <option value="本">本</option>
               <option value="枚">枚</option>
+              <option value="袋">袋</option>
+              <option value="丁">丁</option>
               <option value="片">片</option>
               <option value="適量">適量</option>
               <option value="少々">少々</option>
