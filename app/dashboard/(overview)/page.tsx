@@ -27,7 +27,7 @@ export default function Page() {
           link={'/dashboard/recipe'}
           design="w-40
             px-6 py-2 rounded-2xl font-bold active:translate-y-1
-            bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f] 
+            bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f]
             active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
         >
           <div className="flex gap-1 items-center justify-center">
@@ -46,7 +46,7 @@ export default function Page() {
           link={'/dashboard/set-meal'}
           design="w-40
             px-6 py-2 rounded-2xl font-bold active:translate-y-1
-            bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f] 
+            bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f]
             active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
         >
           <div className="flex gap-1 items-center justify-center">
@@ -65,7 +65,7 @@ export default function Page() {
           link={'/dashboard/shopping-list'}
           design="w-40
             px-6 py-2 rounded-2xl font-bold active:translate-y-1
-            bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f] 
+            bg-[#1F4529] text-[#E8ECD7] shadow-[0_4px_0_#32633f] hover:bg-[#32633f]
             active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
         >
           <div className="flex gap-1 items-center justify-center">
