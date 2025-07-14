@@ -1,0 +1,60 @@
+'use client';
+
+import { useState } from 'react';
+import { createSetMeal } from '@/app/lib/actions/set-meal-actions';
+import { Recipe, SetMealForm } from '@/app/lib/definitions';
+import SetMealTitleInput from './set-meal-title-input';
+import SetMealRecipeInput from './set-meal-recipe-input';
+import SetMealRecipeInputList from './set-meal-recipe-input-list';
+import { GreenButton } from '@/app/lib/classnames';
+
+export default function CreateForm({ recipeList }: { recipeList: Recipe[] }) {
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [formData, setFormData] = useState<SetMealForm>({
+    title: '',
+    recipeList: [],
+  });
+
+  const submitForm = async () => {
+    setIsPending(true);
+    try {
+      await createSetMeal(formData);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  return (
+    <form className="flex flex-col gap-4">
+      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isError && (
+        <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
+      )}
+      {!isPending && !isError && (
+        <div className="flex flex-col gap-4">
+          <SetMealTitleInput formData={formData} setFormData={setFormData} />
+          <SetMealRecipeInput
+            formData={formData}
+            setFormData={setFormData}
+            AllRecipeList={recipeList}
+          />
+          <SetMealRecipeInputList
+            formData={formData}
+            setFormData={setFormData}
+          />
+          <button
+            type="button"
+            onClick={submitForm}
+            className={`${GreenButton} w-20`}
+          >
+            登録
+          </button>
+        </div>
+      )}
+    </form>
+  );
+}

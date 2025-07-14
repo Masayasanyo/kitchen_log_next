@@ -2,13 +2,25 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { SetMealForm } from '@/app/lib/definitions/definitions';
+import {
+  SetMealForm,
+  SetMealRow,
+  SetMealInfoRow,
+  RecipeListRow,
+} from '@/app/lib/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
 
-export async function fetchSetMeals() {
+async function getUserId() {
   const session = await auth();
-  const userId: string = session?.user?.id as string;
+  const userIdString: string = session?.user?.id as string;
+  const userId = Number(userIdString);
+
+  return userId;
+}
+
+export async function fetchSetMeals() {
+  const userId = await getUserId();
 
   let setMealList = [];
 
@@ -16,16 +28,14 @@ export async function fetchSetMeals() {
     .from('set_meals')
     .select()
     .eq('user_id', userId);
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch set meals.');
+  }
+
   if (data && data?.length > 0) {
     setMealList = data;
-  } else {
-    return { message: 'Set meals not found.' };
-  }
-  if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch set meal.',
-    };
   }
 
   for (let i = 0; i < setMealList.length; i++) {
@@ -33,25 +43,53 @@ export async function fetchSetMeals() {
       .from('set_meal_recipes')
       .select('recipes ( id, title, img_url )')
       .eq('set_meal_id', setMealList[i].id);
+
+    if (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to fetch set meals.');
+    }
+
     if (data && data?.length > 0) {
       setMealList[i].recipes = data;
     }
+  }
+
+  if (data && data?.length > 0) {
+    const convertedData = data.map((row: SetMealRow) => ({
+      id: row.id,
+      title: row.title,
+      userId: row.user_id,
+      recipes: row.recipes?.map((r) => r.recipes),
+    }));
+    return convertedData;
+  }
+
+  return [];
+}
+
+export async function createSetMealRecipes(
+  formData: SetMealForm,
+  setMealId: number,
+) {
+  const userId = await getUserId();
+
+  for (let i = 0; i < formData.recipeList.length; i++) {
+    const { error } = await supabase.from('set_meal_recipes').insert({
+      user_id: userId,
+      set_meal_id: setMealId,
+      recipe_id: formData.recipeList[i].id,
+    });
+
     if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to fetch set meal.',
-      };
+      console.error('Database Error:', error);
+      throw new Error('Failed to create set meal.');
     }
   }
-  return {
-    message: 'Set meals retrieved successfully.',
-    data: setMealList,
-  };
 }
 
 export async function createSetMeal(formData: SetMealForm) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
+  const userId = await getUserId();
+
   let setMealId = 0;
 
   const { data, error } = await supabase
@@ -61,84 +99,51 @@ export async function createSetMeal(formData: SetMealForm) {
       title: formData.title,
     })
     .select();
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to create set meal.');
+  }
+
   if (data && data.length > 0) {
     setMealId = data[0].id;
   }
-  if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to create set meal.',
-    };
-  }
 
-  for (let i = 0; i < formData.recipeList.length; i++) {
-    const { data, error } = await supabase
-      .from('set_meal_recipes')
-      .insert({
-        user_id: userId,
-        set_meal_id: setMealId,
-        recipe_id: formData.recipeList[i].id,
-      })
-      .select();
-    if (data && data.length > 0) {
-      setMealId = data[0].id;
-    }
-    if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to create set meal.',
-      };
-    }
-  }
+  await createSetMealRecipes(formData, setMealId);
 
   revalidatePath('/dashboard/set-meal');
   redirect('/dashboard/set-meal');
 }
 
-export async function fetchRecipeSugList(keyword: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
-
-  const { data, error } = await supabase
-    .from('recipes')
-    .select()
-    .ilike('title', `%${keyword}%`)
-    .eq('user_id', userId);
-  if (data && data?.length > 0) {
-    return {
-      message: 'Recipes retrieved successfully.',
-      data: data,
-    };
-  }
-  if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch recipes.',
-    };
-  }
-}
-
 export async function fetchSetMealInfo(setMealId: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
+  const userId = await getUserId();
 
   const { data, error } = await supabase
     .from('set_meals')
     .select()
     .eq('id', setMealId)
     .eq('user_id', userId);
-  if (data && data?.length > 0) {
-    return {
-      message: 'Set meal retrieved successfully.',
-      data: data,
-    };
-  }
+
   if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch set meal.',
-    };
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch set meal.');
   }
+
+  if (data && data?.length > 0) {
+    const convertedData = data.map((row: SetMealInfoRow) => ({
+      id: row.id,
+      title: row.title,
+      userId: row.user_id,
+    }));
+
+    return convertedData[0];
+  }
+
+  return {
+    id: null,
+    title: '',
+    userId: null,
+  };
 }
 
 export async function fetchRecipeList(setMealId: string) {
@@ -146,139 +151,95 @@ export async function fetchRecipeList(setMealId: string) {
     .from('set_meal_recipes')
     .select('recipes ( id, title, img_url, user_id, memo )')
     .eq('set_meal_id', setMealId);
-  if (!data || data?.length < 0) {
-    return {
-      message: 'Recipe not found.',
-      data: data,
-    };
-  }
+
   if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch set meal.',
-    };
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch recipes.');
   }
 
-  return {
-    message: 'Recipe retrieved successfully.',
-    data: data,
-  };
+  if (data && data?.length > 0) {
+    const convertedData = data.map((row: RecipeListRow) => {
+      const recipes = row.recipes;
+
+      if (Array.isArray(recipes)) {
+        return {
+          id: recipes[0].id,
+          imgUrl: recipes[0].img_url,
+          title: recipes[0].title,
+          memo: recipes[0].memo,
+          userId: recipes[0].user_id,
+        };
+      } else {
+        return {
+          id: recipes.id,
+          imgUrl: recipes.img_url,
+          title: recipes.title,
+          memo: recipes.memo,
+          userId: recipes.user_id,
+        };
+      }
+    });
+    return convertedData;
+  }
+
+  return [];
 }
 
-export async function editSetMeal(formData: SetMealForm, setMealId: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
+export async function updateSetMealInfo(
+  formData: SetMealForm,
+  setMealId: number,
+) {
+  const userId = await getUserId();
 
-  const { error: smError } = await supabase
+  const { error } = await supabase
     .from('set_meals')
     .update({
       title: formData.title,
     })
     .eq('id', setMealId)
     .eq('user_id', userId);
-  if (smError) {
-    console.log(smError);
-    return {
-      message: 'Database Error: Failed to edit set meal.',
-    };
-  }
 
-  const { error: deleteSmError } = await supabase
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to update set meal.');
+  }
+}
+
+export async function deleteSetMealRecipes(setMealId: number) {
+  const { error } = await supabase
     .from('set_meal_recipes')
     .delete()
-    .eq('set_meal_id', setMealId)
-    .select();
-  if (deleteSmError) {
-    console.log(deleteSmError);
-    return {
-      message: 'Database Error: Failed to edit set meal.',
-    };
-  }
+    .eq('set_meal_id', setMealId);
 
-  for (let i = 0; i < formData.recipeList.length; i++) {
-    const { error } = await supabase
-      .from('set_meal_recipes')
-      .insert({
-        user_id: userId,
-        set_meal_id: setMealId,
-        recipe_id: formData.recipeList[i].id,
-      })
-      .select();
-    if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to edit set meal.',
-      };
-    }
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to delete set meal recipes.');
   }
+}
+
+export async function editSetMeal(formData: SetMealForm, setMealId: number) {
+  await updateSetMealInfo(formData, setMealId);
+  await deleteSetMealRecipes(setMealId);
+  await createSetMealRecipes(formData, setMealId);
 
   revalidatePath(`/dashboard/set-meal/${setMealId}`);
   redirect(`/dashboard/set-meal/${setMealId}`);
 }
 
-export async function deleteSetMeal(setMealId: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
+export async function deleteSetMeal(setMealId: number) {
+  const userId = await getUserId();
 
-  const { error: deleteSmError } = await supabase
+  const { error } = await supabase
     .from('set_meals')
     .delete()
     .eq('id', setMealId)
-    .eq('user_id', userId)
-    .select();
-  if (deleteSmError) {
-    console.log(deleteSmError);
-    return {
-      message: 'Database Error: Failed to delete set meal.',
-    };
+    .eq('user_id', userId);
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to delete set meal.');
   }
 
   revalidatePath(`/dashboard/set-meal`);
   redirect(`/dashboard/set-meal`);
-}
-
-export async function searchSetMeal(query: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
-
-  let setMealList = [];
-
-  const { data, error } = await supabase
-    .from('set_meals')
-    .select()
-    .ilike('title', `%${query}%`)
-    .eq('user_id', userId);
-  if (data && data?.length > 0) {
-    setMealList = data;
-  } else {
-    return { message: 'Set meals not found.', data: [] };
-  }
-  if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch set meal.',
-      data: [],
-    };
-  }
-
-  for (let i = 0; i < setMealList.length; i++) {
-    const { data, error } = await supabase
-      .from('set_meal_recipes')
-      .select('recipes ( id, title, img_url )')
-      .eq('set_meal_id', setMealList[i].id);
-    if (data && data?.length > 0) {
-      setMealList[i].recipes = data;
-    }
-    if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to fetch set meal.',
-        data: [],
-      };
-    }
-  }
-  return {
-    message: 'Set meals retrieved successfully.',
-    data: setMealList,
-  };
 }

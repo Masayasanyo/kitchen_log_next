@@ -2,367 +2,332 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { RecipeForm } from '@/app/lib/definitions/definitions';
+import {
+  RecipeRow,
+  IngRow,
+  StepRow,
+  Ingredient,
+  Step,
+  RecipeForm,
+} from '@/app/lib/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
 import { ZenkakuToHankaku } from '../zenkaku-hankaku';
 
-export async function createRecipe(formData: RecipeForm) {
+async function getUserId() {
   const session = await auth();
-  const userId: string = session?.user?.id as string;
-  let recipeId = 0;
-  let imgUrl = '';
+  const userIdString: string = session?.user?.id as string;
+  const userId = Number(userIdString);
 
+  return userId;
+}
+
+export async function createRecipe(formData: RecipeForm) {
+  const userId = await getUserId();
   if (formData.imgFile) {
-    try {
-      const file = formData.imgFile;
-      const uniqueSuffix = Math.random().toString(26).substring(4, 10);
-      const fileName = `${Date.now()}-${uniqueSuffix}-${file.name}`;
-
-      const { data, error } = await supabase.storage
-        .from('img-url')
-        .upload(fileName, file);
-      if (error) {
-        console.log(error);
-        return {
-          message: 'Database Error: Failed to Upload Image.',
-        };
-      }
-
-      const { data: image } = supabase.storage
-        .from('img-url')
-        .getPublicUrl(data.path);
-      imgUrl = image.publicUrl;
-    } catch (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to Upload Image.',
-      };
-    }
+    formData.imgUrl = await uploadRecipeImg(formData.imgFile);
   }
+  const recipeId = await createRecipeInfo(
+    userId,
+    formData.imgUrl,
+    formData.title,
+    formData.memo,
+  );
+  await createRecipeIng(formData.ingList, recipeId);
+  await createRecipeStep(formData.stepList, recipeId);
+  revalidatePath('/dashboard/recipe');
+  redirect('/dashboard/recipe');
+}
 
+export async function updateRecipeInfo(
+  id: number,
+  userId: number,
+  imgUrl: string,
+  title: string,
+  memo: string,
+) {
+  const { error } = await supabase
+    .from('recipes')
+    .update({
+      img_url: imgUrl,
+      title: title,
+      memo: memo,
+    })
+    .eq('id', id)
+    .eq('user_id', userId);
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to update recipe.');
+  }
+}
+
+export async function deleteRecipeIng(id: number) {
+  const { error } = await supabase
+    .from('ingredients')
+    .delete()
+    .eq('recipe_id', id);
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to delete ingredients.');
+  }
+}
+
+export async function deleteRecipeStep(id: number) {
+  const { error } = await supabase.from('steps').delete().eq('recipe_id', id);
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to delete steps.');
+  }
+}
+
+export async function createRecipeInfo(
+  userId: number,
+  imgUrl: string,
+  title: string,
+  memo: string,
+) {
   const { data, error } = await supabase
     .from('recipes')
     .insert({
       user_id: userId,
       img_url: imgUrl,
-      title: formData.title,
-      memo: formData.memo,
+      title: title,
+      memo: memo,
     })
     .select();
-  if (data && data.length > 0) {
-    recipeId = data[0].id;
-  }
+
   if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to create recipe.',
-    };
+    console.error('Database Error:', error);
+    throw new Error('Failed to create recipe.');
   }
 
-  formData.ingList = formData.ingList.map((ing) => ({
+  return data[0].id;
+}
+
+export async function createRecipeIng(ingList: Ingredient[], id: number) {
+  ingList = ingList.map((ing) => ({
     ...ing,
     name: ZenkakuToHankaku(ing.name),
     amount: ZenkakuToHankaku(ing.amount),
   }));
 
-  for (let i = 0; i < formData.ingList.length; i++) {
+  for (const ing of ingList) {
     const { error } = await supabase.from('ingredients').insert({
-      recipe_id: recipeId,
-      name: formData.ingList[i].name,
-      amount: formData.ingList[i].amount,
-      unit: formData.ingList[i].unit,
+      recipe_id: id,
+      name: ing.name,
+      amount: ing.amount,
+      unit: ing.unit,
     });
+
     if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to create recipe.',
-      };
+      console.error('Database Error:', error);
+      throw new Error('Failed to create ingredients.');
     }
   }
-
-  for (let i = 0; i < formData.stepList.length; i++) {
-    const { error } = await supabase.from('steps').insert({
-      recipe_id: recipeId,
-      name: formData.stepList[i].name,
-    });
-    if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to create recipe.',
-      };
-    }
-  }
-
-  revalidatePath('/dashboard/recipe');
-  redirect('/dashboard/recipe');
 }
 
-export async function editRecipe(formData: RecipeForm, recipeId: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
+export async function createRecipeStep(stepList: Step[], id: number) {
+  for (const step of stepList) {
+    const { error } = await supabase.from('steps').insert({
+      recipe_id: id,
+      name: step.name,
+    });
 
-  if (formData.imgFile) {
-    if (formData.prevImgUrl) {
-      const splittedUrl = formData.prevImgUrl.split('/');
-      const previousFileName = splittedUrl[splittedUrl.length - 1];
-      await supabase.storage.from('img-url').remove([previousFileName]);
-    }
-
-    const file = formData.imgFile;
-    const uniqueSuffix = Math.random().toString(26).substring(4, 10);
-    const fileName = `${Date.now()}-${uniqueSuffix}-${file.name}`;
-
-    const { data, error } = await supabase.storage
-      .from('img-url')
-      .upload(fileName, file);
     if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to upload image.',
-      };
+      console.error('Database Error:', error);
+      throw new Error('Failed to create steps.');
     }
+  }
+}
 
-    const { data: image } = supabase.storage
-      .from('img-url')
-      .getPublicUrl(data.path);
-    formData.imgUrl = image.publicUrl;
+export async function deleteRecipeImg(imgUrl: string) {
+  const splittedUrl = imgUrl.split('/');
+  const fileName = splittedUrl[splittedUrl.length - 1];
+  await supabase.storage.from('img-url').remove([fileName]);
+}
+
+export async function uploadRecipeImg(imgFile: File) {
+  const uniqueSuffix = Math.random().toString(26).substring(4, 10);
+  const fileName = `${Date.now()}-${uniqueSuffix}-${imgFile.name}`;
+  let imgUrl = '';
+
+  const { data, error } = await supabase.storage
+    .from('img-url')
+    .upload(fileName, imgFile);
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to upload image.');
   }
 
-  const { error: recipesError } = await supabase
+  const { data: image } = supabase.storage
+    .from('img-url')
+    .getPublicUrl(data.path);
+
+  imgUrl = image.publicUrl;
+
+  return imgUrl;
+}
+
+export async function deleteRecipe(prevImgUrl: string, recipeId: number) {
+  const userId = await getUserId();
+
+  if (prevImgUrl) {
+    await deleteRecipeImg(prevImgUrl);
+  }
+
+  const { error } = await supabase
     .from('recipes')
-    .update({
-      img_url: formData.imgUrl,
-      title: formData.title,
-      memo: formData.memo,
-    })
+    .delete()
     .eq('id', recipeId)
     .eq('user_id', userId);
-  if (recipesError) {
-    console.log(recipesError);
-    return {
-      message: 'Database Error: Failed to edit recipe.',
-    };
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to delete recipe.');
   }
 
-  const { error: deleteIngError } = await supabase
-    .from('ingredients')
-    .delete()
-    .eq('recipe_id', recipeId)
-    .select();
-  if (deleteIngError) {
-    console.log(deleteIngError);
-    return {
-      message: 'Database Error: Failed to edit recipe.',
-    };
-  }
-
-  formData.ingList = formData.ingList.map((ing) => ({
-    ...ing,
-    name: ZenkakuToHankaku(ing.name),
-    amount: ZenkakuToHankaku(ing.amount),
-  }));
-
-  for (let i = 0; i < formData.ingList.length; i++) {
-    const { error } = await supabase.from('ingredients').insert({
-      recipe_id: recipeId,
-      name: formData.ingList[i].name,
-      amount: formData.ingList[i].amount,
-      unit: formData.ingList[i].unit,
-    });
-    if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to edit recipe.',
-      };
-    }
-  }
-
-  const { error: deleteStepError } = await supabase
-    .from('steps')
-    .delete()
-    .eq('recipe_id', recipeId)
-    .select();
-  if (deleteStepError) {
-    console.log(deleteStepError);
-    return {
-      message: 'Database Error: Failed to edit recipe.',
-    };
-  }
-
-  for (let i = 0; i < formData.stepList.length; i++) {
-    const { error } = await supabase.from('steps').insert({
-      recipe_id: recipeId,
-      name: formData.stepList[i].name,
-    });
-    if (error) {
-      console.log(error);
-      return {
-        message: 'Database Error: Failed to edit recipe.',
-      };
-    }
-  }
-  revalidatePath(`/dashboard/recipe/${recipeId}`);
-  redirect(`/dashboard/recipe/${recipeId}`);
-}
-
-export async function deleteRecipe(formData: RecipeForm, recipeId: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
-
-  if (formData.prevImgUrl) {
-    const splittedUrl = formData.prevImgUrl.split('/');
-    const previousFileName = splittedUrl[splittedUrl.length - 1];
-    await supabase.storage.from('img-url').remove([previousFileName]);
-  }
-
-  const { error: deleteRecipeError } = await supabase
-    .from('recipes')
-    .delete()
-    .eq('id', recipeId)
-    .eq('user_id', userId)
-    .select();
-  if (deleteRecipeError) {
-    console.log(deleteRecipeError);
-    return {
-      message: 'Database Error: Failed to delete recipe.',
-    };
-  }
-
-  const { error: deleteIngError } = await supabase
-    .from('ingredients')
-    .delete()
-    .eq('recipe_id', recipeId)
-    .select();
-  if (deleteIngError) {
-    console.log(deleteIngError);
-    return {
-      message: 'Database Error: Failed to delete recipe.',
-    };
-  }
-
-  const { error: deleteStepError } = await supabase
-    .from('steps')
-    .delete()
-    .eq('recipe_id', recipeId)
-    .select();
-  if (deleteStepError) {
-    console.log(deleteStepError);
-    return {
-      message: 'Database Error: Failed to delete recipe.',
-    };
-  }
   revalidatePath(`/dashboard/recipe`);
   redirect(`/dashboard/recipe`);
 }
 
+export async function editRecipe(formData: RecipeForm, recipeId: number) {
+  const userId = await getUserId();
+
+  if (formData.imgFile) {
+    if (formData.prevImgUrl) {
+      await deleteRecipeImg(formData.prevImgUrl);
+    }
+    formData.imgUrl = await uploadRecipeImg(formData.imgFile);
+  }
+
+  await updateRecipeInfo(
+    recipeId,
+    userId,
+    formData.imgUrl,
+    formData.title,
+    formData.memo,
+  );
+  await deleteRecipeIng(recipeId);
+  await createRecipeIng(formData.ingList, recipeId);
+  await deleteRecipeStep(recipeId);
+  await createRecipeStep(formData.stepList, recipeId);
+
+  revalidatePath(`/dashboard/recipe/${recipeId}`);
+  redirect(`/dashboard/recipe/${recipeId}`);
+}
+
 export async function fetchRecipes() {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
+  const userId = await getUserId();
 
   const { data, error } = await supabase
     .from('recipes')
     .select()
     .eq('user_id', userId);
-  if (data && data?.length > 0) {
-    return {
-      message: 'Recipes retrieved successfully.',
-      data: data,
-    };
-  }
   if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch recipes.',
-    };
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch recipes.');
   }
+
+  if (data && data?.length > 0) {
+    const convertedData = data.map((row: RecipeRow) => ({
+      id: row.id,
+      imgUrl: row.img_url,
+      title: row.title,
+      memo: row.memo,
+      userId: row.user_id,
+    }));
+
+    return convertedData;
+  }
+
+  return [];
 }
 
 export async function fetchRecipeInfo(recipeId: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
+  const userId = await getUserId();
 
   const { data, error } = await supabase
     .from('recipes')
     .select()
     .eq('id', recipeId)
     .eq('user_id', userId);
-  if (data && data?.length > 0) {
-    return {
-      message: 'Recipe retrieved successfully.',
-      data: data,
-    };
-  }
+
   if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch recipe.',
-    };
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch recipe.');
   }
+
+  if (data && data?.length > 0) {
+    const convertedData = data.map((row: RecipeRow) => ({
+      id: row.id,
+      imgUrl: row.img_url,
+      title: row.title,
+      memo: row.memo,
+      userId: row.user_id,
+    }));
+    return convertedData[0];
+  }
+
+  return {
+    id: null,
+    imgUrl: '',
+    title: '',
+    memo: '',
+    userId: null,
+  };
 }
 
 export async function fetchRecipeIng(recipeId: string) {
   const { data, error } = await supabase
     .from('ingredients')
     .select()
-    .eq('recipe_id', recipeId);
-  if (data && data?.length > 0) {
-    return {
-      message: 'Ingredients retrieved successfully.',
-      data: data,
-    };
-  }
+    .eq('recipe_id', recipeId)
+    .order('id', { ascending: true });
+
   if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch ingredients.',
-    };
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch ingredients.');
   }
+
+  if (data && data?.length > 0) {
+    const convertedData = data.map((row: IngRow) => ({
+      id: row.id,
+      recipeId: row.recipe_id,
+      name: row.name,
+      amount: row.amount,
+      unit: row.unit,
+    }));
+
+    return convertedData;
+  }
+
+  return [];
 }
 
 export async function fetchRecipeStep(recipeId: string) {
   const { data, error } = await supabase
     .from('steps')
     .select()
-    .eq('recipe_id', recipeId);
-  if (data && data?.length > 0) {
-    return {
-      message: 'Steps retrieved successfully.',
-      data: data,
-    };
-  }
-  if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch steps.',
-    };
-  }
-}
+    .eq('recipe_id', recipeId)
+    .order('id', { ascending: true });
 
-export async function searchRecipe(query: string) {
-  const session = await auth();
-  const userId: string = session?.user?.id as string;
-
-  const { data, error } = await supabase
-    .from('recipes')
-    .select()
-    .ilike('title', `%${query}%`)
-    .eq('user_id', userId);
   if (error) {
-    console.log(error);
-    return {
-      message: 'Database Error: Failed to fetch recipes.',
-    };
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch steps.');
   }
+
   if (data && data?.length > 0) {
-    return {
-      message: 'Recipes retrieved successfully.',
-      data: data,
-    };
-  } else {
-    return {
-      message: 'Recipe not found.',
-      data: data,
-    };
+    const convertedData = data.map((row: StepRow) => ({
+      id: row.id,
+      recipeId: row.recipe_id,
+      name: row.name,
+    }));
+    return convertedData;
   }
+
+  return [];
 }

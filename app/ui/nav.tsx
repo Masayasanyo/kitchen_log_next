@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { logout } from '@/app/lib/actions/account-actions';
-import { Links } from '@/app/lib/definitions/definitions';
+import { Links } from '@/app/lib/definitions';
 import CardChecklist from '@/app/ui/icons/card-checklist';
 import Folder from '@/app/ui/icons/folder';
 import ForkKnife from '@/app/ui/icons/fork-knife';

@@ -1,0 +1,37 @@
+'use client';
+
+import PlusBtn from '@/app/ui/icons/plus-circle';
+import { create } from '@/app/lib/actions/shopping-list-actions';
+import { unitList } from '@/app/lib/ing-unit';
+
+export default function Create() {
+  return (
+    <form action={create} className="grid grid-cols-8 gap-2">
+      <input
+        className="bg-[#ffffff] p-2 rounded-2xl w-full col-span-3"
+        placeholder="新規アイテムを入力"
+        name="name"
+        required
+      />
+      <input
+        className="bg-[#ffffff] p-2 rounded-2xl w-full col-span-2"
+        placeholder="量"
+        name="amount"
+      />
+      <select name="unit" className="col-span-2 border p-2 rounded">
+        {unitList &&
+          unitList.map((unit) => (
+            <option key={unit.value} value={unit.value}>
+              {unit.value}
+            </option>
+          ))}
+      </select>
+      <button className="block ml-auto col-span-1" type="submit">
+        <PlusBtn
+          design="w-8 h-8 bg-[#1F4529] text-[#E8ECD7] shadow-[0_3px_0_#32633f] 
+            hover:bg-[#32633f] active:bg-[#32633f] active:shadow-[0_3px_0_#32633f]"
+        />
+      </button>
+    </form>
+  );
+}

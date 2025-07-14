@@ -1,9 +1,15 @@
 import { Metadata } from 'next';
 import ChevronRight from '@/app/ui/icons/chevron-right';
-import ReciepList from '@/app/ui/dashboard/overview/recipe-list';
-import SetMealList from '@/app/ui/dashboard/overview/set-meal-list';
-import ShoppingList from '@/app/ui/dashboard/overview/shopping-list';
+import { LatestRecipeList } from '@/app/ui/recipe/recipe-list';
+import { LatestSetMealList } from '@/app/ui/set-meal/set-meal-list';
+import { LatestShoppingList } from '@/app/ui/shopping-list/latest-shopping-list';
 import LinkBtn from '@/app/ui/linkBtn';
+import {
+  RecipesSkeleton,
+  SetMealsSkeleton,
+  ShoppingListSkeleton,
+} from '@/app/ui/skeletons';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'ホーム',
@@ -14,7 +20,9 @@ export default function Page() {
     <main className="w-full flex flex-col gap-10">
       <section className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-8 md:p-8 md:gap-6">
         <h2 className="text-2xl md:text-3xl font-bold">レシピ</h2>
-        <ReciepList />
+        <Suspense fallback={<RecipesSkeleton />}>
+          <LatestRecipeList />
+        </Suspense>
         <LinkBtn
           link={'/dashboard/recipe'}
           design="w-40
@@ -31,7 +39,9 @@ export default function Page() {
 
       <section className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-8 md:p-8 md:gap-6">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">献立</h2>
-        <SetMealList />
+        <Suspense fallback={<SetMealsSkeleton />}>
+          <LatestSetMealList />
+        </Suspense>
         <LinkBtn
           link={'/dashboard/set-meal'}
           design="w-40
@@ -48,7 +58,9 @@ export default function Page() {
 
       <section className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-8 md:p-8 md:gap-6">
         <h2 className="text-2xl md:text-3xl font-bold mb-4">買い物リスト</h2>
-        <ShoppingList />
+        <Suspense fallback={<ShoppingListSkeleton />}>
+          <LatestShoppingList />
+        </Suspense>
         <LinkBtn
           link={'/dashboard/shopping-list'}
           design="w-40

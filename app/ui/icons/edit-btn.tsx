@@ -1,8 +1,8 @@
-export default function EditBtn(props: { design: string; size: string }) {
+export default function EditBtn(props: { color: string; size: string }) {
   return (
     <div
       className={`p-2 rounded-full flex items-center justify-center active:translate-y-1 
-        ${props.design}`}
+        ${props.color}`}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

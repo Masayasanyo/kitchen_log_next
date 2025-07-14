@@ -1,12 +1,20 @@
 import { Metadata } from 'next';
-import SetMealList from '@/app/ui/dashboard/set-meal/set-meal-list';
 import LinkBtn from '@/app/ui/linkBtn';
+import { AllSetMealList } from '@/app/ui/set-meal/set-meal-list';
+import Search from '@/app/ui/search';
 
 export const metadata: Metadata = {
   title: '献立',
 };
 
-export default function Page() {
+export default async function Page(props: {
+  searchParams?: Promise<{
+    query?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || '';
+
   return (
     <div className="w-full flex flex-col gap-8">
       <div className="flex justify-between gap-2 items-center">
@@ -19,7 +27,10 @@ export default function Page() {
           新規作成
         </LinkBtn>
       </div>
-      <SetMealList />
+      <Search />
+      <div className="flex flex-col gap-8">
+        <AllSetMealList query={query} />
+      </div>
     </div>
   );
 }
