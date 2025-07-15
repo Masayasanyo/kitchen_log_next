@@ -9,6 +9,7 @@ import { buttonClass } from '@/app/lib/classnames';
 import { useState } from 'react';
 import { Recipe, Ingredient, Step, RecipeForm } from '@/app/lib/definitions';
 import { editRecipe, deleteRecipe } from '@/app/lib/actions/recipe-actions';
+import ProcessingPage from '@/app/ui/processing-page';
 
 export default function RecipeEditForm({
   recipeId,
@@ -59,7 +60,7 @@ export default function RecipeEditForm({
 
   return (
     <form className="flex flex-col gap-4">
-      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isPending && <ProcessingPage />}
       {isError && (
         <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
       )}

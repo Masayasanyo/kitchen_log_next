@@ -7,6 +7,7 @@ import SetMealTitleInput from './set-meal-title-input';
 import SetMealRecipeInput from './set-meal-recipe-input';
 import SetMealRecipeInputList from './set-meal-recipe-input-list';
 import { GreenButton } from '@/app/lib/classnames';
+import ProcessingPage from '@/app/ui/processing-page';
 
 export default function CreateForm({ recipeList }: { recipeList: Recipe[] }) {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -30,7 +31,7 @@ export default function CreateForm({ recipeList }: { recipeList: Recipe[] }) {
 
   return (
     <form className="flex flex-col gap-4">
-      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isPending && <ProcessingPage />}
       {isError && (
         <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
       )}

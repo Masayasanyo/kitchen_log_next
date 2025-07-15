@@ -9,6 +9,7 @@ import RecipeMemoInput from '@/app/ui/recipe/form/recipe-memo-input';
 import RecipeIngInput from '@/app/ui/recipe/form/recipe-ing-input';
 import ReciepStepInput from '@/app/ui/recipe/form/recipe-step-input';
 import { GreenButton } from '@/app/lib/classnames';
+import ProcessingPage from '@/app/ui/processing-page';
 
 export default function RecipeCreateForm() {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -37,7 +38,7 @@ export default function RecipeCreateForm() {
 
   return (
     <form className="flex flex-col gap-4">
-      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isPending && <ProcessingPage />}
       {isError && (
         <p className="py-6 font-semibold text-red-500">処理に失敗しました。</p>
       )}

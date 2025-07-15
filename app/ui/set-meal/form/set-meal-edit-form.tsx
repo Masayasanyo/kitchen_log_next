@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { SetMealForm, SetMealInfo, Recipe } from '@/app/lib/definitions';
 import { editSetMeal, deleteSetMeal } from '@/app/lib/actions/set-meal-actions';
 import { buttonClass } from '@/app/lib/classnames';
+import ProcessingPage from '@/app/ui/processing-page';
 
 export default function SetMealEditForm({
   setMealId,
@@ -52,7 +53,7 @@ export default function SetMealEditForm({
 
   return (
     <form className="flex flex-col gap-4">
-      {isPending && <p className="py-6 font-semibold">処理中...</p>}
+      {isPending && <ProcessingPage />}
       {isError && (
         <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
       )}

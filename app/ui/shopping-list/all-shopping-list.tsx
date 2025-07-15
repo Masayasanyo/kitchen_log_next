@@ -12,8 +12,10 @@ import {
   fetchShoppingList,
 } from '@/app/lib/actions/shopping-list-actions';
 import { ShoppingList, ShoppingListForm } from '@/app/lib/definitions';
+import ProcessingPage from '@/app/ui/processing-page';
 
 export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
+  const [isPending, setIsPending] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [shoppingList, setShoppingList] = useState<ShoppingList[]>(defaultList);
   const [formData, setFormData] = useState<ShoppingListForm>({
@@ -41,6 +43,7 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
   };
 
   const submitForm = async () => {
+    setIsPending(true);
     try {
       await createItem(formData.name, formData.amount, formData.unit);
     } catch (error) {
@@ -54,15 +57,17 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
         unit: '',
       });
       setShoppingList(data);
+      setIsPending(false);
     }
   };
 
   return (
     <>
+      {isPending && <ProcessingPage />}
       {isError && (
         <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
       )}
-      {!isError && (
+      {!isPending && !isError && (
         <div className="flex flex-col gap-8">
           <CreateItemForm
             formData={formData}
