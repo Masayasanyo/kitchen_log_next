@@ -1,6 +1,5 @@
 'use server';
 
-import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
 import {
@@ -8,11 +7,9 @@ import {
   Ingredient,
   IngRow,
   ShoppingListRow,
-  ShoppingListForm,
 } from '@/app/lib/definitions';
 import { ZenkakuToHankaku } from '../zenkaku-hankaku';
 import { StringSort } from '../string-sort';
-import { revalidatePath } from 'next/cache';
 
 async function getUserId() {
   const session = await auth();
