@@ -42,7 +42,7 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
 
   const submitForm = async () => {
     try {
-      await createItem(formData);
+      await createItem(formData.name, formData.amount, formData.unit);
     } catch (error) {
       console.error(error);
       setIsError(true);

@@ -88,12 +88,8 @@ async function updateList(id: number, amount: string) {
   }
 }
 
-export async function createItem(formData: ShoppingListForm) {
+export async function createItem(name: string, amount: string, unit: string) {
   const userId = await getUserId();
-
-  let name = formData.name;
-  let amount = formData.amount;
-  const unit = formData.unit;
 
   name = ZenkakuToHankaku(name);
   amount = ZenkakuToHankaku(amount);
@@ -131,10 +127,6 @@ export async function createItem(formData: ShoppingListForm) {
   }
 
   await insertItem(userId, name, amount, unit);
-
-  // revalidatePath('/dashboard/shopping-list');
-
-  // redirect('/dashboard/shopping-list');
 }
 
 export async function check(id: number) {
@@ -171,47 +163,6 @@ export async function uncheck(id: number) {
   }
 }
 
-export async function ingToList(name: string, amount: string, unit: string) {
-  const userId = await getUserId();
-
-  name = ZenkakuToHankaku(name);
-  amount = ZenkakuToHankaku(amount);
-
-  const data = await fetchShoppingList(false);
-
-  if (!data || data.length === 0) {
-    await insertItem(userId, name, amount, unit);
-    return;
-  }
-
-  const doesItemExist = data.find(
-    (item) => item.name === name && item.unit === unit,
-  );
-
-  if (!doesItemExist) {
-    await insertItem(userId, name, amount, unit);
-    return;
-  }
-
-  if (doesItemExist.unit !== unit) {
-    await insertItem(userId, name, amount, unit);
-    return;
-  }
-
-  if (unit === '少々' || unit === '適量') {
-    return;
-  }
-
-  const newAmount = Number(amount) + Number(doesItemExist.amount);
-
-  if (!isNaN(newAmount)) {
-    await updateList(doesItemExist.id, String(newAmount));
-    return;
-  }
-
-  await insertItem(userId, name, amount, unit);
-}
-
 export async function createFromRecipe(recipeList: Recipe[]) {
   let ingList: Ingredient[] = [];
 
@@ -245,7 +196,7 @@ export async function createFromRecipe(recipeList: Recipe[]) {
   }));
 
   for (let i = 0; i < ingList.length; i++) {
-    await ingToList(ingList[i].name, ingList[i].amount, ingList[i].unit);
+    await createItem(ingList[i].name, ingList[i].amount, ingList[i].unit);
   }
 }
 
