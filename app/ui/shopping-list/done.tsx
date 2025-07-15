@@ -5,7 +5,7 @@ import { check, uncheck } from '@/app/lib/actions/shopping-list-actions';
 import CheckBox from '@/app/ui/icons/check-box';
 import CheckedBox from '@/app/ui/icons/checked-box';
 import { ShoppingList } from '@/app/lib/definitions';
-import DeleteSlBtn from './delete-sl-btn';
+import DeleteItemBtn from './delete-item-btn';
 import Link from 'next/link';
 
 export default function Done({ defaultList }: { defaultList: ShoppingList[] }) {
@@ -55,7 +55,7 @@ export default function Done({ defaultList }: { defaultList: ShoppingList[] }) {
                       )}
                     </div>
                   </div>
-                  <DeleteSlBtn
+                  <DeleteItemBtn
                     id={item.id}
                     page={true}
                     setIsError={setIsError}

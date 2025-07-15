@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { check, uncheck } from '@/app/lib/actions/shopping-list-actions';
 import CheckBox from '@/app/ui/icons/check-box';
 import CheckedBox from '@/app/ui/icons/checked-box';
-import DeleteSlBtn from './delete-sl-btn';
+import DeleteItemBtn from './delete-item-btn';
 import Link from 'next/link';
 import CreateItemForm from '@/app/ui/shopping-list/create-item-form';
 import {
@@ -48,6 +48,11 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
       setIsError(true);
     } finally {
       const data = await fetchShoppingList(false);
+      setFormData({
+        name: '',
+        amount: '',
+        unit: '',
+      });
       setShoppingList(data);
     }
   };
@@ -86,7 +91,7 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
                         )}
                       </div>
                     </div>
-                    <DeleteSlBtn
+                    <DeleteItemBtn
                       id={item.id}
                       page={false}
                       setIsError={setIsError}
