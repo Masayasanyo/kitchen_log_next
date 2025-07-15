@@ -8,9 +8,11 @@ import {
   Ingredient,
   IngRow,
   ShoppingListRow,
+  ShoppingListForm,
 } from '@/app/lib/definitions';
 import { ZenkakuToHankaku } from '../zenkaku-hankaku';
 import { StringSort } from '../string-sort';
+import { revalidatePath } from 'next/cache';
 
 async function getUserId() {
   const session = await auth();
@@ -86,12 +88,12 @@ async function updateList(id: number, amount: string) {
   }
 }
 
-export async function create(formData: FormData) {
+export async function createItem(formData: ShoppingListForm) {
   const userId = await getUserId();
 
-  let name = formData.get('name') as string;
-  let amount = formData.get('amount') as string;
-  const unit = formData.get('unit') as string;
+  let name = formData.name;
+  let amount = formData.amount;
+  const unit = formData.unit;
 
   name = ZenkakuToHankaku(name);
   amount = ZenkakuToHankaku(amount);
@@ -130,7 +132,9 @@ export async function create(formData: FormData) {
 
   await insertItem(userId, name, amount, unit);
 
-  redirect('/dashboard/shopping-list');
+  // revalidatePath('/dashboard/shopping-list');
+
+  // redirect('/dashboard/shopping-list');
 }
 
 export async function check(id: number) {

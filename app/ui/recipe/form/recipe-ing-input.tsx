@@ -22,9 +22,7 @@ export default function RecipeIngInput({
   });
 
   const handleNewIngChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLSelectElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     if (e.target.name === 'ingName') {
       setNewIng({

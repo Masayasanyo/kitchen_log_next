@@ -11,23 +11,20 @@ import Cancel from '@/app/ui/icons/cancel';
 export default function DeleteSLBtn(props: {
   id: number;
   page: boolean;
-  setIsPending: React.Dispatch<React.SetStateAction<boolean>>;
   setIsError: React.Dispatch<React.SetStateAction<boolean>>;
   setList: React.Dispatch<React.SetStateAction<ShoppingList[]>>;
 }) {
   const deleteSL = async () => {
-    props.setIsPending(true);
     try {
       await deleteShoppingList(props.id);
-      const data = await fetchShoppingList(props.page);
-      if (data) {
-        props.setList(StringSort(data));
-      }
     } catch (error) {
       console.error(error);
       props.setIsError(true);
     } finally {
-      props.setIsPending(false);
+      const data = await fetchShoppingList(props.page);
+      if (data) {
+        props.setList(StringSort(data));
+      }
     }
   };
 
