@@ -43,6 +43,8 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
   };
 
   const submitForm = async () => {
+    if (!formData.name) return;
+
     setIsPending(true);
     try {
       await createItem(formData.name, formData.amount, formData.unit);
