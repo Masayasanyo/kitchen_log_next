@@ -4,15 +4,16 @@ import { useState } from 'react';
 import { check, uncheck } from '@/app/lib/actions/shopping-list-actions';
 import CheckBox from '@/app/ui/icons/check-box';
 import CheckedBox from '@/app/ui/icons/checked-box';
-import DeleteItemBtn from './delete-item-btn';
 import Link from 'next/link';
 import CreateItemForm from '@/app/ui/shopping-list/create-item-form';
 import {
   createItem,
   fetchShoppingList,
+  deleteShoppingList,
 } from '@/app/lib/actions/shopping-list-actions';
 import { ShoppingList, ShoppingListForm } from '@/app/lib/definitions';
 import ProcessingPage from '@/app/ui/processing-page';
+import Cancel from '@/app/ui/icons/cancel';
 
 export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
   const [isPending, setIsPending] = useState<boolean>(false);
@@ -63,6 +64,16 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
     }
   };
 
+  const deleteItem = async (id: number) => {
+    setShoppingList(shoppingList.filter((item) => item.id !== id));
+    try {
+      await deleteShoppingList(id);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
+    }
+  };
+
   return (
     <>
       {isPending && <ProcessingPage />}
@@ -89,21 +100,19 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
                         {item.progress && <CheckedBox />}
                         {!item.progress && <CheckBox />}
                       </button>
-                      <p className="">{item.name}</p>
-                      <p className="">...</p>
+                      <p>{item.name}</p>
+                      <p>...</p>
                       <div className="flex gap-1">
-                        <p className="">{item.amount}</p>
-                        {item.unit !== 'その他' && (
-                          <p className="">{item.unit}</p>
-                        )}
+                        <p>{item.amount}</p>
+                        {item.unit !== 'その他' && <p>{item.unit}</p>}
                       </div>
                     </div>
-                    <DeleteItemBtn
-                      id={item.id}
-                      page={false}
-                      setIsError={setIsError}
-                      setList={setShoppingList}
-                    />
+                    <button type="button" onClick={() => deleteItem(item.id)}>
+                      <Cancel
+                        design="w-6 bg-[#CC3300] text-[#E8ECD7] shadow-[0_3px_0_#FF3366] hover:bg-[#FF3366] 
+                          active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]"
+                      />
+                    </button>
                   </div>
                   <hr className="my-4" />
                 </div>

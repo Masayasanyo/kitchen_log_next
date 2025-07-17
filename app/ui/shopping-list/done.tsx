@@ -1,12 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { check, uncheck } from '@/app/lib/actions/shopping-list-actions';
+import {
+  check,
+  uncheck,
+  deleteShoppingList,
+} from '@/app/lib/actions/shopping-list-actions';
 import CheckBox from '@/app/ui/icons/check-box';
 import CheckedBox from '@/app/ui/icons/checked-box';
 import { ShoppingList } from '@/app/lib/definitions';
-import DeleteItemBtn from './delete-item-btn';
 import Link from 'next/link';
+import Cancel from '@/app/ui/icons/cancel';
 
 export default function Done({ defaultList }: { defaultList: ShoppingList[] }) {
   const [isError, setIsError] = useState<boolean>(false);
@@ -27,6 +31,16 @@ export default function Done({ defaultList }: { defaultList: ShoppingList[] }) {
         item.id === id ? { ...item, progress: !progress } : item,
       );
       setDoneList(newList);
+    }
+  };
+
+  const deleteItem = async (id: number) => {
+    setDoneList(doneList.filter((item) => item.id !== id));
+    try {
+      await deleteShoppingList(id);
+    } catch (error) {
+      console.error(error);
+      setIsError(true);
     }
   };
 
@@ -55,12 +69,12 @@ export default function Done({ defaultList }: { defaultList: ShoppingList[] }) {
                       )}
                     </div>
                   </div>
-                  <DeleteItemBtn
-                    id={item.id}
-                    page={true}
-                    setIsError={setIsError}
-                    setList={setDoneList}
-                  />
+                  <button type="button" onClick={() => deleteItem(item.id)}>
+                    <Cancel
+                      design="w-6 bg-[#CC3300] text-[#E8ECD7] shadow-[0_3px_0_#FF3366] hover:bg-[#FF3366] 
+                        active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]"
+                    />
+                  </button>
                 </div>
                 <hr className="my-4" />
               </div>
