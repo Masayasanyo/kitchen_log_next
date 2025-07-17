@@ -11,6 +11,7 @@ export interface RecipeForm {
   imgFile: File | null;
   title: string;
   memo: string;
+  tagList: Tag[];
   ingList: Ingredient[];
   stepList: Step[];
 }
@@ -60,6 +61,12 @@ export interface Ingredient {
   name: string;
   amount: string;
   unit: string;
+}
+
+export interface Tag {
+  id: number | null;
+  name: string;
+  recipeId: number | null;
 }
 
 export interface Step {
@@ -133,6 +140,12 @@ export interface RecipeListRow {
         memo: string;
         user_id: number;
       }[];
+}
+
+export interface TagRow {
+  id: number;
+  recipe_id: number;
+  name: string;
 }
 
 export interface IngRow {

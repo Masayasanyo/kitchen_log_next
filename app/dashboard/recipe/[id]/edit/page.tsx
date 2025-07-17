@@ -1,5 +1,6 @@
 import {
   fetchRecipeInfo,
+  fetchRecipeTag,
   fetchRecipeIng,
   fetchRecipeStep,
 } from '@/app/lib/actions/recipe-actions';
@@ -9,6 +10,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const { id } = await props.params;
 
   const recipeInfo = await fetchRecipeInfo(id);
+  const tagList = await fetchRecipeTag(id);
   const ingList = await fetchRecipeIng(id);
   const stepList = await fetchRecipeStep(id);
 
@@ -18,6 +20,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
       <RecipeEditForm
         recipeId={id}
         recipeInfo={recipeInfo}
+        tagList={tagList}
         ingList={ingList}
         stepList={stepList}
       />

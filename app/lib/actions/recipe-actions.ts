@@ -4,11 +4,13 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import {
   RecipeRow,
+  TagRow,
   IngRow,
   StepRow,
   Ingredient,
   Step,
   RecipeForm,
+  Tag,
 } from '@/app/lib/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
@@ -33,6 +35,7 @@ export async function createRecipe(formData: RecipeForm) {
     formData.title,
     formData.memo,
   );
+  await createRecipeTag(formData.tagList, recipeId);
   await createRecipeIng(formData.ingList, recipeId);
   await createRecipeStep(formData.stepList, recipeId);
   revalidatePath('/dashboard/recipe');
@@ -59,6 +62,15 @@ export async function updateRecipeInfo(
   if (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to update recipe.');
+  }
+}
+
+export async function deleteRecipeTag(id: number) {
+  const { error } = await supabase.from('tags').delete().eq('recipe_id', id);
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to delete tag.');
   }
 }
 
@@ -105,6 +117,20 @@ export async function createRecipeInfo(
   }
 
   return data[0].id;
+}
+
+export async function createRecipeTag(tagList: Tag[], id: number) {
+  for (const tag of tagList) {
+    const { error } = await supabase.from('tags').insert({
+      recipe_id: id,
+      name: tag.name,
+    });
+
+    if (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to create tag.');
+    }
+  }
 }
 
 export async function createRecipeIng(ingList: Ingredient[], id: number) {
@@ -211,8 +237,12 @@ export async function editRecipe(formData: RecipeForm, recipeId: number) {
     formData.title,
     formData.memo,
   );
+  await deleteRecipeTag(recipeId);
+  await createRecipeTag(formData.tagList, recipeId);
+
   await deleteRecipeIng(recipeId);
   await createRecipeIng(formData.ingList, recipeId);
+
   await deleteRecipeStep(recipeId);
   await createRecipeStep(formData.stepList, recipeId);
 
@@ -279,6 +309,31 @@ export async function fetchRecipeInfo(recipeId: string) {
     memo: '',
     userId: null,
   };
+}
+
+export async function fetchRecipeTag(recipeId: string) {
+  const { data, error } = await supabase
+    .from('tags')
+    .select()
+    .eq('recipe_id', recipeId)
+    .order('id', { ascending: true });
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch tags.');
+  }
+
+  if (data && data?.length > 0) {
+    const convertedData = data.map((row: TagRow) => ({
+      id: row.id,
+      recipeId: row.recipe_id,
+      name: row.name,
+    }));
+
+    return convertedData;
+  }
+
+  return [];
 }
 
 export async function fetchRecipeIng(recipeId: string) {

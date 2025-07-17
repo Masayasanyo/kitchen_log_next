@@ -3,22 +3,31 @@
 import RecipeImageInput from '@/app/ui/recipe/form/recipe-image-input';
 import RecipeTitleInput from '@/app/ui/recipe/form/recipe-title-input';
 import RecipeMemoInput from '@/app/ui/recipe/form/recipe-memo-input';
+import RecipeTagInput from '@/app/ui/recipe/form/recipe-tag-input';
 import RecipeIngInput from '@/app/ui/recipe/form/recipe-ing-input';
 import ReciepStepInput from '@/app/ui/recipe/form/recipe-step-input';
 import { buttonClass } from '@/app/lib/classnames';
 import { useState } from 'react';
-import { Recipe, Ingredient, Step, RecipeForm } from '@/app/lib/definitions';
+import {
+  Recipe,
+  Tag,
+  Ingredient,
+  Step,
+  RecipeForm,
+} from '@/app/lib/definitions';
 import { editRecipe, deleteRecipe } from '@/app/lib/actions/recipe-actions';
 import ProcessingPage from '@/app/ui/processing-page';
 
 export default function RecipeEditForm({
   recipeId,
   recipeInfo,
+  tagList,
   ingList,
   stepList,
 }: {
   recipeId: string;
   recipeInfo: Recipe;
+  tagList: Tag[];
   ingList: Ingredient[];
   stepList: Step[];
 }) {
@@ -30,6 +39,7 @@ export default function RecipeEditForm({
     imgFile: null,
     title: recipeInfo.title,
     memo: recipeInfo.memo,
+    tagList: tagList,
     ingList: ingList,
     stepList: stepList,
   });
@@ -69,6 +79,7 @@ export default function RecipeEditForm({
           <RecipeImageInput formData={formData} setFormData={setFormData} />
           <RecipeTitleInput formData={formData} setFormData={setFormData} />
           <RecipeMemoInput formData={formData} setFormData={setFormData} />
+          <RecipeTagInput formData={formData} setFormData={setFormData} />
           <RecipeIngInput formData={formData} setFormData={setFormData} />
           <ReciepStepInput formData={formData} setFormData={setFormData} />
           <div className="flex gap-4 mt-6">

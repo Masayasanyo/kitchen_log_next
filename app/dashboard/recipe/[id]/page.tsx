@@ -1,4 +1,5 @@
 import RecipeInfo from '@/app/ui/recipe/recipe-info';
+import Tag from '@/app/ui/recipe/tag';
 import Ingredients from '@/app/ui/recipe/ingredients';
 import Step from '@/app/ui/recipe/step';
 import EditBtn from '@/app/ui/icons/edit-btn';
@@ -17,6 +18,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
         />
       </Link>
       <RecipeInfo recipeId={id} />
+      <Tag recipeId={id} />
       <Ingredients recipeId={id} />
       <Step recipeId={id} />
     </main>

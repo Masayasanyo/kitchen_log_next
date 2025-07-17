@@ -6,6 +6,7 @@ import { RecipeForm } from '@/app/lib/definitions';
 import RecipeImageInput from '@/app/ui/recipe/form/recipe-image-input';
 import RecipeTitleInput from '@/app/ui/recipe/form/recipe-title-input';
 import RecipeMemoInput from '@/app/ui/recipe/form/recipe-memo-input';
+import RecipeTagInput from '@/app/ui/recipe/form/recipe-tag-input';
 import RecipeIngInput from '@/app/ui/recipe/form/recipe-ing-input';
 import ReciepStepInput from '@/app/ui/recipe/form/recipe-step-input';
 import { GreenButton } from '@/app/lib/classnames';
@@ -20,6 +21,7 @@ export default function RecipeCreateForm() {
     imgFile: null,
     title: '',
     memo: '',
+    tagList: [],
     ingList: [],
     stepList: [],
   });
@@ -47,6 +49,7 @@ export default function RecipeCreateForm() {
           <RecipeImageInput formData={formData} setFormData={setFormData} />
           <RecipeTitleInput formData={formData} setFormData={setFormData} />
           <RecipeMemoInput formData={formData} setFormData={setFormData} />
+          <RecipeTagInput formData={formData} setFormData={setFormData} />
           <RecipeIngInput formData={formData} setFormData={setFormData} />
           <ReciepStepInput formData={formData} setFormData={setFormData} />
           <button
