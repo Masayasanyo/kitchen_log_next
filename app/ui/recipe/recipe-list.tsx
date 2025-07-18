@@ -1,6 +1,9 @@
 'use server';
 
-import { fetchRecipes } from '@/app/lib/actions/recipe-actions';
+import {
+  fetchRecipes,
+  fetchAllRecipeData,
+} from '@/app/lib/actions/recipe-actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/app/lib/definitions';
@@ -17,9 +20,30 @@ export async function LatestRecipeList() {
   );
 }
 
-export async function AllRecipeList({ query }: { query: string }) {
-  let recipeList = await fetchRecipes();
-  recipeList = recipeList?.filter((recipe) => recipe.title.includes(query));
+export async function AllRecipeList({
+  type,
+  query,
+}: {
+  type: string;
+  query: string;
+}) {
+  let recipeList = await fetchAllRecipeData();
+
+  if (type === 'title') {
+    recipeList = recipeList?.filter((recipe) => recipe.title.includes(query));
+  }
+
+  if (type === 'tag') {
+    recipeList = recipeList?.filter((recipe) =>
+      recipe.tags.some((tag) => tag.name === query),
+    );
+  }
+
+  if (type === 'ing') {
+    recipeList = recipeList?.filter((recipe) =>
+      recipe.ingredients.some((ing) => ing.name === query),
+    );
+  }
 
   return (
     <div className="md:grid md:grid-cols-4 flex flex-col gap-6">

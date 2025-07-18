@@ -11,6 +11,7 @@ import {
   Step,
   RecipeForm,
   Tag,
+  AllRecipeDataRow,
 } from '@/app/lib/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
@@ -257,6 +258,7 @@ export async function fetchRecipes() {
     .from('recipes')
     .select()
     .eq('user_id', userId);
+
   if (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch recipes.');
@@ -269,6 +271,62 @@ export async function fetchRecipes() {
       title: row.title,
       memo: row.memo,
       userId: row.user_id,
+    }));
+
+    return convertedData;
+  }
+
+  return [];
+}
+
+export async function fetchAllRecipeData() {
+  const userId = await getUserId();
+
+  const { data, error } = await supabase
+    .from('recipes')
+    .select(
+      `
+      id, 
+      title, 
+      img_url, 
+      user_id, 
+      memo, 
+      tags (
+        id, 
+        name, 
+        recipe_id
+      ), 
+      ingredients (
+        id, 
+        name, 
+        amount, 
+        unit, 
+        recipe_id
+      ), 
+      steps (
+        id, 
+        name, 
+        recipe_id
+      )
+    `,
+    )
+    .eq('user_id', userId);
+
+  if (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch recipes.');
+  }
+
+  if (data && data?.length > 0) {
+    const convertedData = data.map((row: AllRecipeDataRow) => ({
+      id: row.id,
+      imgUrl: row.img_url,
+      title: row.title,
+      memo: row.memo,
+      userId: row.user_id,
+      tags: row.tags,
+      ingredients: row.ingredients,
+      steps: row.steps,
     }));
 
     return convertedData;

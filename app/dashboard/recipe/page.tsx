@@ -9,10 +9,12 @@ export const metadata: Metadata = {
 
 export default async function Page(props: {
   searchParams?: Promise<{
+    type?: string;
     query?: string;
   }>;
 }) {
   const searchParams = await props.searchParams;
+  const type = searchParams?.type || '';
   const query = searchParams?.query || '';
 
   return (
@@ -30,7 +32,7 @@ export default async function Page(props: {
       </div>
       <Search />
       <div className="flex flex-col gap-8">
-        <AllRecipeList query={query} />
+        <AllRecipeList type={type} query={query} />
       </div>
     </div>
   );

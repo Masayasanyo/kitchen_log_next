@@ -91,6 +91,7 @@ export interface SetMealChildComponentProps {
   setFormData: React.Dispatch<React.SetStateAction<SetMealForm>>;
 }
 
+// Row
 export interface ShoppingListForm {
   name: string;
   amount: string;
@@ -103,6 +104,17 @@ export interface RecipeRow {
   title: string;
   memo: string;
   user_id: number;
+}
+
+export interface AllRecipeDataRow {
+  id: number;
+  img_url: string;
+  title: string;
+  memo: string;
+  user_id: number;
+  tags: TagRow[];
+  ingredients: IngRow[];
+  steps: StepRow[];
 }
 
 export interface SetMealRow {
