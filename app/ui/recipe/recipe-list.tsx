@@ -29,17 +29,17 @@ export async function AllRecipeList({
 }) {
   let recipeList = await fetchAllRecipeData();
 
-  if (type === 'title') {
+  if (type === 'title' && query) {
     recipeList = recipeList?.filter((recipe) => recipe.title.includes(query));
   }
 
-  if (type === 'tag') {
+  if (type === 'tag' && query) {
     recipeList = recipeList?.filter((recipe) =>
       recipe.tags.some((tag) => tag.name === query),
     );
   }
 
-  if (type === 'ing') {
+  if (type === 'ing' && query) {
     recipeList = recipeList?.filter((recipe) =>
       recipe.ingredients.some((ing) => ing.name === query),
     );
