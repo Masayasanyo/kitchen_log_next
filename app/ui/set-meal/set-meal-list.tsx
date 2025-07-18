@@ -19,9 +19,26 @@ export async function LatestSetMealList() {
   );
 }
 
-export async function AllSetMealList({ query }: { query: string }) {
+export async function AllSetMealList({
+  type,
+  query,
+}: {
+  type: string;
+  query: string;
+}) {
   let setMealList = await fetchSetMeals();
-  setMealList = setMealList?.filter((setMeal) => setMeal.title.includes(query));
+
+  if (type === 'title' && query) {
+    setMealList = setMealList?.filter((setMeal) =>
+      setMeal.title.includes(query),
+    );
+  }
+
+  if (type === 'recipeTitle' && query) {
+    setMealList = setMealList?.filter((setMeal) =>
+      setMeal.recipes.some((recipe) => recipe.title.includes(query)),
+    );
+  }
 
   return (
     <div className="flex flex-col md:grid md:grid-cols-2 rounded-2xl gap-6">

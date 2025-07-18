@@ -4,7 +4,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
-export default function Search() {
+export default function SetMealSearch() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -45,9 +45,7 @@ export default function Search() {
         }}
       >
         <option value="title">タイトル</option>
-        <option value="tag">タグ</option>
-        <option value="ing">材料名</option>
-        {/* <option value="alphabetical">五十音順</option> */}
+        <option value="recipeTitle">レシピ名</option>
       </select>
     </div>
   );

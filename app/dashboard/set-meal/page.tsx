@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import LinkBtn from '@/app/ui/linkBtn';
 import { AllSetMealList } from '@/app/ui/set-meal/set-meal-list';
-import Search from '@/app/ui/search';
+import Search from '@/app/ui/set-meal/set-meal-search';
 
 export const metadata: Metadata = {
   title: '献立',
@@ -9,10 +9,12 @@ export const metadata: Metadata = {
 
 export default async function Page(props: {
   searchParams?: Promise<{
+    type?: string;
     query?: string;
   }>;
 }) {
   const searchParams = await props.searchParams;
+  const type = searchParams?.type || '';
   const query = searchParams?.query || '';
 
   return (
@@ -29,7 +31,7 @@ export default async function Page(props: {
       </div>
       <Search />
       <div className="flex flex-col gap-8">
-        <AllSetMealList query={query} />
+        <AllSetMealList type={type} query={query} />
       </div>
     </div>
   );

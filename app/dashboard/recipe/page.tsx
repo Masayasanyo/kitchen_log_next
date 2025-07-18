@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { AllRecipeList } from '@/app/ui/recipe/recipe-list';
 import LinkBtn from '@/app/ui/linkBtn';
-import Search from '@/app/ui/search';
+import Search from '@/app/ui/recipe/recipe-search';
 
 export const metadata: Metadata = {
   title: 'レシピ',
