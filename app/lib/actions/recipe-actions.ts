@@ -291,6 +291,7 @@ export async function fetchAllRecipeData() {
       img_url, 
       user_id, 
       memo, 
+      created_at, 
       tags (
         id, 
         name, 
@@ -310,7 +311,8 @@ export async function fetchAllRecipeData() {
       )
     `,
     )
-    .eq('user_id', userId);
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
 
   if (error) {
     console.error('Database Error:', error);

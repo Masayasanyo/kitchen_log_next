@@ -47,6 +47,7 @@ export default function Search() {
         <option value="title">タイトル</option>
         <option value="tag">タグ</option>
         <option value="ing">材料名</option>
+        {/* <option value="alphabetical">五十音順</option> */}
       </select>
     </div>
   );
