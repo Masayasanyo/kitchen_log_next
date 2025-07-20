@@ -1,3 +1,5 @@
+import { ViewApi } from '@fullcalendar/core';
+
 export interface User {
   id: string;
   name: string;
@@ -31,6 +33,17 @@ export interface Recipe {
   title: string;
   memo: string;
   userId: number | null;
+}
+
+export interface AllRecipeData {
+  id: number;
+  imgUrl: string;
+  title: string;
+  memo: string;
+  userId: number | null;
+  tags: Tag[];
+  ingredients: Ingredient[];
+  steps: Step[];
 }
 
 export interface SetMeal {
@@ -222,4 +235,35 @@ export interface RecipeEditState {
     recipeStep?: string[];
   };
   message?: string | null;
+}
+
+export interface DateClick {
+  dayEl: HTMLElement;
+  jsEvent: MouseEvent;
+  view: ViewApi;
+  date: Date;
+  dateStr: string;
+  allDay: boolean;
+}
+
+export interface Event {
+  id: string;
+  recipeId: number;
+  title: string;
+  start: string;
+  end: string;
+  backgroundColor: string;
+  borderColor: string;
+  textColor: string;
+}
+
+export interface EventRow {
+  id: string;
+  recipe_id: number;
+  title: string;
+  start: string;
+  end: string;
+  background_color: string;
+  border_color: string;
+  text_color: string;
 }

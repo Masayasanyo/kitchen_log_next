@@ -326,9 +326,23 @@ export async function fetchAllRecipeData() {
       title: row.title,
       memo: row.memo,
       userId: row.user_id,
-      tags: row.tags,
-      ingredients: row.ingredients,
-      steps: row.steps,
+      tags: row.tags.map((tag: TagRow) => ({
+        id: tag.id,
+        name: tag.name,
+        recipeId: tag.recipe_id,
+      })),
+      ingredients: row.ingredients.map((ing: IngRow) => ({
+        id: ing.id,
+        name: ing.name,
+        amount: ing.amount,
+        unit: ing.unit,
+        recipeId: ing.recipe_id,
+      })),
+      steps: row.steps.map((step: StepRow) => ({
+        id: step.id,
+        name: step.name,
+        recipeId: step.recipe_id,
+      })),
     }));
 
     return convertedData;

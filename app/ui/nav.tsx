@@ -7,7 +7,8 @@ import CardChecklist from '@/app/ui/icons/card-checklist';
 import Folder from '@/app/ui/icons/folder';
 import ForkKnife from '@/app/ui/icons/fork-knife';
 import Home from '@/app/ui/icons/home';
-import BoxArrowRight from './icons/box-arrow-right';
+import BoxArrowRight from '@/app/ui/icons/box-arrow-right';
+import Calendar from '@/app/ui/icons/calendar';
 
 const links: Links[] = [
   { name: 'ホーム', href: '/dashboard', icon: Home, width: 'w-6' },
@@ -17,6 +18,12 @@ const links: Links[] = [
     name: '買い物リスト',
     href: '/dashboard/shopping-list',
     icon: CardChecklist,
+    width: 'w-6',
+  },
+  {
+    name: 'カレンダー',
+    href: '/dashboard/calendar',
+    icon: Calendar,
     width: 'w-6',
   },
 ];
