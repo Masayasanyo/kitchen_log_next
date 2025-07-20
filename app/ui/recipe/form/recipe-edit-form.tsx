@@ -8,46 +8,28 @@ import RecipeIngInput from '@/app/ui/recipe/form/recipe-ing-input';
 import ReciepStepInput from '@/app/ui/recipe/form/recipe-step-input';
 import { buttonClass } from '@/app/lib/classnames';
 import { useState } from 'react';
-import {
-  Recipe,
-  Tag,
-  Ingredient,
-  Step,
-  RecipeForm,
-} from '@/app/lib/definitions';
+import { Recipe, RecipeForm } from '@/app/lib/definitions';
 import { editRecipe, deleteRecipe } from '@/app/lib/actions/recipe-actions';
 import ProcessingPage from '@/app/ui/processing-page';
 
-export default function RecipeEditForm({
-  recipeId,
-  recipeInfo,
-  tagList,
-  ingList,
-  stepList,
-}: {
-  recipeId: string;
-  recipeInfo: Recipe;
-  tagList: Tag[];
-  ingList: Ingredient[];
-  stepList: Step[];
-}) {
+export default function RecipeEditForm({ recipeData }: { recipeData: Recipe }) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [formData, setFormData] = useState<RecipeForm>({
-    prevImgUrl: recipeInfo.imgUrl,
-    imgUrl: recipeInfo.imgUrl,
+    prevImgUrl: recipeData.imgUrl,
+    imgUrl: recipeData.imgUrl,
     imgFile: null,
-    title: recipeInfo.title,
-    memo: recipeInfo.memo,
-    tagList: tagList,
-    ingList: ingList,
-    stepList: stepList,
+    title: recipeData.title,
+    memo: recipeData.memo,
+    tagList: recipeData.tags,
+    ingList: recipeData.ingredients,
+    stepList: recipeData.steps,
   });
 
   const submitForm = async () => {
     setIsPending(true);
     try {
-      await editRecipe(formData, Number(recipeId));
+      await editRecipe(formData, Number(recipeData.id));
     } catch (error) {
       console.error(error);
       setIsError(true);
@@ -59,7 +41,7 @@ export default function RecipeEditForm({
   const submitDeleteRecipe = async () => {
     setIsPending(true);
     try {
-      await deleteRecipe(formData.prevImgUrl, Number(recipeId));
+      await deleteRecipe(formData.prevImgUrl, Number(recipeData.id));
     } catch (error) {
       console.error(error);
       setIsError(true);

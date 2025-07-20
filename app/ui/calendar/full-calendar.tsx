@@ -8,7 +8,7 @@ import { EventClickArg } from '@fullcalendar/core';
 import jaLocale from '@fullcalendar/core/locales/ja';
 import './full-calendar.css';
 import { useState } from 'react';
-import { AllRecipeData, DateClick, Event } from '@/app/lib/definitions';
+import { Recipe, DateClick, Event } from '@/app/lib/definitions';
 import CancelBtn from '@/app/ui/icons/cancel-btn';
 import { createEvent, deleteEvent } from '@/app/lib/actions/calendar-actions';
 import { useRouter } from 'next/navigation';
@@ -19,7 +19,7 @@ export default function Calendar({
   allRecipeList,
   events,
 }: {
-  allRecipeList: AllRecipeData[];
+  allRecipeList: Recipe[];
   events: Event[];
 }) {
   const router = useRouter();
@@ -36,7 +36,7 @@ export default function Calendar({
     borderColor: '',
     textColor: '',
   });
-  const [recipeList, setRecipeList] = useState<AllRecipeData[]>([]);
+  const [recipeList, setRecipeList] = useState<Recipe[]>([]);
 
   const handleDateClick = (info: DateClick) => {
     setSelectedDate(info.dateStr);
@@ -55,7 +55,7 @@ export default function Calendar({
     setRecipeList(newRecipeList);
   };
 
-  const selectRecipe = async (recipe: AllRecipeData) => {
+  const selectRecipe = async (recipe: Recipe) => {
     const newEvent = {
       id: String(events.length + 1),
       recipeId: recipe.id,

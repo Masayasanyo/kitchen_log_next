@@ -27,15 +27,15 @@ export interface RecipeFormProps {
   setFormData: React.Dispatch<React.SetStateAction<RecipeForm>>;
 }
 
-export interface Recipe {
-  id: number | null;
-  imgUrl: string;
-  title: string;
-  memo: string;
-  userId: number | null;
-}
+// export interface Recipe {
+//   id: number | null;
+//   imgUrl: string;
+//   title: string;
+//   memo: string;
+//   userId: number | null;
+// }
 
-export interface AllRecipeData {
+export interface Recipe {
   id: number;
   imgUrl: string;
   title: string;

@@ -351,37 +351,118 @@ export async function fetchAllRecipeData() {
   return [];
 }
 
-export async function fetchRecipeInfo(recipeId: string) {
+// export async function fetchRecipeInfo(recipeId: string) {
+//   const userId = await getUserId();
+
+//   const { data, error } = await supabase
+//     .from('recipes')
+//     .select()
+//     .eq('id', recipeId)
+//     .eq('user_id', userId);
+
+//   if (error) {
+//     console.error('Database Error:', error);
+//     throw new Error('Failed to fetch recipe.');
+//   }
+
+//   if (data && data?.length > 0) {
+//     const convertedData = data.map((row: RecipeRow) => ({
+//       id: row.id,
+//       imgUrl: row.img_url,
+//       title: row.title,
+//       memo: row.memo,
+//       userId: row.user_id,
+//     }));
+//     return convertedData[0];
+//   }
+
+//   return {
+//     id: null,
+//     imgUrl: '',
+//     title: '',
+//     memo: '',
+//     userId: null,
+//   };
+// }
+
+export async function fetchRecipe(recipeId: string) {
   const userId = await getUserId();
 
   const { data, error } = await supabase
     .from('recipes')
-    .select()
-    .eq('id', recipeId)
-    .eq('user_id', userId);
+    .select(
+      `
+      id, 
+      title, 
+      img_url, 
+      user_id, 
+      memo, 
+      created_at, 
+      tags (
+        id, 
+        name, 
+        recipe_id
+      ), 
+      ingredients (
+        id, 
+        name, 
+        amount, 
+        unit, 
+        recipe_id
+      ), 
+      steps (
+        id, 
+        name, 
+        recipe_id
+      )
+    `,
+    )
+    .eq('user_id', userId)
+    .eq('id', recipeId);
 
   if (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch recipe.');
+    throw new Error('Failed to fetch recipes.');
   }
 
   if (data && data?.length > 0) {
-    const convertedData = data.map((row: RecipeRow) => ({
+    const convertedData = data.map((row: AllRecipeDataRow) => ({
       id: row.id,
       imgUrl: row.img_url,
       title: row.title,
       memo: row.memo,
       userId: row.user_id,
+      tags: row.tags.map((tag: TagRow) => ({
+        id: tag.id,
+        name: tag.name,
+        recipeId: tag.recipe_id,
+      })),
+      ingredients: row.ingredients.map((ing: IngRow) => ({
+        id: ing.id,
+        name: ing.name,
+        amount: ing.amount,
+        unit: ing.unit,
+        recipeId: ing.recipe_id,
+      })),
+      steps: row.steps.map((step: StepRow) => ({
+        id: step.id,
+        name: step.name,
+        recipeId: step.recipe_id,
+      })),
     }));
+
     return convertedData[0];
   }
 
   return {
-    id: null,
+    id: 0,
     imgUrl: '',
     title: '',
     memo: '',
-    userId: null,
+    userId: 0,
+    tags: [],
+    ingredients: [],
+    steps: [],
   };
 }
 

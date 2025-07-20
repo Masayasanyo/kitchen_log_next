@@ -1,15 +1,16 @@
-import { fetchRecipeIng } from '@/app/lib/actions/recipe-actions';
-import ToShoppingList from '@/app/ui/recipe/to-shoppinglist';
+import { Recipe } from '@/app/lib/definitions';
 
-export default async function Ingredients(props: { recipeId: string }) {
-  const ingList = await fetchRecipeIng(props.recipeId);
-
+export default async function Ingredients({
+  recipeData,
+}: {
+  recipeData: Recipe;
+}) {
   return (
     <div className="flex flex-col gap-2">
       <div className="bg-[#ffffff] rounded-2xl px-6 py-4">
         <h3 className="font-medium text-xl mb-4">材料</h3>
         <div className="flex flex-col gap-2">
-          {ingList?.map((ing, index) => (
+          {recipeData.ingredients?.map((ing, index) => (
             <div key={index}>
               <div className="flex gap-2">
                 <p className="">{ing.name}</p>
@@ -23,7 +24,6 @@ export default async function Ingredients(props: { recipeId: string }) {
             </div>
           ))}
         </div>
-        <ToShoppingList recipeId={props.recipeId} />
       </div>
     </div>
   );
