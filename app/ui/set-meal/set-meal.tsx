@@ -1,7 +1,6 @@
 import { SetMeal } from '@/app/lib/definitions';
 import Image from 'next/image';
 import Link from 'next/link';
-import AddToShoppingList from './add-to-shopping-list';
 
 export default async function Page({ setMeal }: { setMeal: SetMeal }) {
   return (
@@ -27,7 +26,6 @@ export default async function Page({ setMeal }: { setMeal: SetMeal }) {
             </Link>
           ))}
         </div>
-        <AddToShoppingList recipeList={setMeal.recipes} />
       </div>
     </div>
   );

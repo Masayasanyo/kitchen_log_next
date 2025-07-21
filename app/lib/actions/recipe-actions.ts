@@ -250,34 +250,6 @@ export async function editRecipe(formData: RecipeForm, recipeId: number) {
   redirect(`/dashboard/recipe/${recipeId}`);
 }
 
-// export async function fetchRecipes() {
-//   const userId = await getUserId();
-
-//   const { data, error } = await supabase
-//     .from('recipes')
-//     .select()
-//     .eq('user_id', userId);
-
-//   if (error) {
-//     console.error('Database Error:', error);
-//     throw new Error('Failed to fetch recipes.');
-//   }
-
-//   if (data && data?.length > 0) {
-//     const convertedData = data.map((row: RecipeRow) => ({
-//       id: row.id,
-//       imgUrl: row.img_url,
-//       title: row.title,
-//       memo: row.memo,
-//       userId: row.user_id,
-//     }));
-
-//     return convertedData;
-//   }
-
-//   return [];
-// }
-
 export async function fetchRecipes() {
   const userId = await getUserId();
 
@@ -350,40 +322,6 @@ export async function fetchRecipes() {
   return [];
 }
 
-// export async function fetchRecipeInfo(recipeId: string) {
-//   const userId = await getUserId();
-
-//   const { data, error } = await supabase
-//     .from('recipes')
-//     .select()
-//     .eq('id', recipeId)
-//     .eq('user_id', userId);
-
-//   if (error) {
-//     console.error('Database Error:', error);
-//     throw new Error('Failed to fetch recipe.');
-//   }
-
-//   if (data && data?.length > 0) {
-//     const convertedData = data.map((row: RecipeRow) => ({
-//       id: row.id,
-//       imgUrl: row.img_url,
-//       title: row.title,
-//       memo: row.memo,
-//       userId: row.user_id,
-//     }));
-//     return convertedData[0];
-//   }
-
-//   return {
-//     id: null,
-//     imgUrl: '',
-//     title: '',
-//     memo: '',
-//     userId: null,
-//   };
-// }
-
 export async function fetchRecipe(recipeId: string) {
   const userId = await getUserId();
 
@@ -453,16 +391,7 @@ export async function fetchRecipe(recipeId: string) {
     return convertedData[0];
   }
 
-  return {
-    id: 0,
-    imgUrl: '',
-    title: '',
-    memo: '',
-    userId: 0,
-    tags: [],
-    ingredients: [],
-    steps: [],
-  };
+  return;
 }
 
 export async function fetchRecipeTag(recipeId: string) {

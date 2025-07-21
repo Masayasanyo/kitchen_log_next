@@ -5,7 +5,7 @@ import SetMealRecipeInput from '@/app/ui/set-meal/form/set-meal-recipe-input';
 import SetMealRecipeInputList from '@/app/ui/set-meal/form/set-meal-recipe-input-list';
 import { useState } from 'react';
 import { SetMealForm, SetMeal, Recipe } from '@/app/lib/definitions';
-import { editSetMeal, deleteSetMeal } from '@/app/lib/actions/set-meal-actions';
+import { editSetMeal } from '@/app/lib/actions/set-meal-actions';
 import { buttonClass } from '@/app/lib/classnames';
 import ProcessingPage from '@/app/ui/processing-page';
 
@@ -27,18 +27,6 @@ export default function SetMealEditForm({
     setIsPending(true);
     try {
       await editSetMeal(formData, setMeal.id);
-    } catch (error) {
-      console.error(error);
-      setIsError(true);
-    } finally {
-      setIsPending(false);
-    }
-  };
-
-  const submitDeleteSetMeal = async () => {
-    setIsPending(true);
-    try {
-      await deleteSetMeal(setMeal.id);
     } catch (error) {
       console.error(error);
       setIsError(true);
@@ -74,15 +62,6 @@ export default function SetMealEditForm({
                 active:shadow-[0_3px_0_#32633f]`}
             >
               登録
-            </button>
-            <button
-              type="button"
-              onClick={submitDeleteSetMeal}
-              className={`${buttonClass} bg-[#CC3300] text-[#E8ECD7] 
-                shadow-[0_4px_0_#FF3366] hover:bg-[#FF3366] 
-              active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]`}
-            >
-              削除
             </button>
           </div>
         </>

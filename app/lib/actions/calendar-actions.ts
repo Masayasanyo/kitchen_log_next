@@ -31,6 +31,28 @@ export async function createEvent(eventData: Event) {
   }
 }
 
+export async function createEvents(eventData: Event[]) {
+  const userId = await getUserId();
+
+  for (let i = 0; i < eventData.length; i++) {
+    const { error } = await supabase.from('calendar').insert({
+      user_id: userId,
+      recipe_id: eventData[i].recipeId,
+      title: eventData[i].title,
+      start: eventData[i].start,
+      end: eventData[i].end,
+      background_color: eventData[i].backgroundColor,
+      border_color: eventData[i].borderColor,
+      text_color: eventData[i].textColor,
+    });
+
+    if (error) {
+      console.error('Database Error:', error);
+      throw new Error('Failed to create events.');
+    }
+  }
+}
+
 export async function fetchEvents() {
   const userId = await getUserId();
 

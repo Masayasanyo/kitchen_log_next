@@ -10,12 +10,16 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const recipe = await fetchRecipe(id);
 
   return (
-    <main className="w-full flex flex-col gap-8">
-      <EditBtn recipe={recipe} />
-      <RecipeInfo recipe={recipe} />
-      <Tag recipe={recipe} />
-      <Ingredients recipe={recipe} />
-      <Step recipe={recipe} />
-    </main>
+    <>
+      {recipe && (
+        <main className="w-full flex flex-col gap-8">
+          <EditBtn recipe={recipe} />
+          <RecipeInfo recipe={recipe} />
+          <Tag recipe={recipe} />
+          <Ingredients recipe={recipe} />
+          <Step recipe={recipe} />
+        </main>
+      )}
+    </>
   );
 }
