@@ -27,6 +27,11 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
   });
 
   const checkItem = async (id: number, progress: boolean) => {
+    const updatedList = shoppingList.map((item) => {
+      return item.id === id ? { ...item, progress: !item.progress } : item;
+    });
+    setShoppingList(updatedList);
+
     try {
       if (progress) {
         await uncheck(id);
@@ -36,11 +41,6 @@ export default function Page({ defaultList }: { defaultList: ShoppingList[] }) {
     } catch (error) {
       console.error(error);
       setError(true);
-    } finally {
-      const newList = shoppingList.map((item) =>
-        item.id === id ? { ...item, progress: !progress } : item,
-      );
-      setShoppingList(newList);
     }
   };
 

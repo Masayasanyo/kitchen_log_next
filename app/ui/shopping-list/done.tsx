@@ -18,6 +18,11 @@ export default function Done({ defaultList }: { defaultList: ShoppingList[] }) {
   const [doneList, setDoneList] = useState<ShoppingList[]>(defaultList);
 
   const checkItem = async (id: number, progress: boolean) => {
+    const updatedList = doneList.map((item) => {
+      return item.id === id ? { ...item, progress: !item.progress } : item;
+    });
+    setDoneList(updatedList);
+
     try {
       if (progress) {
         await uncheck(id);
@@ -27,11 +32,6 @@ export default function Done({ defaultList }: { defaultList: ShoppingList[] }) {
     } catch (error) {
       console.error(error);
       setError(true);
-    } finally {
-      const newList = doneList.map((item) =>
-        item.id === id ? { ...item, progress: !progress } : item,
-      );
-      setDoneList(newList);
     }
   };
 
