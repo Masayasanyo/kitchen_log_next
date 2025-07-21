@@ -115,11 +115,11 @@ export async function createSetMealRecipes(
 ) {
   const userId = await getUserId();
 
-  for (let i = 0; i < formData.recipeList.length; i++) {
+  for (let i = 0; i < formData.recipes.length; i++) {
     const { error } = await supabase.from('set_meal_recipes').insert({
       user_id: userId,
       set_meal_id: setMealId,
-      recipe_id: formData.recipeList[i].id,
+      recipe_id: formData.recipes[i].id,
     });
 
     if (error) {
