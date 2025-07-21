@@ -12,8 +12,10 @@ import { Recipe, RecipeForm } from '@/app/lib/definitions';
 import { editRecipe } from '@/app/lib/actions/recipe-actions';
 import PendingPage from '@/app/ui/pending-page';
 import ErrorPage from '@/app/ui/error-page';
+import { useRouter } from 'next/navigation';
 
 export default function RecipeEditForm({ recipe }: { recipe: Recipe }) {
+  const router = useRouter();
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [formData, setFormData] = useState<RecipeForm>({
@@ -36,6 +38,7 @@ export default function RecipeEditForm({ recipe }: { recipe: Recipe }) {
       setError(true);
     } finally {
       setIsPending(false);
+      router.push(`/dashboard/recipe/${recipe.id}`);
     }
   };
 

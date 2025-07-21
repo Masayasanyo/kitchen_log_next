@@ -12,8 +12,10 @@ import { createEvent } from '@/app/lib/actions/calendar-actions';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ja from 'date-fns/locale/ja';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useRouter } from 'next/navigation';
 
 export default function EditBtn({ recipe }: { recipe: Recipe }) {
+  const router = useRouter();
   const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -55,6 +57,7 @@ export default function EditBtn({ recipe }: { recipe: Recipe }) {
       setError(true);
     } finally {
       setIsPending(false);
+      router.push(`/dashboard/recipe`);
     }
   };
 

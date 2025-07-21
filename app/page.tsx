@@ -15,6 +15,7 @@ export default function Page() {
         <ul className="list-disc list-inside">
           <li>レシピ・献立・買い物リストを管理できます。</li>
           <li>レシピや献立から買い物リストを自動生成します。</li>
+          <li>カレンダーでレシピを記録できます。</li>
         </ul>
       </section>
 
@@ -33,7 +34,6 @@ export default function Page() {
       <section className="flex flex-col gap-2">
         <h2 className="font-semibold">工夫した点</h2>
         <ul className="list-disc list-inside">
-          <li>3色配色のバランスルール</li>
           <li>モバイルファーストで設計</li>
           <li>登録材料から買い物リストへの自動変換</li>
           <li>TailwindでUIを統一</li>

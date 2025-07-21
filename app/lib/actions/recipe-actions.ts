@@ -1,7 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import {
   RecipeRow,
   TagRow,
@@ -38,8 +36,6 @@ export async function createRecipe(formData: RecipeForm) {
   await createRecipeTag(formData.tagList, recipeId);
   await createRecipeIng(formData.ingList, recipeId);
   await createRecipeStep(formData.stepList, recipeId);
-  revalidatePath('/dashboard/recipe');
-  redirect('/dashboard/recipe');
 }
 
 export async function updateRecipeInfo(
@@ -215,9 +211,6 @@ export async function deleteRecipe(prevImgUrl: string, recipeId: number) {
     console.error('Database Error:', error);
     throw new Error('Failed to delete recipe.');
   }
-
-  revalidatePath(`/dashboard/recipe`);
-  redirect(`/dashboard/recipe`);
 }
 
 export async function editRecipe(formData: RecipeForm, recipeId: number) {
@@ -245,9 +238,6 @@ export async function editRecipe(formData: RecipeForm, recipeId: number) {
 
   await deleteRecipeStep(recipeId);
   await createRecipeStep(formData.stepList, recipeId);
-
-  revalidatePath(`/dashboard/recipe/${recipeId}`);
-  redirect(`/dashboard/recipe/${recipeId}`);
 }
 
 export async function fetchRecipes() {

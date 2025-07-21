@@ -9,8 +9,10 @@ import SetMealRecipeInputList from './set-meal-recipe-input-list';
 import { GreenButton } from '@/app/lib/classnames';
 import PendingPage from '@/app/ui/pending-page';
 import ErrorPage from '@/app/ui/error-page';
+import { useRouter } from 'next/navigation';
 
 export default function CreateForm({ recipes }: { recipes: Recipe[] }) {
+  const router = useRouter();
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [formData, setFormData] = useState<SetMealForm>({
@@ -27,6 +29,7 @@ export default function CreateForm({ recipes }: { recipes: Recipe[] }) {
       setError(true);
     } finally {
       setIsPending(false);
+      router.push(`/dashboard/set-meal`);
     }
   };
 

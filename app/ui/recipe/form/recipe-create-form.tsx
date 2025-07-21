@@ -12,8 +12,10 @@ import ReciepStepInput from '@/app/ui/recipe/form/recipe-step-input';
 import { GreenButton } from '@/app/lib/classnames';
 import PendingPage from '@/app/ui/pending-page';
 import ErrorPage from '@/app/ui/error-page';
+import { useRouter } from 'next/navigation';
 
 export default function RecipeCreateForm() {
+  const router = useRouter();
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [formData, setFormData] = useState<RecipeForm>({
@@ -36,6 +38,7 @@ export default function RecipeCreateForm() {
       setError(true);
     } finally {
       setIsPending(false);
+      router.push(`/dashboard/recipe`);
     }
   };
 

@@ -30,7 +30,10 @@ const links: Links[] = [
 
 export default function Nav(props: { isOpen: boolean; openNav?: () => void }) {
   return (
-    <nav className="bg-[#1F4529] text-[#E8ECD7] w-100 rounded-2xl px-6 py-8 transition-all duration-500 ease-in-out">
+    <nav
+      className={`w-full h-screen bg-[#1F4529] text-[#E8ECD7] rounded-2xl 
+        px-6 py-8 transition-all duration-500 ease-in-out`}
+    >
       {links.map((link) => (
         <div key={link.name}>
           <Link

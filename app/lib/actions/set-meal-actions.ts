@@ -1,7 +1,5 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import {
   SetMealForm,
   SetMealRow,
@@ -152,9 +150,6 @@ export async function createSetMeal(formData: SetMealForm) {
   }
 
   await createSetMealRecipes(formData, setMealId);
-
-  revalidatePath('/dashboard/set-meal');
-  redirect('/dashboard/set-meal');
 }
 
 export async function fetchSetMeal(setMealId: string) {
@@ -282,9 +277,6 @@ export async function editSetMeal(formData: SetMealForm, setMealId: number) {
   await updateSetMealInfo(formData, setMealId);
   await deleteSetMealRecipes(setMealId);
   await createSetMealRecipes(formData, setMealId);
-
-  revalidatePath(`/dashboard/set-meal/${setMealId}`);
-  redirect(`/dashboard/set-meal/${setMealId}`);
 }
 
 export async function deleteSetMeal(setMealId: number) {
@@ -300,7 +292,4 @@ export async function deleteSetMeal(setMealId: number) {
     console.error('Database Error:', error);
     throw new Error('Failed to delete set meal.');
   }
-
-  revalidatePath(`/dashboard/set-meal`);
-  redirect(`/dashboard/set-meal`);
 }
