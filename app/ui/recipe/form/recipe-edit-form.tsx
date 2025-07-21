@@ -9,7 +9,7 @@ import ReciepStepInput from '@/app/ui/recipe/form/recipe-step-input';
 import { buttonClass } from '@/app/lib/classnames';
 import { useState } from 'react';
 import { Recipe, RecipeForm } from '@/app/lib/definitions';
-import { editRecipe, deleteRecipe } from '@/app/lib/actions/recipe-actions';
+import { editRecipe } from '@/app/lib/actions/recipe-actions';
 import ProcessingPage from '@/app/ui/processing-page';
 
 export default function RecipeEditForm({ recipe }: { recipe: Recipe }) {
