@@ -30,6 +30,7 @@ export default function Calendar({
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [isRecipeOpen, setIsRecipeOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<string>('');
+  const [searchType, setSearchType] = useState<string>('title');
   const [currentEvent, setCurrentEvent] = useState<Event>({
     id: '',
     recipeId: 0,
@@ -47,15 +48,33 @@ export default function Calendar({
     setIsAdding(true);
   };
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = e.target.value;
     if (!keyword) {
       setRecipeList([]);
       return;
     }
-    const newRecipeList = recipes?.filter((recipe) =>
-      recipe.title.includes(keyword),
-    );
+
+    let newRecipeList = [...recipes];
+
+    if (searchType === 'title') {
+      newRecipeList = recipes?.filter((recipe) =>
+        recipe.title.includes(keyword),
+      );
+    }
+
+    if (searchType === 'tag') {
+      newRecipeList = recipes?.filter((recipe) =>
+        recipe.tags.some((tag) => tag.name === keyword),
+      );
+    }
+
+    if (searchType === 'ing') {
+      newRecipeList = recipes?.filter((recipe) =>
+        recipe.ingredients.some((ing) => ing.name === keyword),
+      );
+    }
+
     setRecipeList(newRecipeList);
   };
 
@@ -133,6 +152,10 @@ export default function Calendar({
     }
   };
 
+  const handleType = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSearchType(e.target.value);
+  };
+
   return (
     <div>
       {isPending && <PendingPage />}
@@ -163,7 +186,7 @@ export default function Calendar({
 
           <div
             className={`fixed inset-0 m-auto z-1100 px-4 py-4 bg-[#e8ecd7] 
-              rounded-2xl shadow-md size-72 flex flex-col gap-2`}
+              rounded-2xl shadow-md size-80 flex flex-col gap-2`}
           >
             <button type="button" onClick={displayForm}>
               <CancelBtn fillColor={'#1f4529'} cN={'w-6 block ml-auto'} />
@@ -176,14 +199,27 @@ export default function Calendar({
             </div>
 
             <div className="flex flex-col gap-4 overflow-auto">
-              <input
-                className="bg-[#ffffff] p-2 rounded-2xl w-full focus:outline-none"
-                name="search"
-                type="search"
-                placeholder="レシピ名を入力"
-                onChange={handleChange}
-                required
-              />
+              <div className="bg-[#ffffff] p-2 rounded-2xl w-full flex gap-2">
+                <input
+                  className="p-2 rounded-2xl w-full"
+                  id="search"
+                  placeholder="レシピを検索"
+                  onChange={handleSearch}
+                  required
+                />
+
+                <select
+                  className="bg-[#1F4529] text-[#E8ECD7] px-4 rounded-2xl"
+                  onChange={(e) => {
+                    handleType(e);
+                  }}
+                >
+                  <option value="title">タイトル</option>
+                  <option value="tag">タグ</option>
+                  <option value="ing">材料名</option>
+                </select>
+              </div>
+
               <div className="flex flex-col gap-1">
                 {recipeList.map((recipe) => (
                   <div

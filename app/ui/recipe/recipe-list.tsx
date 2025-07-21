@@ -62,7 +62,7 @@ export async function RecipeCard({ recipe }: { recipe: Recipe }) {
         width={160}
         height={90}
         alt={recipe.title}
-        className="object-cover aspect-video w-full"
+        className="object-cover aspect-video w-full rounded-md"
         unoptimized
       />
       <p>{recipe.title}</p>
@@ -81,7 +81,7 @@ export async function RecipeImgCard({ recipe }: { recipe: Recipe }) {
         width={160}
         height={90}
         alt={recipe.title}
-        className="object-cover aspect-video w-full"
+        className="object-cover aspect-video w-full rounded-md"
         unoptimized
       />
     </Link>
