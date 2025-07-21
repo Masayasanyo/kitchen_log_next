@@ -31,7 +31,7 @@ export async function createEvent(eventData: Event) {
   }
 }
 
-export async function fetchAllEvents() {
+export async function fetchEvents() {
   const userId = await getUserId();
 
   const { data, error } = await supabase

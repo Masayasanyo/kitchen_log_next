@@ -13,8 +13,8 @@ export default function RecipeTagInput({
   setFormData: React.Dispatch<React.SetStateAction<RecipeForm>>;
 }) {
   const [newTag, setNewTag] = useState<Tag>({
-    id: null,
-    recipeId: null,
+    id: 0,
+    recipeId: 0,
     name: '',
   });
 
@@ -30,16 +30,16 @@ export default function RecipeTagInput({
     const newTagList = [
       ...formData.tagList,
       {
-        id: null,
+        id: 0,
         name: newTag.name,
-        recipeId: null,
+        recipeId: 0,
       },
     ];
     setFormData((prev) => ({
       ...prev,
       tagList: newTagList,
     }));
-    setNewTag({ id: null, recipeId: null, name: '' });
+    setNewTag({ id: 0, recipeId: 0, name: '' });
   };
 
   const handleTagChange = (

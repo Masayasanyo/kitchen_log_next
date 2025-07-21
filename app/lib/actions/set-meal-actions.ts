@@ -5,8 +5,9 @@ import { redirect } from 'next/navigation';
 import {
   SetMealForm,
   SetMealRow,
-  SetMealInfoRow,
-  RecipeListRow,
+  TagRow,
+  IngRow,
+  StepRow,
 } from '@/app/lib/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
@@ -22,11 +23,44 @@ async function getUserId() {
 export async function fetchSetMeals() {
   const userId = await getUserId();
 
-  let setMealList = [];
-
   const { data, error } = await supabase
     .from('set_meals')
-    .select()
+    .select(
+      `
+        id, 
+        title, 
+        user_id, 
+        set_meal_recipes (
+          id, 
+          recipe_id, 
+          set_meal_id, 
+          recipes ( 
+            id,
+            title,
+            img_url,
+            memo, 
+            user_id, 
+            tags (
+              id,
+              name,
+              recipe_id
+            ),
+            ingredients (
+              id,
+              name,
+              amount,
+              unit,
+              recipe_id
+            ),
+            steps (
+              id,
+              name,
+              recipe_id
+            )
+          )
+        )
+      `,
+    )
     .eq('user_id', userId);
 
   if (error) {
@@ -35,32 +69,40 @@ export async function fetchSetMeals() {
   }
 
   if (data && data?.length > 0) {
-    setMealList = data;
-  }
-
-  for (let i = 0; i < setMealList.length; i++) {
-    const { data, error } = await supabase
-      .from('set_meal_recipes')
-      .select('recipes ( id, title, img_url )')
-      .eq('set_meal_id', setMealList[i].id);
-
-    if (error) {
-      console.error('Database Error:', error);
-      throw new Error('Failed to fetch set meals.');
-    }
-
-    if (data && data?.length > 0) {
-      setMealList[i].recipes = data;
-    }
-  }
-
-  if (data && data?.length > 0) {
     const convertedData = data.map((row: SetMealRow) => ({
       id: row.id,
       title: row.title,
       userId: row.user_id,
-      recipes: row.recipes?.map((r) => r.recipes),
+      recipes: row.set_meal_recipes?.map((sr) => {
+        const recipe = Array.isArray(sr.recipes) ? sr.recipes[0] : sr.recipes;
+
+        return {
+          id: recipe.id,
+          title: recipe.title,
+          imgUrl: recipe.img_url,
+          memo: recipe.memo,
+          userId: recipe.user_id,
+          tags: recipe.tags.map((tag: TagRow) => ({
+            id: tag.id,
+            name: tag.name,
+            recipeId: tag.recipe_id,
+          })),
+          ingredients: recipe.ingredients.map((ing: IngRow) => ({
+            id: ing.id,
+            name: ing.name,
+            amount: ing.amount,
+            unit: ing.unit,
+            recipeId: ing.recipe_id,
+          })),
+          steps: recipe.steps.map((step: StepRow) => ({
+            id: step.id,
+            name: step.name,
+            recipeId: step.recipe_id,
+          })),
+        };
+      }),
     }));
+
     return convertedData;
   }
 
@@ -115,12 +157,47 @@ export async function createSetMeal(formData: SetMealForm) {
   redirect('/dashboard/set-meal');
 }
 
-export async function fetchSetMealInfo(setMealId: string) {
+export async function fetchSetMeal(setMealId: string) {
   const userId = await getUserId();
 
   const { data, error } = await supabase
     .from('set_meals')
-    .select()
+    .select(
+      `
+        id, 
+        title, 
+        user_id, 
+        set_meal_recipes (
+          id, 
+          recipe_id, 
+          set_meal_id, 
+          recipes (
+            id,
+            title,
+            img_url,
+            memo, 
+            user_id, 
+            tags (
+              id,
+              name,
+              recipe_id
+            ),
+            ingredients (
+              id,
+              name,
+              amount,
+              unit,
+              recipe_id
+            ),
+            steps (
+              id,
+              name,
+              recipe_id
+            )
+          )
+        )
+      `,
+    )
     .eq('id', setMealId)
     .eq('user_id', userId);
 
@@ -130,59 +207,43 @@ export async function fetchSetMealInfo(setMealId: string) {
   }
 
   if (data && data?.length > 0) {
-    const convertedData = data.map((row: SetMealInfoRow) => ({
+    const convertedData = data.map((row: SetMealRow) => ({
       id: row.id,
       title: row.title,
       userId: row.user_id,
-    }));
+      recipes: row.set_meal_recipes?.map((sr) => {
+        const recipe = Array.isArray(sr.recipes) ? sr.recipes[0] : sr.recipes;
 
+        return {
+          id: recipe.id,
+          title: recipe.title,
+          imgUrl: recipe.img_url,
+          memo: recipe.memo,
+          userId: recipe.user_id,
+          tags: recipe.tags.map((tag: TagRow) => ({
+            id: tag.id,
+            name: tag.name,
+            recipeId: tag.recipe_id,
+          })),
+          ingredients: recipe.ingredients.map((ing: IngRow) => ({
+            id: ing.id,
+            name: ing.name,
+            amount: ing.amount,
+            unit: ing.unit,
+            recipeId: ing.recipe_id,
+          })),
+          steps: recipe.steps.map((step: StepRow) => ({
+            id: step.id,
+            name: step.name,
+            recipeId: step.recipe_id,
+          })),
+        };
+      }),
+    }));
     return convertedData[0];
   }
 
-  return {
-    id: null,
-    title: '',
-    userId: null,
-  };
-}
-
-export async function fetchRecipeList(setMealId: string) {
-  const { data, error } = await supabase
-    .from('set_meal_recipes')
-    .select('recipes ( id, title, img_url, user_id, memo )')
-    .eq('set_meal_id', setMealId);
-
-  if (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch recipes.');
-  }
-
-  if (data && data?.length > 0) {
-    const convertedData = data.map((row: RecipeListRow) => {
-      const recipes = row.recipes;
-
-      if (Array.isArray(recipes)) {
-        return {
-          id: recipes[0].id,
-          imgUrl: recipes[0].img_url,
-          title: recipes[0].title,
-          memo: recipes[0].memo,
-          userId: recipes[0].user_id,
-        };
-      } else {
-        return {
-          id: recipes.id,
-          imgUrl: recipes.img_url,
-          title: recipes.title,
-          memo: recipes.memo,
-          userId: recipes.user_id,
-        };
-      }
-    });
-    return convertedData;
-  }
-
-  return [];
+  return;
 }
 
 export async function updateSetMealInfo(

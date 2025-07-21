@@ -12,24 +12,24 @@ import { Recipe, RecipeForm } from '@/app/lib/definitions';
 import { editRecipe, deleteRecipe } from '@/app/lib/actions/recipe-actions';
 import ProcessingPage from '@/app/ui/processing-page';
 
-export default function RecipeEditForm({ recipeData }: { recipeData: Recipe }) {
+export default function RecipeEditForm({ recipe }: { recipe: Recipe }) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [formData, setFormData] = useState<RecipeForm>({
-    prevImgUrl: recipeData.imgUrl,
-    imgUrl: recipeData.imgUrl,
+    prevImgUrl: recipe.imgUrl,
+    imgUrl: recipe.imgUrl,
     imgFile: null,
-    title: recipeData.title,
-    memo: recipeData.memo,
-    tagList: recipeData.tags,
-    ingList: recipeData.ingredients,
-    stepList: recipeData.steps,
+    title: recipe.title,
+    memo: recipe.memo,
+    tagList: recipe.tags,
+    ingList: recipe.ingredients,
+    stepList: recipe.steps,
   });
 
   const submitForm = async () => {
     setIsPending(true);
     try {
-      await editRecipe(formData, Number(recipeData.id));
+      await editRecipe(formData, recipe.id);
     } catch (error) {
       console.error(error);
       setIsError(true);
@@ -41,7 +41,7 @@ export default function RecipeEditForm({ recipeData }: { recipeData: Recipe }) {
   const submitDeleteRecipe = async () => {
     setIsPending(true);
     try {
-      await deleteRecipe(formData.prevImgUrl, Number(recipeData.id));
+      await deleteRecipe(formData.prevImgUrl, recipe.id);
     } catch (error) {
       console.error(error);
       setIsError(true);

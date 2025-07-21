@@ -13,8 +13,8 @@ export default function ReciepStepInput({
   setFormData: React.Dispatch<React.SetStateAction<RecipeForm>>;
 }) {
   const [newStep, setNewStep] = useState<Step>({
-    id: null,
-    recipeId: null,
+    id: 0,
+    recipeId: 0,
     name: '',
   });
 
@@ -26,13 +26,13 @@ export default function ReciepStepInput({
     if (!newStep.name) return;
     const newStepList = [
       ...formData.stepList,
-      { id: null, recipeId: null, name: newStep.name },
+      { id: 0, recipeId: 0, name: newStep.name },
     ];
     setFormData((prev) => ({
       ...prev,
       stepList: newStepList,
     }));
-    setNewStep({ id: null, recipeId: null, name: '' });
+    setNewStep({ id: 0, recipeId: 0, name: '' });
   };
 
   const handleStepChange = (

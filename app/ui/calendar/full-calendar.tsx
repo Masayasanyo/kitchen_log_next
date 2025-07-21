@@ -16,10 +16,10 @@ import Trash from '@/app/ui/icons/trash';
 import { buttonClass } from '@/app/lib/classnames';
 
 export default function Calendar({
-  allRecipeList,
+  recipes,
   events,
 }: {
-  allRecipeList: Recipe[];
+  recipes: Recipe[];
   events: Event[];
 }) {
   const router = useRouter();
@@ -49,7 +49,7 @@ export default function Calendar({
       setRecipeList([]);
       return;
     }
-    const newRecipeList = allRecipeList?.filter((recipe) =>
+    const newRecipeList = recipes?.filter((recipe) =>
       recipe.title.includes(keyword),
     );
     setRecipeList(newRecipeList);

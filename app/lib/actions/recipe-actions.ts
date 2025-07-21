@@ -11,7 +11,6 @@ import {
   Step,
   RecipeForm,
   Tag,
-  AllRecipeDataRow,
 } from '@/app/lib/definitions';
 import { auth } from '@/auth';
 import { supabase } from '@/app/lib/supabase';
@@ -251,35 +250,35 @@ export async function editRecipe(formData: RecipeForm, recipeId: number) {
   redirect(`/dashboard/recipe/${recipeId}`);
 }
 
+// export async function fetchRecipes() {
+//   const userId = await getUserId();
+
+//   const { data, error } = await supabase
+//     .from('recipes')
+//     .select()
+//     .eq('user_id', userId);
+
+//   if (error) {
+//     console.error('Database Error:', error);
+//     throw new Error('Failed to fetch recipes.');
+//   }
+
+//   if (data && data?.length > 0) {
+//     const convertedData = data.map((row: RecipeRow) => ({
+//       id: row.id,
+//       imgUrl: row.img_url,
+//       title: row.title,
+//       memo: row.memo,
+//       userId: row.user_id,
+//     }));
+
+//     return convertedData;
+//   }
+
+//   return [];
+// }
+
 export async function fetchRecipes() {
-  const userId = await getUserId();
-
-  const { data, error } = await supabase
-    .from('recipes')
-    .select()
-    .eq('user_id', userId);
-
-  if (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch recipes.');
-  }
-
-  if (data && data?.length > 0) {
-    const convertedData = data.map((row: RecipeRow) => ({
-      id: row.id,
-      imgUrl: row.img_url,
-      title: row.title,
-      memo: row.memo,
-      userId: row.user_id,
-    }));
-
-    return convertedData;
-  }
-
-  return [];
-}
-
-export async function fetchAllRecipeData() {
   const userId = await getUserId();
 
   const { data, error } = await supabase
@@ -320,7 +319,7 @@ export async function fetchAllRecipeData() {
   }
 
   if (data && data?.length > 0) {
-    const convertedData = data.map((row: AllRecipeDataRow) => ({
+    const convertedData = data.map((row: RecipeRow) => ({
       id: row.id,
       imgUrl: row.img_url,
       title: row.title,
@@ -426,7 +425,7 @@ export async function fetchRecipe(recipeId: string) {
   }
 
   if (data && data?.length > 0) {
-    const convertedData = data.map((row: AllRecipeDataRow) => ({
+    const convertedData = data.map((row: RecipeRow) => ({
       id: row.id,
       imgUrl: row.img_url,
       title: row.title,

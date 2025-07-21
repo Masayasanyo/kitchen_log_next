@@ -1,11 +1,14 @@
 'use client';
 
-import { SetMealChildComponentProps } from '@/app/lib/definitions';
+import { SetMealForm } from '@/app/lib/definitions';
 
 export default function SetMealTitleInput({
   formData,
   setFormData,
-}: SetMealChildComponentProps) {
+}: {
+  formData: SetMealForm;
+  setFormData: React.Dispatch<React.SetStateAction<SetMealForm>>;
+}) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,

@@ -4,33 +4,29 @@ import SetMealTitleInput from '@/app/ui/set-meal/form/set-meal-title-input';
 import SetMealRecipeInput from '@/app/ui/set-meal/form/set-meal-recipe-input';
 import SetMealRecipeInputList from '@/app/ui/set-meal/form/set-meal-recipe-input-list';
 import { useState } from 'react';
-import { SetMealForm, SetMealInfo, Recipe } from '@/app/lib/definitions';
+import { SetMealForm, SetMeal, Recipe } from '@/app/lib/definitions';
 import { editSetMeal, deleteSetMeal } from '@/app/lib/actions/set-meal-actions';
 import { buttonClass } from '@/app/lib/classnames';
 import ProcessingPage from '@/app/ui/processing-page';
 
 export default function SetMealEditForm({
-  setMealId,
-  setMealInfo,
-  recipeList,
-  allRecipeList,
+  setMeal,
+  recipes,
 }: {
-  setMealId: string;
-  setMealInfo: SetMealInfo;
-  recipeList: Recipe[];
-  allRecipeList: Recipe[];
+  setMeal: SetMeal;
+  recipes: Recipe[];
 }) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [formData, setFormData] = useState<SetMealForm>({
-    title: setMealInfo.title,
-    recipeList: recipeList,
+    title: setMeal.title,
+    recipes: setMeal.recipes,
   });
 
   const submitForm = async () => {
     setIsPending(true);
     try {
-      await editSetMeal(formData, Number(setMealId));
+      await editSetMeal(formData, setMeal.id);
     } catch (error) {
       console.error(error);
       setIsError(true);
@@ -42,7 +38,7 @@ export default function SetMealEditForm({
   const submitDeleteSetMeal = async () => {
     setIsPending(true);
     try {
-      await deleteSetMeal(Number(setMealId));
+      await deleteSetMeal(setMeal.id);
     } catch (error) {
       console.error(error);
       setIsError(true);
@@ -63,7 +59,7 @@ export default function SetMealEditForm({
           <SetMealRecipeInput
             formData={formData}
             setFormData={setFormData}
-            AllRecipeList={allRecipeList}
+            recipes={recipes}
           />
           <SetMealRecipeInputList
             formData={formData}

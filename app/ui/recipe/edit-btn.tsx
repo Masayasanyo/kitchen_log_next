@@ -13,7 +13,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import ja from 'date-fns/locale/ja';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default function EditBtn({ recipeData }: { recipeData: Recipe }) {
+export default function EditBtn({ recipe }: { recipe: Recipe }) {
   const [isButtonClicked, setIsButtonClicked] = useState<boolean>(false);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
@@ -26,7 +26,7 @@ export default function EditBtn({ recipeData }: { recipeData: Recipe }) {
     try {
       await createFromRecipe([
         {
-          id: Number(recipeData.id),
+          id: Number(recipe.id),
           imgUrl: '',
           title: '',
           memo: '',
@@ -49,7 +49,7 @@ export default function EditBtn({ recipeData }: { recipeData: Recipe }) {
 
     setIsPending(true);
     try {
-      await deleteRecipe(recipeData.imgUrl, Number(recipeData.id));
+      await deleteRecipe(recipe.imgUrl, recipe.id);
     } catch (error) {
       console.error(error);
       setError(true);
@@ -71,8 +71,8 @@ export default function EditBtn({ recipeData }: { recipeData: Recipe }) {
 
     const newEvent = {
       id: '',
-      recipeId: recipeData.id,
-      title: recipeData.title,
+      recipeId: recipe.id,
+      title: recipe.title,
       start: String(dateString),
       end: String(dateString),
       backgroundColor: '#1f4529',
@@ -111,7 +111,7 @@ export default function EditBtn({ recipeData }: { recipeData: Recipe }) {
             rounded-lg shadow-md flex flex-col gap-4 absolute right-0 font-semibold`}
         >
           <div>
-            <Link href={`/dashboard/recipe/${recipeData.id}/edit`}>編集</Link>
+            <Link href={`/dashboard/recipe/${recipe.id}/edit`}>編集</Link>
           </div>
           <div>
             <button type="button" onClick={addToShoppingList}>

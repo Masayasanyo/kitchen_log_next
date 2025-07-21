@@ -6,11 +6,11 @@ import Link from 'next/link';
 import { SetMeal } from '@/app/lib/definitions';
 
 export async function LatestSetMealList() {
-  const setMealList = await fetchSetMeals();
+  const setMeals = await fetchSetMeals();
 
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-      {setMealList
+      {setMeals
         ?.slice(0, 4)
         .map((setMeal) => (
           <SetMealImgCard key={setMeal.id} setMeal={setMeal} />
@@ -26,23 +26,21 @@ export async function AllSetMealList({
   type: string;
   query: string;
 }) {
-  let setMealList = await fetchSetMeals();
+  let setMeals = await fetchSetMeals();
 
   if (type === 'title' && query) {
-    setMealList = setMealList?.filter((setMeal) =>
-      setMeal.title.includes(query),
-    );
+    setMeals = setMeals?.filter((setMeal) => setMeal.title.includes(query));
   }
 
   if (type === 'recipeTitle' && query) {
-    setMealList = setMealList?.filter((setMeal) =>
+    setMeals = setMeals?.filter((setMeal) =>
       setMeal.recipes.some((recipe) => recipe.title.includes(query)),
     );
   }
 
   return (
     <div className="flex flex-col md:grid md:grid-cols-2 rounded-2xl gap-6">
-      {setMealList?.map((setMeal) => (
+      {setMeals?.map((setMeal) => (
         <SetMealCard key={setMeal.id} setMeal={setMeal} />
       ))}
     </div>
@@ -60,7 +58,7 @@ export async function SetMealCard({ setMeal }: { setMeal: SetMeal }) {
         {setMeal.recipes?.map((recipe) => (
           <Image
             key={recipe.id}
-            src={recipe.img_url || '/no_image.png'}
+            src={recipe.imgUrl || '/no_image.png'}
             width={160}
             height={90}
             alt={recipe.title}
@@ -86,7 +84,7 @@ export async function SetMealImgCard({ setMeal }: { setMeal: SetMeal }) {
           ?.slice(0, 4)
           .map((recipe) => (
             <Image
-              src={recipe.img_url || '/no_image.png'}
+              src={recipe.imgUrl || '/no_image.png'}
               width={160}
               height={90}
               key={recipe.id}

@@ -1,9 +1,6 @@
 'use server';
 
-import {
-  fetchRecipes,
-  fetchAllRecipeData,
-} from '@/app/lib/actions/recipe-actions';
+import { fetchRecipes } from '@/app/lib/actions/recipe-actions';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Recipe } from '@/app/lib/definitions';
@@ -27,7 +24,7 @@ export async function AllRecipeList({
   type: string;
   query: string;
 }) {
-  let recipeList = await fetchAllRecipeData();
+  let recipeList = await fetchRecipes();
 
   if (type === 'title' && query) {
     recipeList = recipeList?.filter((recipe) => recipe.title.includes(query));

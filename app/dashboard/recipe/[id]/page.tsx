@@ -7,15 +7,15 @@ import { fetchRecipe } from '@/app/lib/actions/recipe-actions';
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const { id } = await props.params;
-  const recipeData = await fetchRecipe(id);
+  const recipe = await fetchRecipe(id);
 
   return (
     <main className="w-full flex flex-col gap-8">
-      <EditBtn recipeData={recipeData} />
-      <RecipeInfo recipeData={recipeData} />
-      <Tag recipeData={recipeData} />
-      <Ingredients recipeData={recipeData} />
-      <Step recipeData={recipeData} />
+      <EditBtn recipe={recipe} />
+      <RecipeInfo recipe={recipe} />
+      <Tag recipe={recipe} />
+      <Ingredients recipe={recipe} />
+      <Step recipe={recipe} />
     </main>
   );
 }

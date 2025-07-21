@@ -1,15 +1,18 @@
 'use client';
 
-import { SetMealChildComponentProps } from '@/app/lib/definitions';
+import { SetMealForm } from '@/app/lib/definitions';
 import Image from 'next/image';
 import Cancel from '@/app/ui/icons/cancel';
 
 export default function SetMealRecipeInputList({
   formData,
   setFormData,
-}: SetMealChildComponentProps) {
+}: {
+  formData: SetMealForm;
+  setFormData: React.Dispatch<React.SetStateAction<SetMealForm>>;
+}) {
   const cancelRecipe = (id: number | null) => {
-    let currentList = [...formData.recipeList];
+    let currentList = [...formData.recipes];
     currentList = currentList.filter((recipe) => recipe.id !== id);
     setFormData((prev) => ({
       ...prev,
@@ -19,7 +22,7 @@ export default function SetMealRecipeInputList({
 
   return (
     <div className="md:grid md:grid-cols-4 grid grid-cols-2 gap-4">
-      {formData.recipeList.map((recipe) => (
+      {formData.recipes.map((recipe) => (
         <div
           key={recipe.id}
           className="bg-[#ffffff] rounded-2xl px-4 py-4 flex flex-col gap-4 shadow-md"

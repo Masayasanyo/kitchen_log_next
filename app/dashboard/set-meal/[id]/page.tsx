@@ -1,10 +1,11 @@
-import SetMealInfo from '@/app/ui/set-meal/set-meal-info';
-import RecipeList from '@/app/ui/set-meal/recipe-list';
+import SetMeal from '@/app/ui/set-meal/set-meal';
 import EditBtn from '@/app/ui/icons/edit-btn';
 import Link from 'next/link';
+import { fetchSetMeal } from '@/app/lib/actions/set-meal-actions';
 
 export default async function Page(props: { params: Promise<{ id: string }> }) {
   const { id } = await props.params;
+  const setMeal = await fetchSetMeal(id);
 
   return (
     <main className="w-full flex flex-col gap-8">
@@ -15,8 +16,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           size="w-4 h-4"
         />
       </Link>
-      <SetMealInfo setMealId={id} />
-      <RecipeList setMealId={id} />
+      {setMeal && <SetMeal setMeal={setMeal} />}
     </main>
   );
 }

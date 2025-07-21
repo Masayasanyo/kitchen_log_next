@@ -9,12 +9,12 @@ import SetMealRecipeInputList from './set-meal-recipe-input-list';
 import { GreenButton } from '@/app/lib/classnames';
 import ProcessingPage from '@/app/ui/processing-page';
 
-export default function CreateForm({ recipeList }: { recipeList: Recipe[] }) {
+export default function CreateForm({ recipes }: { recipes: Recipe[] }) {
   const [isPending, setIsPending] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [formData, setFormData] = useState<SetMealForm>({
     title: '',
-    recipeList: [],
+    recipes: [],
   });
 
   const submitForm = async () => {
@@ -41,7 +41,7 @@ export default function CreateForm({ recipeList }: { recipeList: Recipe[] }) {
           <SetMealRecipeInput
             formData={formData}
             setFormData={setFormData}
-            AllRecipeList={recipeList}
+            recipes={recipes}
           />
           <SetMealRecipeInputList
             formData={formData}

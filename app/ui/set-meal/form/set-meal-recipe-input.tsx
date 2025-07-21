@@ -1,18 +1,17 @@
 'use client';
 
-import { Recipe, SetMealChildComponentProps } from '@/app/lib/definitions';
+import { Recipe, SetMealForm } from '@/app/lib/definitions';
 import { useState } from 'react';
-
-interface ExtendedSetMealChildComponentProps
-  extends SetMealChildComponentProps {
-  AllRecipeList: Recipe[];
-}
 
 export default function SetMealRecipeInput({
   formData,
   setFormData,
-  AllRecipeList,
-}: ExtendedSetMealChildComponentProps) {
+  recipes,
+}: {
+  formData: SetMealForm;
+  setFormData: React.Dispatch<React.SetStateAction<SetMealForm>>;
+  recipes: Recipe[];
+}) {
   const [recipeList, setRecipeList] = useState<Recipe[]>([]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,7 +22,7 @@ export default function SetMealRecipeInput({
       return;
     }
 
-    const newRecipeList = AllRecipeList?.filter((recipe) =>
+    const newRecipeList = recipes?.filter((recipe) =>
       recipe.title.includes(keyword),
     );
 
@@ -31,10 +30,10 @@ export default function SetMealRecipeInput({
   };
 
   const selectRecipe = (recipe: Recipe) => {
-    if (formData.recipeList.some((r) => r.id === recipe.id)) return;
+    if (formData.recipes.some((r) => r.id === recipe.id)) return;
     setFormData((prev) => ({
       ...prev,
-      recipeList: [...prev.recipeList, recipe],
+      recipeList: [...prev.recipes, recipe],
     }));
     setRecipeList([]);
   };
