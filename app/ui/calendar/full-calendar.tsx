@@ -71,6 +71,7 @@ export default function Calendar({
       textColor: '#ffffff',
     };
 
+    setIsRecipeOpen(false);
     setIsPending(true);
     try {
       await createEvent(newEvent);
@@ -78,8 +79,8 @@ export default function Calendar({
       console.error(error);
       setError(true);
     } finally {
-      setIsPending(false);
       router.refresh();
+      setIsPending(false);
       setRecipeList([]);
       setIsAdding(false);
     }
@@ -119,6 +120,7 @@ export default function Calendar({
   };
 
   const handleDeleteEvent = async (eventId: string) => {
+    setIsRecipeOpen(false);
     setIsPending(true);
     try {
       await deleteEvent(Number(eventId));
@@ -126,9 +128,8 @@ export default function Calendar({
       console.error(error);
       setError(true);
     } finally {
-      setIsPending(false);
-      setIsRecipeOpen(false);
       router.refresh();
+      setIsPending(false);
     }
   };
 
