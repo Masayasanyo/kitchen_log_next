@@ -14,8 +14,8 @@ export default function RecipeIngInput({
   setFormData: React.Dispatch<React.SetStateAction<RecipeForm>>;
 }) {
   const [newIng, setNewIng] = useState<Ingredient>({
-    id: null,
-    recipeId: null,
+    id: 0,
+    recipeId: 0,
     name: '',
     amount: '',
     unit: 'g',
@@ -49,18 +49,18 @@ export default function RecipeIngInput({
     const newIngList = [
       ...formData.ingList,
       {
-        id: null,
+        id: 0,
         name: newIng.name,
         amount: newIng.amount,
         unit: newIng.unit,
-        recipeId: null,
+        recipeId: 0,
       },
     ];
     setFormData((prev) => ({
       ...prev,
       ingList: newIngList,
     }));
-    setNewIng({ id: null, recipeId: null, name: '', amount: '', unit: 'g' });
+    setNewIng({ id: 0, recipeId: 0, name: '', amount: '', unit: 'g' });
   };
 
   const handleIngChange = (
