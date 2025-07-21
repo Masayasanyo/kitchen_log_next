@@ -7,11 +7,12 @@ import SetMealTitleInput from './set-meal-title-input';
 import SetMealRecipeInput from './set-meal-recipe-input';
 import SetMealRecipeInputList from './set-meal-recipe-input-list';
 import { GreenButton } from '@/app/lib/classnames';
-import ProcessingPage from '@/app/ui/processing-page';
+import PendingPage from '@/app/ui/pending-page';
+import ErrorPage from '@/app/ui/error-page';
 
 export default function CreateForm({ recipes }: { recipes: Recipe[] }) {
   const [isPending, setIsPending] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const [formData, setFormData] = useState<SetMealForm>({
     title: '',
     recipes: [],
@@ -23,7 +24,7 @@ export default function CreateForm({ recipes }: { recipes: Recipe[] }) {
       await createSetMeal(formData);
     } catch (error) {
       console.error(error);
-      setIsError(true);
+      setError(true);
     } finally {
       setIsPending(false);
     }
@@ -31,31 +32,22 @@ export default function CreateForm({ recipes }: { recipes: Recipe[] }) {
 
   return (
     <form className="flex flex-col gap-4">
-      {isPending && <ProcessingPage />}
-      {isError && (
-        <p className="p-6 font-semibold text-red-500">処理に失敗しました。</p>
-      )}
-      {!isPending && !isError && (
-        <div className="flex flex-col gap-4">
-          <SetMealTitleInput formData={formData} setFormData={setFormData} />
-          <SetMealRecipeInput
-            formData={formData}
-            setFormData={setFormData}
-            recipes={recipes}
-          />
-          <SetMealRecipeInputList
-            formData={formData}
-            setFormData={setFormData}
-          />
-          <button
-            type="button"
-            onClick={submitForm}
-            className={`${GreenButton} w-20`}
-          >
-            登録
-          </button>
-        </div>
-      )}
+      {isPending && <PendingPage />}
+      {error && <ErrorPage setError={setError} />}
+      <SetMealTitleInput formData={formData} setFormData={setFormData} />
+      <SetMealRecipeInput
+        formData={formData}
+        setFormData={setFormData}
+        recipes={recipes}
+      />
+      <SetMealRecipeInputList formData={formData} setFormData={setFormData} />
+      <button
+        type="button"
+        onClick={submitForm}
+        className={`${GreenButton} w-20`}
+      >
+        登録
+      </button>
     </form>
   );
 }

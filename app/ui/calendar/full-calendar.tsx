@@ -14,6 +14,8 @@ import { createEvent, deleteEvent } from '@/app/lib/actions/calendar-actions';
 import { useRouter } from 'next/navigation';
 import Trash from '@/app/ui/icons/trash';
 import { buttonClass } from '@/app/lib/classnames';
+import PendingPage from '@/app/ui/pending-page';
+import ErrorPage from '@/app/ui/error-page';
 
 export default function Calendar({
   recipes,
@@ -23,6 +25,8 @@ export default function Calendar({
   events: Event[];
 }) {
   const router = useRouter();
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
   const [isRecipeOpen, setIsRecipeOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<string>('');
@@ -67,10 +71,18 @@ export default function Calendar({
       textColor: '#ffffff',
     };
 
-    await createEvent(newEvent);
-    router.refresh();
-    setRecipeList([]);
-    setIsAdding(false);
+    setIsPending(true);
+    try {
+      await createEvent(newEvent);
+    } catch (error) {
+      console.error(error);
+      setError(true);
+    } finally {
+      setIsPending(false);
+      router.refresh();
+      setRecipeList([]);
+      setIsAdding(false);
+    }
   };
 
   const displayForm = () => {
@@ -107,13 +119,24 @@ export default function Calendar({
   };
 
   const handleDeleteEvent = async (eventId: string) => {
-    await deleteEvent(Number(eventId));
-    setIsRecipeOpen(false);
-    router.refresh();
+    setIsPending(true);
+    try {
+      await deleteEvent(Number(eventId));
+    } catch (error) {
+      console.error(error);
+      setError(true);
+    } finally {
+      setIsPending(false);
+      setIsRecipeOpen(false);
+      router.refresh();
+    }
   };
 
   return (
     <div>
+      {isPending && <PendingPage />}
+      {error && <ErrorPage setError={setError} />}
+
       <FullCalendar
         locale={jaLocale}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
