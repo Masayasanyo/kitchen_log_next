@@ -33,7 +33,7 @@ export default function SetMealRecipeInput({
     if (formData.recipes.some((r) => r.id === recipe.id)) return;
     setFormData((prev) => ({
       ...prev,
-      recipeList: [...prev.recipes, recipe],
+      recipes: [...prev.recipes, recipe],
     }));
     setRecipeList([]);
   };

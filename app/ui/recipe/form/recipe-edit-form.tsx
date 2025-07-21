@@ -38,18 +38,6 @@ export default function RecipeEditForm({ recipe }: { recipe: Recipe }) {
     }
   };
 
-  const submitDeleteRecipe = async () => {
-    setIsPending(true);
-    try {
-      await deleteRecipe(formData.prevImgUrl, recipe.id);
-    } catch (error) {
-      console.error(error);
-      setIsError(true);
-    } finally {
-      setIsPending(false);
-    }
-  };
-
   return (
     <form className="flex flex-col gap-4">
       {isPending && <ProcessingPage />}
@@ -73,15 +61,6 @@ export default function RecipeEditForm({ recipe }: { recipe: Recipe }) {
                 active:shadow-[0_3px_0_#32633f]`}
             >
               登録
-            </button>
-            <button
-              type="button"
-              onClick={submitDeleteRecipe}
-              className={`${buttonClass} bg-[#CC3300] text-[#E8ECD7] 
-                shadow-[0_4px_0_#FF3366] hover:bg-[#FF3366] 
-              active:bg-[#FF3366] active:shadow-[0_3px_0_#FF3366]`}
-            >
-              削除
             </button>
           </div>
         </>

@@ -111,10 +111,19 @@ export default function EditBtn({ recipe }: { recipe: Recipe }) {
             rounded-lg shadow-md flex flex-col gap-4 absolute right-0 font-semibold`}
         >
           <div>
-            <Link href={`/dashboard/recipe/${recipe.id}/edit`}>編集</Link>
+            <Link
+              href={`/dashboard/recipe/${recipe.id}/edit`}
+              className="block"
+            >
+              編集
+            </Link>
           </div>
           <div>
-            <button type="button" onClick={addToShoppingList}>
+            <button
+              type="button"
+              onClick={addToShoppingList}
+              className="block w-full text-left"
+            >
               買い物リストに追加
             </button>
           </div>
@@ -129,7 +138,11 @@ export default function EditBtn({ recipe }: { recipe: Recipe }) {
             />
           </div>
           <div>
-            <button type="button" onClick={submitDeleteRecipe}>
+            <button
+              type="button"
+              onClick={submitDeleteRecipe}
+              className="block w-full text-left"
+            >
               削除
             </button>
           </div>
