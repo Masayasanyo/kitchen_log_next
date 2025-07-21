@@ -51,7 +51,7 @@ export async function SetMealCard({ setMeal }: { setMeal: SetMeal }) {
   return (
     <Link
       href={`/dashboard/set-meal/${setMeal.id}`}
-      className="rounded-2xl p-4 flex flex-col gap-2 shadow-md bg-[#ffffff]"
+      className="rounded-xl p-6 flex flex-col gap-2 shadow-md bg-[#ffffff]"
       key={setMeal.id}
     >
       <div className="grid grid-cols-2 grid-rows-2 gap-2">
@@ -67,7 +67,7 @@ export async function SetMealCard({ setMeal }: { setMeal: SetMeal }) {
           />
         ))}
       </div>
-      <p>{setMeal.title}</p>
+      <p className="text-xl font-semibold">{setMeal.title}</p>
     </Link>
   );
 }
@@ -76,7 +76,7 @@ export async function SetMealImgCard({ setMeal }: { setMeal: SetMeal }) {
   return (
     <Link
       href={`/dashboard/set-meal/${setMeal.id}`}
-      className="rounded-md p-4 flex flex-col gap-2 shadow-md"
+      className="rounded-xl p-6 flex flex-col gap-2 shadow-md"
       key={setMeal.id}
     >
       <div className="grid grid-cols-2 grid-rows-2 gap-2">

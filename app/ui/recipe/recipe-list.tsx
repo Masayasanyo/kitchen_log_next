@@ -55,17 +55,17 @@ export async function RecipeCard({ recipe }: { recipe: Recipe }) {
   return (
     <Link
       href={`/dashboard/recipe/${recipe.id}`}
-      className="rounded-2xl shadow-md bg-white p-4 flex flex-col gap-2"
+      className="rounded-xl shadow-md bg-white p-6 flex flex-col gap-2"
     >
       <Image
         src={recipe.imgUrl || '/no_image.png'}
         width={160}
         height={90}
         alt={recipe.title}
-        className="object-cover aspect-video w-full rounded-md"
+        className="object-cover aspect-video w-full rounded-2xl"
         unoptimized
       />
-      <p>{recipe.title}</p>
+      <p className="text-xl font-semibold">{recipe.title}</p>
     </Link>
   );
 }

@@ -38,7 +38,7 @@ export default function Page() {
       </section>
 
       <section className="bg-[#ffffff] rounded-2xl p-6 flex flex-col gap-8 md:p-8 md:gap-6">
-        <h2 className="text-2xl md:text-3xl font-bold mb-4">献立</h2>
+        <h2 className="text-2xl md:text-3xl font-bold">献立</h2>
         <Suspense fallback={<SetMealsSkeleton />}>
           <LatestSetMealList />
         </Suspense>
