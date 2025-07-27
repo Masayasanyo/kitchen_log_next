@@ -34,12 +34,12 @@ export default function Nav(props: { isOpen: boolean; openNav?: () => void }) {
     <>
       <div
         className={`fixed w-full h-full bg-[rgba(0,0,0,.5)] 
-              top-0 left-0 z-1000`}
+          top-0 left-0 z-1000`}
       ></div>
       <nav
         className={`fixed top-0 left-0 z-1100 w-75 h-screen bg-[#1F4529] 
         text-[#E8ECD7] rounded-r-2xl 
-        px-8 py-10 transition-all duration-500 ease-in-out`}
+        px-8 py-10 transition-all duration-500 ease-in-out md:w-100`}
       >
         <button
           type="button"
